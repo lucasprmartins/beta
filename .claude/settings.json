@@ -32,6 +32,7 @@
       "Bash(bun db*)",
       "Bash(bun start*)",
       "Bash(bun env*)",
+      "Bash(bun n8n*)",
       "Bash(rm -rf*)"
     ]
   },

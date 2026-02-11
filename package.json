@@ -26,7 +26,9 @@
     "start": "turbo start",
     "start:server": "turbo -F server start",
     "start:web": "turbo -F web start",
-    "ci": "bun lint && bun check-types && bun run build"
+    "ci": "bun lint && bun check-types && bun run build",
+    "n8n:pull": "bun scripts/n8n-pull.ts",
+    "n8n:push": "bun scripts/n8n-push.ts"
   },
   "catalog": {
     "typescript": "^5",
