@@ -43,7 +43,7 @@ export const CAMPOS_WORKFLOW = [
 ] as const;
 
 export async function carregarEnv(): Promise<ConfigN8n> {
-  const envPath = join(SCRIPTS_DIR, ".env");
+  const envPath = join(ROOT_DIR, "apps", "server", ".env");
   const envContent = await readFile(envPath, "utf-8");
   const vars: Record<string, string> = {};
 
