@@ -1,0 +1,50 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(bun check-types*)",
+      "Bash(bun lint*)",
+      "Bash(bun ultracite*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch --list*)"
+    ],
+    "ask": [
+      "Bash(bun add*)",
+      "Bash(bun install*)",
+      "Bash(bun build*)",
+      "Bash(bun ci*)",
+      "Bash(git push*)",
+      "Bash(git commit*)",
+      "Bash(git checkout*)",
+      "Bash(gh pr*)"
+    ],
+    "deny": [
+      "Bash(bun dev*)",
+      "Bash(bun db*)",
+      "Bash(bun start*)",
+      "Bash(bun env*)",
+      "Bash(rm -rf*)"
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "codepowers": {
+      "source": {
+        "source": "github",
+        "repo": "lucasprmartins/codepowers"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "codepowers@codepowers": true,
+    "context7@claude-plugins-official": true
+  }
+}
