@@ -1,0 +1,69 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+change-template: "- $TITLE (#$NUMBER) @$AUTHOR"
+
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "feature"
+  patch:
+    labels:
+      - "fix"
+  default: patch
+
+categories:
+  - title: "🚀 Funcionalidades"
+    labels:
+      - "feature"
+  - title: "🐛 Correções"
+    labels:
+      - "fix"
+  - title: "⚡ Performance"
+    labels:
+      - "perf"
+  - title: "📚 Documentação"
+    labels:
+      - "docs"
+  - title: "🔧 Manutenção"
+    labels:
+      - "chore"
+      - "refactor"
+      - "style"
+      - "test"
+
+autolabeler:
+  - label: "feature"
+    title:
+      - '/^feat(\(.+\))?[!]?:/i'
+  - label: "fix"
+    title:
+      - '/^fix(\(.+\))?[!]?:/i'
+  - label: "perf"
+    title:
+      - '/^perf(\(.+\))?[!]?:/i'
+  - label: "docs"
+    title:
+      - '/^docs(\(.+\))?[!]?:/i'
+  - label: "chore"
+    title:
+      - '/^chore(\(.+\))?[!]?:/i'
+  - label: "refactor"
+    title:
+      - '/^refactor(\(.+\))?[!]?:/i'
+  - label: "style"
+    title:
+      - '/^style(\(.+\))?[!]?:/i'
+  - label: "test"
+    title:
+      - '/^test(\(.+\))?[!]?:/i'
+  - label: "major"
+    title:
+      - '/^.+(\(.+\))?!:/i'
+
+template: |
+  ## Changelog
+
+  $CHANGES
