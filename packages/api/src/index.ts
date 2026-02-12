@@ -12,23 +12,21 @@ export const router = {
 
 export type AppRouterClient = RouterClient<typeof router>;
 
-export const rpcHandler = new RPCHandler(router, {
-  interceptors: [
-    onError((error) => {
-      console.error(error);
-    }),
-  ],
-});
+export type ErrorHandler = (error: unknown) => void;
 
-export const apiHandler = new OpenAPIHandler(router, {
-  plugins: [
-    new OpenAPIReferencePlugin({
-      schemaConverters: [new ZodToJsonSchemaConverter()],
-    }),
-  ],
-  interceptors: [
-    onError((error) => {
-      console.error(error);
-    }),
-  ],
-});
+export function createRPCHandler(onErrorHandler: ErrorHandler) {
+  return new RPCHandler(router, {
+    interceptors: [onError((error) => onErrorHandler(error))],
+  });
+}
+
+export function createAPIHandler(onErrorHandler: ErrorHandler) {
+  return new OpenAPIHandler(router, {
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+      }),
+    ],
+    interceptors: [onError((error) => onErrorHandler(error))],
+  });
+}
