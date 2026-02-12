@@ -1,14 +1,22 @@
-import { apiHandler, rpcHandler } from "@app/api";
+import { createAPIHandler, createRPCHandler } from "@app/api";
 import { auth, createContext } from "@app/auth/server";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
+import { logger } from "./logger";
 import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
 const URL = process.env.RAILWAY_PUBLIC_DOMAIN
   ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
   : "http://localhost";
 const PORT = 3000;
+
+const rpcHandler = createRPCHandler((error) =>
+  logger.error({ err: error, handler: "rpc" }, "erro no handler")
+);
+const apiHandler = createAPIHandler((error) =>
+  logger.error({ err: error, handler: "api" }, "erro no handler")
+);
 
 new Elysia()
   .headers({
@@ -93,6 +101,6 @@ new Elysia()
   .listen(PORT, () => {
     const isLocal = URL.includes("localhost");
     const baseUrl = isLocal ? `${URL}:${PORT}` : URL;
-    console.log("🔋 Servidor executado!");
-    console.log(`🌏 Acesse ${baseUrl}/api/ para conferir a documentação.`);
+    logger.info("servidor executado");
+    logger.info({ url: `${baseUrl}/api/` }, "documentação disponível");
   });
