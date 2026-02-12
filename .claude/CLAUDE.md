@@ -61,3 +61,4 @@ Server → Auth → Sessão/Cookies
 - Não crie comentários no código a não ser que eu peça
 - Não use comando de build a não ser que eu peça
 - Não tente gerar rotas do TanStack Router (ele gera automaticamente)
+- Não use `cd` para o diretório de trabalho — você já está nele. Use `cd` apenas quando realmente precisar mudar de diretório
