@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "bun@1.3.9",
   "scripts": {
-    "dev": "bun run --watch src/index.ts | bunx pino-pretty",
+    "dev": "bun run src/index.ts | bunx pino-pretty",
     "build": "bun build --compile src/index.ts --outfile server --minify",
     "start": "./server",
     "check-types": "tsc --noEmit",
