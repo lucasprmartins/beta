@@ -15,7 +15,9 @@
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
-      "Bash(git branch --list*)"
+      "Bash(git branch --list*)",
+      "Bash(git add*)",
+      "Bash(git commit*)"
     ],
     "ask": [
       "Bash(bun add*)",
@@ -23,7 +25,6 @@
       "Bash(bun build*)",
       "Bash(bun ci*)",
       "Bash(git push*)",
-      "Bash(git commit*)",
       "Bash(git checkout*)",
       "Bash(gh pr*)"
     ],
