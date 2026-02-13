@@ -35,13 +35,6 @@ const ROOT_DIR = resolve(SCRIPTS_DIR, "..");
 
 export const N8N_DIR = join(ROOT_DIR, "n8n");
 
-export const CAMPOS_WORKFLOW = [
-  "name",
-  "nodes",
-  "connections",
-  "settings",
-] as const;
-
 export async function carregarEnv(): Promise<ConfigN8n> {
   const envPath = join(ROOT_DIR, "apps", "server", ".env");
   const envContent = await readFile(envPath, "utf-8");
@@ -141,11 +134,10 @@ export async function buscarWorkflow(
 }
 
 export function limparWorkflow(workflow: WorkflowRemoto): WorkflowLimpo {
-  const limpo = {} as Record<string, unknown>;
-  for (const campo of CAMPOS_WORKFLOW) {
-    if (campo in workflow) {
-      limpo[campo] = workflow[campo];
-    }
-  }
-  return limpo as WorkflowLimpo;
+  return {
+    name: workflow.name,
+    nodes: workflow.nodes,
+    connections: workflow.connections,
+    settings: workflow.settings,
+  };
 }
