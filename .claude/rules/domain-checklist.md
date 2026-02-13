@@ -7,7 +7,7 @@ Ao criar um novo domínio, siga esta ordem exata. Cada passo referencia a regra 
 
 ## Backend
 
-1. `packages/core/src/contracts/{dominio}.ts` — Interface `{Dominio}Data` + `{Dominio}Repository`
+1. `packages/core/src/contracts/{dominio}.ts` — Interface `{Dominio}Data` + `{Dominio}Repository` (importar `EntradaPaginacao`/`SaidaPaginacao` de `./paginacao` e adicionar método `listar`)
 2. `packages/core/src/domains/{dominio}.ts` — Entidade com `criar()` + `paraDados()`
 3. `packages/core/src/application/{dominio}.ts` — Use cases (`criar{Dominio}`, etc.)
 4. `packages/infra/src/db/schema/{dominio}.ts` — Tabela Drizzle com `.enableRLS()`
@@ -21,8 +21,8 @@ Ao criar um novo domínio, siga esta ordem exata. Cada passo referencia a regra 
 
 ## Frontend
 
-9. `apps/web/src/features/{dominio}.tsx` — Componente dashboard com Query/Mutation
-10. `apps/web/src/routes/_auth/{dominio}.tsx` — Rota protegida com loader
+9. `apps/web/src/features/{dominio}.tsx` — Componente dashboard com `useInfiniteQuery` + Mutation
+10. `apps/web/src/routes/_auth/{dominio}.tsx` — Rota protegida (sem loader para listagens paginadas)
 11. `apps/web/src/components/sidebar.tsx` — Adicionar item ao menu
 
 ## Validação

@@ -12,6 +12,8 @@ Lógica de negócio pura, sem dependências de frameworks ou banco de dados.
 Interfaces e tipos compartilhados (DTOs e contratos de repositório).
 
 ```typescript
+import type { EntradaPaginacao, SaidaPaginacao } from "./paginacao";
+
 export interface {Dominio}Data {
   id: string;
   nome: string;
@@ -20,6 +22,7 @@ export interface {Dominio}Data {
 export interface {Dominio}Repository {
   buscarPorId(id: string): Promise<{Dominio}Data | null>;
   buscarTodos(): Promise<{Dominio}Data[]>;
+  listar(paginacao: EntradaPaginacao): Promise<SaidaPaginacao<{Dominio}Data>>;
   criar(data: {Dominio}Data): Promise<{Dominio}Data | null>;
   atualizar(id: string, data: {Dominio}Data): Promise<{Dominio}Data | null>;
   deletar(id: string): Promise<boolean>;
@@ -34,6 +37,7 @@ export interface {Dominio}Repository {
 - Tipo do ID depende do domínio (`string` para UUIDs, `number` para sequenciais)
 - Adicionar métodos de consulta extras conforme necessário (`buscarPorNome`, etc.)
 - Incluir apenas métodos que o domínio realmente precisa
+- `buscarTodos()` para uso interno; `listar()` para API com paginação (usa tipos de `./paginacao`)
 
 ## Domínios (`src/domains/`)
 

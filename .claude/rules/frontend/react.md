@@ -25,7 +25,7 @@ Estrutura de arquivo, de cima para baixo:
 
 ```typescript
 import { /* ícones */ } from "@phosphor-icons/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { client, orpc } from "../lib/orpc";
 
@@ -47,12 +47,21 @@ export function {Dominio}Dashboard() {
   const queryClient = useQueryClient();
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
 
-  // Query: listar
+  // Query: listar (paginado)
   const {
-    data: itens,
+    data,
     isPending: carregando,
-    error: erroListagem,
-  } = useQuery(orpc.{dominio}.listar.queryOptions());
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    orpc.{dominio}.listar.infiniteOptions({
+      input: (cursor: number) => ({ cursor, limite: 10 }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.proximoCursor,
+    })
+  );
+  const itens = data?.pages.flatMap((page) => page.itens);
 
   // Mutation: criar
   const criarMutation = useMutation({
@@ -85,19 +94,16 @@ export function {Dominio}Dashboard() {
 
 ```typescript
 import { createFileRoute } from "@tanstack/react-router";
-import { orpc } from "@/lib/orpc";
 import { {Dominio}Dashboard } from "@/features/{dominio}";
 
 export const Route = createFileRoute("/_auth/{dominio}")({
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(orpc.{dominio}.listar.queryOptions()),
   component: {Dominio}Dashboard,
 });
 ```
 
 - Rotas protegidas em `src/routes/_auth/`
-- `loader` com `ensureQueryData` para pré-carregar
-- `queryOptions()` do loader = mesmo do `useQuery` no componente
+- Infinite queries carregam client-side, sem `loader` com `ensureQueryData`
+- Use `loader` com `ensureQueryData` apenas para queries simples (`useQuery`)
 - **NÃO criar** `routeTree.gen.ts` (gerado automaticamente)
 
 ## TanStack Router

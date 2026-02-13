@@ -126,6 +126,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 const {
   data,
+  isPending: carregando,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -136,9 +137,13 @@ const {
     getNextPageParam: (lastPage) => lastPage.proximoCursor,
   })
 );
+const itens = data?.pages.flatMap((page) => page.itens);
+
+// Loading inicial
+if (carregando) return <ListagemSkeleton />;
 
 // Renderização
-{data?.pages.flatMap((page) => page.itens).map((item) => (
+{itens?.map((item) => (
   <Card key={item.id} item={item} />
 ))}
 
@@ -146,6 +151,31 @@ const {
 <button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
   {isFetchingNextPage ? "Carregando..." : "Carregar mais"}
 </button>
+```
+
+### Invalidação após mutation
+
+```typescript
+const criarMutation = useMutation({
+  mutationFn: (data) => client.{dominio}.criar(data),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: orpc.{dominio}.key() });
+  },
+});
+```
+
+Invalidar com `.key()` do domínio reseta todas as páginas do infinite query.
+
+### Nomenclatura pt-br para infinite queries
+
+```typescript
+const {
+  data,                              // contém pages
+  isPending: carregando,             // loading inicial
+  fetchNextPage: carregarMais,       // função para próxima página
+  hasNextPage: temMaisPaginas,       // boolean
+  isFetchingNextPage: carregandoMais, // loading de próxima página
+} = useInfiniteQuery(...);
 ```
 
 ## Padrões do Projeto

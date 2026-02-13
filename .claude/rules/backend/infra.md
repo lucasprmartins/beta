@@ -79,6 +79,22 @@ export const db{Dominio}Repository: {Dominio}Repository = {
     return rows.map(paraDados);
   },
 
+  async listar({ cursor, limite }) {
+    const rows = await db
+      .select()
+      .from({dominio})
+      .limit(limite + 1)
+      .offset(cursor);
+
+    const temMais = rows.length > limite;
+    const itens = (temMais ? rows.slice(0, limite) : rows).map(paraDados);
+
+    return {
+      itens,
+      proximoCursor: temMais ? cursor + limite : null,
+    };
+  },
+
   async criar(data) {
     const [row] = await db
       .insert({dominio})
@@ -117,6 +133,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 - `const [row]` para consultas de linha única
 - `.returning()` em insert/update/delete
 - `.limit(1)` em consultas de item único
+- `listar()`: busca `limite + 1` com offset, `slice(0, limite)` para itens, `proximoCursor = temMais ? cursor + limite : null`
 - `.set()` **não** inclui `id`, `createdAt`, `updatedAt`
 - `.values()` **não** inclui `createdAt`, `updatedAt` (gerados auto)
 - `db.transaction()` para operações que combinam leitura + escrita

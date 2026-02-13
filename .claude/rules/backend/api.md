@@ -84,11 +84,22 @@ export const {dominio}Router = {
       method: "GET",
       path: "/{dominio}/listar",
       summary: "Listar {Dominio}s",
-      description: "Lista todos(as) os(as) {dominio}s.",
+      description: "Lista {dominio}s com paginação.",
       tags: ["{Dominio}"],
     })
-    .output(z.array({dominio}Schema))
-    .handler(async () => db{Dominio}Repository.buscarTodos()),
+    .input(
+      z.object({
+        cursor: z.coerce.number().int().min(0).default(0).describe("Offset para paginação"),
+        limite: z.coerce.number().int().min(1).max(100).default(10).describe("Itens por página"),
+      })
+    )
+    .output(
+      z.object({
+        itens: z.array({dominio}Schema),
+        proximoCursor: z.number().nullable(),
+      })
+    )
+    .handler(async ({ input }) => db{Dominio}Repository.listar(input)),
 };
 ```
 
@@ -99,6 +110,7 @@ export const {dominio}Router = {
 - `.errors()` com dados tipados para respostas de erro
 - Handler verifica `null` e lança erros tipados
 - GET-por-ID: usar `z.string()` (não number), transformar se necessário
+- `z.coerce.number()` no input de GET: query params chegam como strings
 - Convenção: `{dominio}Router`
 
 ## Registrar Router (`src/index.ts`)
