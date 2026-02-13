@@ -1,4 +1,7 @@
-import { WarningCircle as WarningCircleIcon } from "@phosphor-icons/react";
+import {
+  MagnifyingGlass as MagnifyingGlassIcon,
+  WarningCircle as WarningCircleIcon,
+} from "@phosphor-icons/react";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { ErrorComponentProps } from "@tanstack/react-router";
@@ -39,6 +42,25 @@ function RootErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
+function RootNotFoundComponent() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-base-100">
+      <div className="flex max-w-md flex-col items-center gap-4 rounded-box border border-warning p-8 text-center">
+        <MagnifyingGlassIcon className="h-12 w-12 text-warning" weight="bold" />
+        <h1 className="font-bold text-2xl text-warning">
+          Página não encontrada
+        </h1>
+        <p className="text-sm opacity-70">
+          A página que você procura não existe ou foi removida.
+        </p>
+        <Link className="btn btn-primary" to="/dashboard">
+          Ir para o início
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <AuthProvider
@@ -54,4 +76,5 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     </AuthProvider>
   ),
   errorComponent: RootErrorComponent,
+  notFoundComponent: RootNotFoundComponent,
 });
