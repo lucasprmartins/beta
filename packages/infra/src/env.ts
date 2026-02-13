@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
-  BETTER_AUTH_URL: z.string().url(),
+  BETTER_AUTH_URL: z.url(),
   BETTER_AUTH_SECRET: z.string().min(1),
   CORS_ORIGIN: z.string().optional().default(""),
   LOG_LEVEL: z
@@ -11,7 +11,7 @@ const envSchema = z.object({
     .optional()
     .default("info"),
   RAILWAY_PUBLIC_DOMAIN: z.string().optional(),
-  S3_ENDPOINT: z.string().url().optional(),
+  S3_ENDPOINT: z.url().optional(),
   S3_REGION: z.string().optional().default("auto"),
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
