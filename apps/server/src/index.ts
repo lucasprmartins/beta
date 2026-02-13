@@ -3,6 +3,7 @@ import { auth, createContext } from "@app/auth/server";
 import { env } from "@app/infra/env";
 import { logger } from "@app/infra/logger";
 import { cors } from "@elysiajs/cors";
+import { sql } from "bun";
 import { Elysia } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
 import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
@@ -22,7 +23,18 @@ new Elysia()
     "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
   })
 
-  .get("/", () => "OK")
+  .get("/", async () => {
+    try {
+      await sql`SELECT 1`;
+      return { status: "ok", db: "connected" };
+    } catch (err) {
+      logger.error({ err }, "health check falhou: banco indisponível");
+      return new Response(
+        JSON.stringify({ status: "error", db: "disconnected" }),
+        { status: 503 }
+      );
+    }
+  })
 
   .use(
     cors({
