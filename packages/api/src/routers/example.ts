@@ -121,9 +121,31 @@ export const pokemonRouter = {
       method: "GET",
       path: "/pokemon/listar",
       summary: "Listar Pokemons",
-      description: "Lista todos os Pokemons cadastrados.",
+      description: "Lista Pokemons com paginação cursor-based.",
       tags: ["Pokemon"],
     })
-    .output(z.array(pokemonSchema))
-    .handler(async () => dbPokemonRepository.buscarTodos()),
+    .input(
+      z.object({
+        cursor: z.coerce
+          .number()
+          .int()
+          .min(0)
+          .default(0)
+          .describe("Offset para paginação"),
+        limite: z.coerce
+          .number()
+          .int()
+          .min(1)
+          .max(100)
+          .default(10)
+          .describe("Quantidade de itens por página"),
+      })
+    )
+    .output(
+      z.object({
+        itens: z.array(pokemonSchema),
+        proximoCursor: z.number().nullable(),
+      })
+    )
+    .handler(async ({ input }) => dbPokemonRepository.listar(input)),
 };

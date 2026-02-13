@@ -43,6 +43,22 @@ export const dbPokemonRepository: PokemonRepository = {
     return rows.map(paraDados);
   },
 
+  async listar({ cursor, limite }) {
+    const rows = await db
+      .select()
+      .from(pokemon)
+      .limit(limite + 1)
+      .offset(cursor);
+
+    const temMais = rows.length > limite;
+    const itens = (temMais ? rows.slice(0, limite) : rows).map(paraDados);
+
+    return {
+      itens,
+      proximoCursor: temMais ? cursor + limite : null,
+    };
+  },
+
   async criar(data) {
     const [row] = await db
       .insert(pokemon)
