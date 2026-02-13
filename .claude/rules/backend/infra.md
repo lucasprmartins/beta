@@ -127,7 +127,13 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 
 Após criar, executar `bun db:generate` para migration.
 
-## Integrations
+**Regras de migration:**
+- **Nunca** edite arquivos em `src/db/migrations/` manualmente — são gerados pelo Drizzle Kit
+- Após criar ou alterar schema, execute `bun db:generate` para gerar a migration
+- Use `bun db:push` apenas em desenvolvimento local para aplicar schema direto
+- Use `bun db:migrate` em produção para aplicar migrations versionadas
+
+## Integrações
 
 - Implemente contratos definidos em `@app/core/contracts`
 - Cada integração em arquivo separado

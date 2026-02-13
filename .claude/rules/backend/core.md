@@ -7,7 +7,7 @@ paths:
 
 Lógica de negócio pura, sem dependências de frameworks ou banco de dados.
 
-## Contracts (`src/contracts/`)
+## Contratos (`src/contracts/`)
 
 Interfaces e tipos compartilhados (DTOs e contratos de repositório).
 
@@ -30,7 +30,7 @@ export interface {Dominio}Repository {
 - Adicionar métodos de consulta extras conforme necessário (`buscarPorNome`, etc.)
 - Incluir apenas métodos que o domínio realmente precisa
 
-## Domains (`src/domains/`)
+## Domínios (`src/domains/`)
 
 Entidades com regras de negócio:
 
@@ -69,7 +69,7 @@ export class {Dominio} {
 - Use `private _campo` + getter para campos mutáveis com métodos de negócio
 - Arrays: use spread no construtor e em `paraDados()`: `this.items = [...data.items]`
 
-## Application (`src/application/`)
+## Aplicação (`src/application/`)
 
 Use cases com injeção de dependência via closure:
 

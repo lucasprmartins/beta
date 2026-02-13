@@ -46,6 +46,20 @@ Server → Auth → Sessão/Cookies
 | Styling | Tailwind CSS + DaisyUI |
 | Icons | Phosphor Icons |
 
+## Decisões Técnicas
+
+| Tecnologia | Por quê |
+|------------|---------|
+| **Bun** | Performance superior ao Node, package manager nativo, compatível com TypeScript sem build |
+| **Elysia** | Framework otimizado para Bun, tipagem end-to-end, plugins extensíveis |
+| **oRPC** | Type-safety completa entre server e client, gera OpenAPI automaticamente, integra com TanStack Query |
+| **Better Auth** | Solução completa de auth sem vendor lock-in, suporte nativo a Drizzle, extensível via plugins |
+| **Drizzle ORM** | Type-safe, SQL-first, migrations versionadas, suporte a RLS e PostgreSQL features |
+| **TanStack Router** | File-based routing, type-safe, code splitting automático, integração nativa com Query |
+| **TanStack Query** | Cache inteligente, deduplicação, prefetch, integração com oRPC via `queryOptions()` |
+| **DaisyUI** | Componentes semânticos sobre Tailwind, temas built-in, sem JavaScript extra |
+| **Phosphor Icons** | Biblioteca consistente, múltiplos pesos (regular, bold, fill), tree-shakeable |
+
 ## Comandos Úteis
 
 | Comando | Descrição |
