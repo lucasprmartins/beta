@@ -10,6 +10,9 @@
     "./integrations": {
       "default": "./src/integrations/index.ts"
     },
+    "./storage": {
+      "default": "./src/storage/client.ts"
+    },
     "./*": {
       "default": "./src/*.ts"
     }
@@ -30,6 +33,8 @@
   },
   "dependencies": {
     "@app/core": "workspace:*",
+    "@aws-sdk/client-s3": "^3.989.0",
+    "@aws-sdk/s3-request-presigner": "^3.989.0",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
     "pino": "catalog:",

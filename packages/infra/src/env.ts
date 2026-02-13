@@ -11,6 +11,11 @@ const envSchema = z.object({
     .optional()
     .default("info"),
   RAILWAY_PUBLIC_DOMAIN: z.string().optional(),
+  S3_ENDPOINT: z.string().url().optional(),
+  S3_REGION: z.string().optional().default("auto"),
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
+  S3_BUCKET: z.string().optional(),
 });
 
 const result = envSchema.safeParse(process.env);
