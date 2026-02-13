@@ -202,3 +202,38 @@ const criarMutation = useMutation({
 - **Use `ensureQueryData`** no loader para SSR/prefetch
 - **Mesmo `queryOptions()`** no loader e no componente
 - **Mutations usam `client`**, queries usam `orpc`
+
+## Tratamento de Erros da API
+
+### Erros tipados no onError
+
+```typescript
+import { ORPCError } from "@orpc/client";
+
+const criarMutation = useMutation({
+  mutationFn: (data) => client.{dominio}.criar(data),
+  onError: (error) => {
+    if (error instanceof ORPCError) {
+      if (error.code === "CONFLICT") {
+        setFeedback({ tipo: "error", mensagem: "Já existe um registro com este nome." });
+        return;
+      }
+      if (error.code === "UNAUTHORIZED") {
+        setFeedback({ tipo: "error", mensagem: "Sessão expirada. Faça login novamente." });
+        return;
+      }
+    }
+    setFeedback({ tipo: "error", mensagem: "Erro inesperado. Tente novamente." });
+  },
+});
+```
+
+### Códigos de erro comuns
+
+| Código | Significado | Ação sugerida |
+|--------|-------------|---------------|
+| `NOT_FOUND` | Recurso não encontrado | Feedback + invalidar cache |
+| `CONFLICT` | Recurso já existe | Feedback informativo |
+| `UNAUTHORIZED` | Sessão expirada | Redirecionar para login |
+| `FORBIDDEN` | Sem permissão | Feedback informativo |
+| `BAD_REQUEST` | Input inválido | Mostrar erros de validação |

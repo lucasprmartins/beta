@@ -119,6 +119,67 @@ O tipo `AppRouterClient` atualiza automaticamente (deriva de `typeof router`).
 6. `packages/api/src/routers/{dominio}.ts`
 7. Registrar em `packages/api/src/index.ts`
 
+## Erros Tipados Avançados
+
+### Múltiplos erros no mesmo endpoint
+
+```typescript
+.errors({
+  NOT_FOUND: {
+    message: "{Dominio} não encontrado(a)",
+    data: z.object({ id: z.string() }),
+  },
+  CONFLICT: {
+    message: "{Dominio} já existe com este nome",
+    data: z.object({ nome: z.string() }),
+  },
+  BAD_REQUEST: {
+    message: "Dados inválidos",
+    data: z.object({ campos: z.array(z.string()) }),
+  },
+})
+.handler(async ({ input, errors }) => {
+  const existente = await repo.buscarPorNome(input.nome);
+  if (existente) {
+    throw errors.CONFLICT({ data: { nome: input.nome } });
+  }
+
+  const entidade = {Dominio}.criar(input);
+  if (!entidade) {
+    throw errors.BAD_REQUEST({ data: { campos: ["nome"] } });
+  }
+
+  const result = await repo.criar(entidade.paraDados());
+  if (!result) {
+    throw errors.NOT_FOUND({ data: { id: input.id } });
+  }
+
+  return result;
+})
+```
+
+### Erros com contexto do usuário autenticado
+
+```typescript
+atualizar: authRouter
+  .route({ ... })
+  .errors({
+    FORBIDDEN: {
+      message: "Você não pode editar este recurso",
+      data: z.object({ userId: z.string(), recursoId: z.string() }),
+    },
+  })
+  .handler(async ({ input, context, errors }) => {
+    const recurso = await repo.buscarPorId(input.id);
+    if (recurso?.donoId !== context.session.user.id) {
+      throw errors.FORBIDDEN({
+        data: { userId: context.session.user.id, recursoId: input.id },
+      });
+    }
+    // ...
+  })
+```
+
 ## Padrões
 
 - Valide input com schemas Zod
