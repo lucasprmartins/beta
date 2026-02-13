@@ -42,7 +42,7 @@ Execute `bun lint` para verificar e `bun lint:fix` para corrigir.
 - Mantenha funções focadas e com baixa complexidade
 - Early returns para reduzir aninhamento
 - Remova `console.log`, `debugger` e `alert` do código de produção
-- No server (`apps/server`), use o `logger` (Pino) em vez de `console.log`:
+- No backend, use o `logger` de `@app/infra/logger` (Pino) em vez de `console.log`:
   - `logger.info()` para operações normais
   - `logger.error({ err }, "mensagem")` para erros
   - `logger.debug()` para informações de desenvolvimento
