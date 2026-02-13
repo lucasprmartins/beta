@@ -81,6 +81,10 @@ new Elysia()
   // API endpoint - REST
   .group("/api", (app) =>
     app
+      .onAfterHandle(({ set }) => {
+        set.headers["Content-Security-Policy"] =
+          "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src 'self'; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:; worker-src 'self' blob:; frame-ancestors 'none'";
+      })
       .use(
         rateLimit({
           duration: RATE_LIMITS.api.duration,
