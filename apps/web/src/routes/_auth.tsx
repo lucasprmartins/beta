@@ -51,5 +51,26 @@ export const Route = createFileRoute("/_auth")({
       <Outlet />
     </Sidebar>
   ),
+  pendingComponent: () => (
+    <Sidebar>
+      <div className="p-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {["s1", "s2", "s3", "s4", "s5", "s6"].map((id, i) => (
+            <div
+              className="card card-border animate-[fadeIn_0.4s_ease-out_both] bg-base-100"
+              key={id}
+              style={{ animationDelay: `${i * 50}ms` }}
+            >
+              <div className="card-body gap-4">
+                <div className="skeleton h-6 w-28" />
+                <div className="skeleton h-4 w-full" />
+                <div className="skeleton h-4 w-3/4" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Sidebar>
+  ),
   errorComponent: AuthErrorComponent,
 });

@@ -36,6 +36,8 @@ const router = createRouter({
   notFoundMode: "fuzzy",
   scrollRestoration: true,
   scrollRestorationBehavior: "instant",
+  defaultPendingMs: 300,
+  defaultPendingMinMs: 200,
   context: {
     queryClient,
   },
