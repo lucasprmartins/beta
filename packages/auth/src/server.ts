@@ -5,13 +5,14 @@ import {
   user,
   verification,
 } from "@app/infra/db/schema/auth";
+import { env } from "@app/infra/env";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin as adminPlugin, openAPI, username } from "better-auth/plugins";
 
 export const auth = betterAuth({
   basePath: "/auth",
-  baseUrl: process.env.BETTER_AUTH_URL,
+  baseUrl: env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
@@ -21,7 +22,7 @@ export const auth = betterAuth({
       verification,
     },
   }),
-  trustedOrigins: process.env.CORS_ORIGIN?.split(",") ?? [],
+  trustedOrigins: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
   emailAndPassword: {
     enabled: true,
   },

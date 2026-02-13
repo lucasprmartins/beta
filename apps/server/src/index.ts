@@ -1,13 +1,14 @@
 import { apiHandler, rpcHandler } from "@app/api";
 import { auth, createContext } from "@app/auth/server";
+import { env } from "@app/infra/env";
 import { logger } from "@app/infra/logger";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
 import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
-const URL = process.env.RAILWAY_PUBLIC_DOMAIN
-  ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+const URL = env.RAILWAY_PUBLIC_DOMAIN
+  ? `https://${env.RAILWAY_PUBLIC_DOMAIN}`
   : "http://localhost";
 const PORT = 3000;
 
@@ -23,7 +24,7 @@ new Elysia()
 
   .use(
     cors({
-      origin: process.env.CORS_ORIGIN?.split(",") ?? [],
+      origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
       methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
       exposeHeaders: ["Content-Length"],
