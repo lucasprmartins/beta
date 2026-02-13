@@ -14,6 +14,7 @@ Template full-stack TypeScript com arquitetura limpa em monorepo.
 - **Banco de dados**: PostgreSQL, Drizzle ORM
 - **Autenticação**: Better Auth
 - **Validação**: Zod
+- **Storage**: AWS SDK S3 (compatível com S3, Cloudflare R2, MinIO)
 - **Linting**: Biome (Ultracite)
 
 ## Estrutura
@@ -42,7 +43,7 @@ Server (Elysia)
 ```
 
 - **Core** -- Contratos (interfaces/DTOs), domínios (entidades) e use cases. Sem dependências externas.
-- **Infra** -- Schemas Drizzle, repositórios e integrações com serviços externos.
+- **Infra** -- Schemas Drizzle, repositórios, storage (S3) e integrações com serviços externos.
 - **API** -- Routers oRPC com três níveis de acesso: `publicRouter`, `authRouter` e `adminRouter`.
 - **Auth** -- Configuração do Better Auth (server e client).
 
@@ -81,6 +82,13 @@ DATABASE_URL=postgresql://usuario:senha@localhost:5432/nome_do_banco
 CORS_ORIGIN=http://localhost:3001
 BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=sua_chave_secreta
+
+# Storage (opcional)
+S3_ENDPOINT=
+S3_REGION=auto
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+S3_BUCKET=
 ```
 
 4. Aplique o schema no banco de dados:

@@ -12,7 +12,7 @@ apps/
 packages/
 ├── config/        # Configurações compartilhadas (tsconfig)
 ├── core/          # Lógica de negócio (sem dependências externas)
-├── infra/         # Infraestrutura (DB + APIs externas)
+├── infra/         # Infraestrutura (DB + Storage + APIs externas)
 ├── auth/          # Autenticação (Better Auth)
 └── api/           # Definição da API (oRPC)
 ```
@@ -45,6 +45,7 @@ Server → Auth → Sessão/Cookies
 | Frontend | React 19 + TanStack Router/Query |
 | Styling | Tailwind CSS + DaisyUI |
 | Icons | Phosphor Icons |
+| Storage | AWS SDK S3 (compatível com R2/MinIO) |
 
 ## Decisões Técnicas
 
@@ -59,6 +60,7 @@ Server → Auth → Sessão/Cookies
 | **TanStack Query** | Cache inteligente, deduplicação, prefetch, integração com oRPC via `queryOptions()` |
 | **DaisyUI** | Componentes semânticos sobre Tailwind, temas built-in, sem JavaScript extra |
 | **Phosphor Icons** | Biblioteca consistente, múltiplos pesos (regular, bold, fill), tree-shakeable |
+| **AWS SDK S3** | Compatível com qualquer storage S3 (AWS, Cloudflare R2, MinIO), presigned URLs para upload direto do browser |
 
 ## Comandos Úteis
 
