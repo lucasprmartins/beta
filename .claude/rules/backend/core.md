@@ -23,6 +23,11 @@ export interface {Dominio}Repository {
   criar(data: {Dominio}Data): Promise<{Dominio}Data | null>;
   atualizar(id: string, data: {Dominio}Data): Promise<{Dominio}Data | null>;
   deletar(id: string): Promise<boolean>;
+  criarSeNaoExiste(data: {Dominio}Data): Promise<{Dominio}Data | null>;
+  buscarEAtualizar(
+    id: string,
+    transformar: (dados: {Dominio}Data) => {Dominio}Data | null,
+  ): Promise<{Dominio}Data | null>;
 }
 ```
 
@@ -80,23 +85,17 @@ import { {Dominio} } from "../domains/{dominio}";
 export function criar{Dominio}(repo: {Dominio}Repository) {
   return async (data: {Dominio}Data): Promise<{Dominio}Data | null> => {
     const entidade = {Dominio}.criar(data);
-    if (!entidade) {
-      return null;
-    }
-    return repo.criar(entidade.paraDados());
+    if (!entidade) return null;
+    return repo.criarSeNaoExiste(entidade.paraDados());
   };
 }
 
 export function atualizar{Dominio}(repo: {Dominio}Repository) {
   return async (id: string, data: {Dominio}Data): Promise<{Dominio}Data | null> => {
     const existente = await repo.buscarPorId(id);
-    if (!existente) {
-      return null;
-    }
+    if (!existente) return null;
     const entidade = {Dominio}.criar(data);
-    if (!entidade) {
-      return null;
-    }
+    if (!entidade) return null;
     return repo.atualizar(id, entidade.paraDados());
   };
 }

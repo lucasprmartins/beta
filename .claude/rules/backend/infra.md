@@ -119,6 +119,59 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 - `.limit(1)` em consultas de item único
 - `.set()` **não** inclui `id`, `createdAt`, `updatedAt`
 - `.values()` **não** inclui `createdAt`, `updatedAt` (gerados auto)
+- `db.transaction()` para operações que combinam leitura + escrita
+
+## Transações
+
+Use `db.transaction()` para operações que combinam leitura + escrita ou múltiplas escritas:
+
+```typescript
+async criarSeNaoExiste(data) {
+  return db.transaction(async (tx) => {
+    const [existente] = await tx
+      .select()
+      .from({dominio})
+      .where(eq({dominio}.nome, data.nome))
+      .limit(1);
+
+    if (existente) return null;
+
+    const [row] = await tx
+      .insert({dominio})
+      .values({ ... })
+      .returning();
+
+    return row ? paraDados(row) : null;
+  });
+},
+
+async buscarEAtualizar(id, transformar) {
+  return db.transaction(async (tx) => {
+    const [row] = await tx
+      .select()
+      .from({dominio})
+      .where(eq({dominio}.id, id))
+      .limit(1);
+
+    if (!row) return null;
+
+    const resultado = transformar(paraDados(row));
+    if (!resultado) return null;
+
+    const [atualizado] = await tx
+      .update({dominio})
+      .set({ ... })
+      .where(eq({dominio}.id, id))
+      .returning();
+
+    return atualizado ? paraDados(atualizado) : null;
+  });
+},
+```
+
+- Use `tx` (não `db`) para todas as queries dentro da transação
+- Rollback é automático se uma exceção for lançada
+- Use para: verificar existência + criar, ler + modificar + salvar, operações multi-tabela
 
 ## Ordem de Criação
 
