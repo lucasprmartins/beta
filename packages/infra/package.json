@@ -32,6 +32,7 @@
     "@app/core": "workspace:*",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
+    "pino": "catalog:",
     "postgres": "^3.4.8"
   }
 }

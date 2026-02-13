@@ -1,3 +1,4 @@
+import { logger } from "@app/infra/logger";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import type { RouterClient } from "@orpc/server";
@@ -12,21 +13,23 @@ export const router = {
 
 export type AppRouterClient = RouterClient<typeof router>;
 
-export type ErrorHandler = (error: unknown) => void;
+export const rpcHandler = new RPCHandler(router, {
+  interceptors: [
+    onError((error) =>
+      logger.error({ err: error, handler: "rpc" }, "erro no handler")
+    ),
+  ],
+});
 
-export function createRPCHandler(onErrorHandler: ErrorHandler) {
-  return new RPCHandler(router, {
-    interceptors: [onError((error) => onErrorHandler(error))],
-  });
-}
-
-export function createAPIHandler(onErrorHandler: ErrorHandler) {
-  return new OpenAPIHandler(router, {
-    plugins: [
-      new OpenAPIReferencePlugin({
-        schemaConverters: [new ZodToJsonSchemaConverter()],
-      }),
-    ],
-    interceptors: [onError((error) => onErrorHandler(error))],
-  });
-}
+export const apiHandler = new OpenAPIHandler(router, {
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+    }),
+  ],
+  interceptors: [
+    onError((error) =>
+      logger.error({ err: error, handler: "api" }, "erro no handler")
+    ),
+  ],
+});

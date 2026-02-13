@@ -20,9 +20,9 @@
   "dependencies": {
     "@app/api": "workspace:*",
     "@app/auth": "workspace:*",
+    "@app/infra": "workspace:*",
     "elysia": "^1.4.25",
     "@elysiajs/cors": "^1.4.1",
-    "elysia-rate-limit": "^4.5.0",
-    "pino": "catalog:"
+    "elysia-rate-limit": "^4.5.0"
   }
 }

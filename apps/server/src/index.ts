@@ -1,22 +1,15 @@
-import { createAPIHandler, createRPCHandler } from "@app/api";
+import { apiHandler, rpcHandler } from "@app/api";
 import { auth, createContext } from "@app/auth/server";
+import { logger } from "@app/infra/logger";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
-import { logger } from "./logger";
 import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
 const URL = process.env.RAILWAY_PUBLIC_DOMAIN
   ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
   : "http://localhost";
 const PORT = 3000;
-
-const rpcHandler = createRPCHandler((error) =>
-  logger.error({ err: error, handler: "rpc" }, "erro no handler")
-);
-const apiHandler = createAPIHandler((error) =>
-  logger.error({ err: error, handler: "api" }, "erro no handler")
-);
 
 new Elysia()
   .headers({
