@@ -1,28 +1,28 @@
 import type {
-  PokemonData,
-  PokemonRepository,
+  ProdutoData,
+  ProdutoRepository,
 } from "@app/core/contracts/example";
 import { eq } from "drizzle-orm";
 import { db } from "../index";
-import { pokemon } from "../schema/example";
+import { produto } from "../schema/example";
 
-function paraDados(row: typeof pokemon.$inferSelect): PokemonData {
+function paraDados(row: typeof produto.$inferSelect): ProdutoData {
   return {
     id: row.id,
     nome: row.nome,
-    tipos: row.tipos,
-    nivel: row.nivel,
-    hp: row.hp,
-    sprite: row.sprite,
+    descricao: row.descricao,
+    preco: row.preco,
+    estoque: row.estoque,
+    imagemUrl: row.imagemUrl,
   };
 }
 
-export const dbPokemonRepository: PokemonRepository = {
+export const dbProdutoRepository: ProdutoRepository = {
   async buscarPorId(id) {
     const [row] = await db
       .select()
-      .from(pokemon)
-      .where(eq(pokemon.id, id))
+      .from(produto)
+      .where(eq(produto.id, id))
       .limit(1);
 
     return row ? paraDados(row) : null;
@@ -31,22 +31,22 @@ export const dbPokemonRepository: PokemonRepository = {
   async buscarPorNome(nome) {
     const [row] = await db
       .select()
-      .from(pokemon)
-      .where(eq(pokemon.nome, nome))
+      .from(produto)
+      .where(eq(produto.nome, nome))
       .limit(1);
 
     return row ? paraDados(row) : null;
   },
 
   async buscarTodos() {
-    const rows = await db.select().from(pokemon);
+    const rows = await db.select().from(produto);
     return rows.map(paraDados);
   },
 
   async listar({ cursor, limite }) {
     const rows = await db
       .select()
-      .from(pokemon)
+      .from(produto)
       .limit(limite + 1)
       .offset(cursor);
 
@@ -61,14 +61,13 @@ export const dbPokemonRepository: PokemonRepository = {
 
   async criar(data) {
     const [row] = await db
-      .insert(pokemon)
+      .insert(produto)
       .values({
-        id: data.id,
         nome: data.nome,
-        tipos: data.tipos,
-        nivel: data.nivel,
-        hp: data.hp,
-        sprite: data.sprite,
+        descricao: data.descricao,
+        preco: data.preco,
+        estoque: data.estoque,
+        imagemUrl: data.imagemUrl,
       })
       .returning();
 
@@ -77,15 +76,15 @@ export const dbPokemonRepository: PokemonRepository = {
 
   async atualizar(id, data) {
     const [row] = await db
-      .update(pokemon)
+      .update(produto)
       .set({
         nome: data.nome,
-        tipos: data.tipos,
-        nivel: data.nivel,
-        hp: data.hp,
-        sprite: data.sprite,
+        descricao: data.descricao,
+        preco: data.preco,
+        estoque: data.estoque,
+        imagemUrl: data.imagemUrl,
       })
-      .where(eq(pokemon.id, id))
+      .where(eq(produto.id, id))
       .returning();
 
     return row ? paraDados(row) : null;
@@ -93,8 +92,8 @@ export const dbPokemonRepository: PokemonRepository = {
 
   async deletar(id) {
     const result = await db
-      .delete(pokemon)
-      .where(eq(pokemon.id, id))
+      .delete(produto)
+      .where(eq(produto.id, id))
       .returning();
 
     return result.length > 0;
@@ -104,8 +103,8 @@ export const dbPokemonRepository: PokemonRepository = {
     return await db.transaction(async (tx) => {
       const [existente] = await tx
         .select()
-        .from(pokemon)
-        .where(eq(pokemon.nome, data.nome))
+        .from(produto)
+        .where(eq(produto.nome, data.nome))
         .limit(1);
 
       if (existente) {
@@ -113,14 +112,13 @@ export const dbPokemonRepository: PokemonRepository = {
       }
 
       const [row] = await tx
-        .insert(pokemon)
+        .insert(produto)
         .values({
-          id: data.id,
           nome: data.nome,
-          tipos: data.tipos,
-          nivel: data.nivel,
-          hp: data.hp,
-          sprite: data.sprite,
+          descricao: data.descricao,
+          preco: data.preco,
+          estoque: data.estoque,
+          imagemUrl: data.imagemUrl,
         })
         .returning();
 
@@ -132,8 +130,8 @@ export const dbPokemonRepository: PokemonRepository = {
     return await db.transaction(async (tx) => {
       const [row] = await tx
         .select()
-        .from(pokemon)
-        .where(eq(pokemon.id, id))
+        .from(produto)
+        .where(eq(produto.id, id))
         .limit(1);
 
       if (!row) {
@@ -146,15 +144,15 @@ export const dbPokemonRepository: PokemonRepository = {
       }
 
       const [atualizado] = await tx
-        .update(pokemon)
+        .update(produto)
         .set({
           nome: resultado.nome,
-          tipos: resultado.tipos,
-          nivel: resultado.nivel,
-          hp: resultado.hp,
-          sprite: resultado.sprite,
+          descricao: resultado.descricao,
+          preco: resultado.preco,
+          estoque: resultado.estoque,
+          imagemUrl: resultado.imagemUrl,
         })
-        .where(eq(pokemon.id, id))
+        .where(eq(produto.id, id))
         .returning();
 
       return atualizado ? paraDados(atualizado) : null;

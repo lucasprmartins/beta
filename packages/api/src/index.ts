@@ -5,10 +5,10 @@ import type { RouterClient } from "@orpc/server";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { pokemonRouter } from "./routers/example";
+import { produtoRouter } from "./routers/example";
 
 export const router = {
-  pokemon: pokemonRouter,
+  produto: produtoRouter,
 };
 
 export type AppRouterClient = RouterClient<typeof router>;

@@ -1,28 +1,31 @@
-import { criarPokemon, treinarPokemon } from "@app/core/application/example";
-import { dbPokemonRepository } from "@app/infra/db/repositories/example";
+import {
+  adicionarEstoqueProduto,
+  criarProduto,
+} from "@app/core/application/example";
+import { dbProdutoRepository } from "@app/infra/db/repositories/example";
 import { z } from "zod";
 import { publicRouter } from "../auth";
 
-const criar = criarPokemon(dbPokemonRepository);
-const treinar = treinarPokemon(dbPokemonRepository);
+const criar = criarProduto(dbProdutoRepository);
+const adicionarEstoque = adicionarEstoqueProduto(dbProdutoRepository);
 
-const pokemonSchema = z.object({
-  id: z.number().int().min(1).describe("ID da National Dex"),
-  nome: z.string().min(1).describe("Nome do Pokemon"),
-  tipos: z.array(z.string()).min(1).describe("Tipos do Pokemon"),
-  nivel: z.number().int().min(1).describe("Nível atual"),
-  hp: z.number().int().min(1).describe("Pontos de vida"),
-  sprite: z.url().describe("URL do sprite"),
+const produtoSchema = z.object({
+  id: z.number().int().describe("ID do produto"),
+  nome: z.string().min(1).describe("Nome do produto"),
+  descricao: z.string().min(1).describe("Descrição do produto"),
+  preco: z.number().min(0.01).describe("Preço do produto"),
+  estoque: z.number().int().min(0).describe("Quantidade em estoque"),
+  imagemUrl: z.string().url().nullable().describe("URL da imagem do produto"),
 });
 
-export const pokemonRouter = {
+export const produtoRouter = {
   buscar: publicRouter
     .route({
       method: "GET",
-      path: "/pokemon/buscar",
-      summary: "Buscar Pokemon",
-      description: "Busca um Pokemon pelo ID da National Dex.",
-      tags: ["Pokemon"],
+      path: "/produto/buscar",
+      summary: "Buscar Produto",
+      description: "Busca um produto pelo ID.",
+      tags: ["Produto"],
     })
     .input(
       z.object({
@@ -34,95 +37,96 @@ export const pokemonRouter = {
             (val) => !Number.isNaN(val) && val >= 1,
             "ID deve ser um número válido maior que 0"
           )
-          .describe("ID da National Dex"),
+          .describe("ID do produto"),
       })
     )
-    .output(pokemonSchema)
+    .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Pokemon não encontrado",
+        message: "Produto não encontrado",
         data: z.object({
           id: z.number().describe("ID que foi buscado"),
         }),
       },
     })
     .handler(async ({ input, errors }) => {
-      const pokemon = await dbPokemonRepository.buscarPorId(input.id);
+      const produto = await dbProdutoRepository.buscarPorId(input.id);
 
-      if (!pokemon) {
+      if (!produto) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return pokemon;
+      return produto;
     }),
 
   criar: publicRouter
     .route({
       method: "POST",
-      path: "/pokemon/criar",
-      summary: "Criar Pokemon",
-      description: "Cria um novo Pokemon no sistema.",
-      tags: ["Pokemon"],
+      path: "/produto/criar",
+      summary: "Criar Produto",
+      description: "Cria um novo produto no sistema.",
+      tags: ["Produto"],
     })
-    .input(pokemonSchema)
-    .output(pokemonSchema)
+    .input(produtoSchema)
+    .output(produtoSchema)
     .errors({
       CONFLICT: {
-        message: "Pokemon já existe",
+        message: "Produto já existe",
         data: z.object({
           nome: z.string().describe("Nome duplicado"),
         }),
       },
     })
     .handler(async ({ input, errors }) => {
-      const pokemon = await criar(input);
+      const produto = await criar(input);
 
-      if (!pokemon) {
+      if (!produto) {
         throw errors.CONFLICT({ data: { nome: input.nome } });
       }
 
-      return pokemon;
+      return produto;
     }),
 
-  treinar: publicRouter
+  adicionarEstoque: publicRouter
     .route({
       method: "POST",
-      path: "/pokemon/treinar",
-      summary: "Treinar Pokemon",
-      description: "Treina um Pokemon, aumentando nível em 1 e HP em 5.",
-      tags: ["Pokemon"],
+      path: "/produto/adicionar-estoque",
+      summary: "Adicionar Estoque",
+      description: "Adiciona quantidade ao estoque de um produto.",
+      tags: ["Produto"],
     })
     .input(
       z.object({
-        id: z.number().int().min(1).describe("ID da National Dex"),
+        id: z.number().int().min(1).describe("ID do produto"),
+        quantidade: z.number().int().min(1).describe("Quantidade a adicionar"),
       })
     )
-    .output(pokemonSchema)
+    .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Pokemon não encontrado",
+        message: "Produto não encontrado",
         data: z.object({
           id: z.number().describe("ID que foi buscado"),
         }),
       },
     })
     .handler(async ({ input, errors }) => {
-      const pokemon = await treinar(input.id);
+      const produto = await adicionarEstoque(input.id, input.quantidade);
 
-      if (!pokemon) {
+      if (!produto) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return pokemon;
+      return produto;
     }),
 
   listar: publicRouter
     .route({
       method: "GET",
-      path: "/pokemon/listar",
-      summary: "Listar Pokemons",
-      description: "Lista Pokemons com paginação cursor-based.",
-      tags: ["Pokemon"],
+      path: "/produto/listar",
+      summary: "Listar Produtos",
+      description: "Lista produtos com paginação cursor-based.",
+      tags: ["Produto"],
     })
     .input(
       z.object({
@@ -143,9 +147,9 @@ export const pokemonRouter = {
     )
     .output(
       z.object({
-        itens: z.array(pokemonSchema),
+        itens: z.array(produtoSchema),
         proximoCursor: z.number().nullable(),
       })
     )
-    .handler(async ({ input }) => dbPokemonRepository.listar(input)),
+    .handler(async ({ input }) => dbProdutoRepository.listar(input)),
 };

@@ -1,51 +1,50 @@
-import type { PokemonData } from "../contracts/example";
+import type { ProdutoData } from "../contracts/example";
 
-export class Pokemon {
+export class Produto {
   readonly id: number;
   readonly nome: string;
-  readonly tipos: string[];
-  private _nivel: number;
-  private _hp: number;
-  readonly sprite: string;
+  readonly descricao: string;
+  readonly imagemUrl: string | null;
+  private readonly _preco: number;
+  private _estoque: number;
 
-  private constructor(data: PokemonData) {
+  private constructor(data: ProdutoData) {
     this.id = data.id;
     this.nome = data.nome;
-    this.tipos = [...data.tipos];
-    this._nivel = data.nivel;
-    this._hp = data.hp;
-    this.sprite = data.sprite;
+    this.descricao = data.descricao;
+    this.imagemUrl = data.imagemUrl;
+    this._preco = data.preco;
+    this._estoque = data.estoque;
   }
 
-  static criar(data: PokemonData): Pokemon | null {
-    if (data.nivel < 1) {
+  static criar(data: ProdutoData): Produto | null {
+    if (data.preco <= 0) {
       return null;
     }
 
-    return new Pokemon(data);
+    return new Produto(data);
   }
 
-  get nivel(): number {
-    return this._nivel;
+  get preco(): number {
+    return this._preco;
   }
 
-  get hp(): number {
-    return this._hp;
+  get estoque(): number {
+    return this._estoque;
   }
 
-  treinar(): void {
-    this._nivel += 1;
-    this._hp += 5;
+  adicionarEstoque(quantidade: number): void {
+    this._estoque += quantidade;
   }
 
-  paraDados(): PokemonData {
+  paraDados(): ProdutoData {
     return {
       id: this.id,
       nome: this.nome,
-      tipos: [...this.tipos],
-      nivel: this._nivel,
-      hp: this._hp,
-      sprite: this.sprite,
+      descricao: this.descricao,
+      preco: this._preco,
+      estoque: this._estoque,
+      imagemUrl: this.imagemUrl,
     };
   }
 }

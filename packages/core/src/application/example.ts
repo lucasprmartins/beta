@@ -1,25 +1,28 @@
-import type { PokemonData, PokemonRepository } from "../contracts/example";
-import { Pokemon } from "../domains/example";
+import type { ProdutoData, ProdutoRepository } from "../contracts/example";
+import { Produto } from "../domains/example";
 
-export function criarPokemon(repo: PokemonRepository) {
-  return async (data: PokemonData): Promise<PokemonData | null> => {
-    const pokemon = Pokemon.criar(data);
-    if (!pokemon) {
+export function criarProduto(repo: ProdutoRepository) {
+  return async (data: ProdutoData): Promise<ProdutoData | null> => {
+    const produto = Produto.criar(data);
+    if (!produto) {
       return null;
     }
-    return await repo.criarSeNaoExiste(pokemon.paraDados());
+    return await repo.criarSeNaoExiste(produto.paraDados());
   };
 }
 
-export function treinarPokemon(repo: PokemonRepository) {
-  return async (id: number): Promise<PokemonData | null> => {
+export function adicionarEstoqueProduto(repo: ProdutoRepository) {
+  return async (
+    id: number,
+    quantidade: number
+  ): Promise<ProdutoData | null> => {
     return await repo.buscarEAtualizar(id, (dados) => {
-      const pokemon = Pokemon.criar(dados);
-      if (!pokemon) {
+      const produto = Produto.criar(dados);
+      if (!produto) {
         return null;
       }
-      pokemon.treinar();
-      return pokemon.paraDados();
+      produto.adicionarEstoque(quantidade);
+      return produto.paraDados();
     });
   };
 }
