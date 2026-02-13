@@ -14,4 +14,9 @@ export interface PokemonRepository {
   criar(data: PokemonData): Promise<PokemonData | null>;
   atualizar(id: number, data: PokemonData): Promise<PokemonData | null>;
   deletar(id: number): Promise<boolean>;
+  criarSeNaoExiste(data: PokemonData): Promise<PokemonData | null>;
+  buscarEAtualizar(
+    id: number,
+    transformar: (dados: PokemonData) => PokemonData | null
+  ): Promise<PokemonData | null>;
 }

@@ -83,4 +83,65 @@ export const dbPokemonRepository: PokemonRepository = {
 
     return result.length > 0;
   },
+
+  async criarSeNaoExiste(data) {
+    return await db.transaction(async (tx) => {
+      const [existente] = await tx
+        .select()
+        .from(pokemon)
+        .where(eq(pokemon.nome, data.nome))
+        .limit(1);
+
+      if (existente) {
+        return null;
+      }
+
+      const [row] = await tx
+        .insert(pokemon)
+        .values({
+          id: data.id,
+          nome: data.nome,
+          tipos: data.tipos,
+          nivel: data.nivel,
+          hp: data.hp,
+          sprite: data.sprite,
+        })
+        .returning();
+
+      return row ? paraDados(row) : null;
+    });
+  },
+
+  async buscarEAtualizar(id, transformar) {
+    return await db.transaction(async (tx) => {
+      const [row] = await tx
+        .select()
+        .from(pokemon)
+        .where(eq(pokemon.id, id))
+        .limit(1);
+
+      if (!row) {
+        return null;
+      }
+
+      const resultado = transformar(paraDados(row));
+      if (!resultado) {
+        return null;
+      }
+
+      const [atualizado] = await tx
+        .update(pokemon)
+        .set({
+          nome: resultado.nome,
+          tipos: resultado.tipos,
+          nivel: resultado.nivel,
+          hp: resultado.hp,
+          sprite: resultado.sprite,
+        })
+        .where(eq(pokemon.id, id))
+        .returning();
+
+      return atualizado ? paraDados(atualizado) : null;
+    });
+  },
 };
