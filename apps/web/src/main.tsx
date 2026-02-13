@@ -31,7 +31,7 @@ const router = createRouter({
   defaultPreloadDelay: 1000,
   defaultStaleTime: DADOS_FRESCOS,
   defaultGcTime: DADOS_FRESCOS * 5,
-  defaultViewTransition: true,
+  defaultViewTransition: false,
   trailingSlash: "never",
   notFoundMode: "fuzzy",
   scrollRestoration: true,
