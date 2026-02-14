@@ -9,11 +9,20 @@ Definição de rotas usando oRPC.
 
 ## Auth Middleware (`src/auth.ts`)
 
-Três níveis de acesso:
+Middlewares composáveis para controle de acesso:
 
-- **`publicRouter`** - Sem autenticação
-- **`authRouter`** - Requer sessão (retorna `UNAUTHORIZED`)
-- **`adminRouter`** - Requer role `admin` (retorna `FORBIDDEN`)
+- **`o`** - Base sem autenticação (rotas públicas)
+- **`requireAuth`** - Middleware que requer sessão (retorna `UNAUTHORIZED`)
+- **`requireRole(...roles)`** - Middleware que requer role específica (retorna `UNAUTHORIZED` ou `FORBIDDEN`)
+
+### Tabela de migração
+
+| Uso | Exemplo |
+|-----|---------|
+| Rota pública | `o.route(...)` |
+| Requer autenticação | `o.use(requireAuth).route(...)` |
+| Requer role admin | `o.use(requireRole("admin")).route(...)` |
+| Requer múltiplas roles | `o.use(requireRole("admin", "editor")).route(...)` |
 
 ## Routers (`src/routers/`)
 
@@ -21,7 +30,7 @@ Três níveis de acesso:
 import { criar{Dominio} } from "@app/core/application/{dominio}";
 import { db{Dominio}Repository } from "@app/infra/db/repositories/{dominio}";
 import { z } from "zod";
-import { publicRouter } from "../auth";
+import { o } from "../auth";
 
 const criar = criar{Dominio}(db{Dominio}Repository);
 
@@ -31,7 +40,7 @@ const {dominio}Schema = z.object({
 });
 
 export const {dominio}Router = {
-  buscar: publicRouter
+  buscar: o
     .route({
       method: "GET",
       path: "/{dominio}/buscar",
@@ -55,7 +64,7 @@ export const {dominio}Router = {
       return result;
     }),
 
-  criar: publicRouter
+  criar: o
     .route({
       method: "POST",
       path: "/{dominio}/criar",
@@ -79,7 +88,7 @@ export const {dominio}Router = {
       return result;
     }),
 
-  listar: publicRouter
+  listar: o
     .route({
       method: "GET",
       path: "/{dominio}/listar",
@@ -103,7 +112,7 @@ export const {dominio}Router = {
 };
 ```
 
-- Importar nível de auth conforme requisitos: `publicRouter`, `authRouter` ou `adminRouter`
+- Importar middlewares conforme necessidade: `import { o, requireAuth, requireRole } from "../auth"`
 - **Instanciar use cases no nível do módulo**: `const criar = criar{Dominio}(db{Dominio}Repository)`
 - Schema Zod com `.describe()` em cada campo para documentação OpenAPI
 - `.route()` com `method`, `path`, `summary`, `description`, `tags`
@@ -173,7 +182,8 @@ O tipo `AppRouterClient` atualiza automaticamente (deriva de `typeof router`).
 ### Erros com contexto do usuário autenticado
 
 ```typescript
-atualizar: authRouter
+atualizar: o
+  .use(requireAuth)
   .route({ ... })
   .errors({
     FORBIDDEN: {
