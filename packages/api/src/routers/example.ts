@@ -4,7 +4,7 @@ import {
 } from "@app/core/application/example";
 import { dbProdutoRepository } from "@app/infra/db/repositories/example";
 import { z } from "zod";
-import { publicRouter } from "../auth";
+import { o } from "../auth";
 
 const criar = criarProduto(dbProdutoRepository);
 const adicionarEstoque = adicionarEstoqueProduto(dbProdutoRepository);
@@ -19,7 +19,7 @@ const produtoSchema = z.object({
 });
 
 export const produtoRouter = {
-  buscar: publicRouter
+  buscar: o
     .route({
       method: "GET",
       path: "/produto/buscar",
@@ -59,7 +59,7 @@ export const produtoRouter = {
       return produto;
     }),
 
-  criar: publicRouter
+  criar: o
     .route({
       method: "POST",
       path: "/produto/criar",
@@ -87,7 +87,7 @@ export const produtoRouter = {
       return produto;
     }),
 
-  adicionarEstoque: publicRouter
+  adicionarEstoque: o
     .route({
       method: "POST",
       path: "/produto/adicionar-estoque",
@@ -120,7 +120,7 @@ export const produtoRouter = {
       return produto;
     }),
 
-  listar: publicRouter
+  listar: o
     .route({
       method: "GET",
       path: "/produto/listar",
