@@ -94,6 +94,66 @@ criarMutation.mutate(dados, {
 });
 ```
 
+## Estratégias de Atualização
+
+### Quando usar cada padrão
+
+| Interação | Estratégia | Motivo |
+|---|---|---|
+| CRUD com formulário | Invalidação | Fluxo natural já tem delay (preencher → salvar) |
+| Listagem paginada (infinite query) | Invalidação | Manipular estrutura de `pages` é complexo demais |
+| Toggle / favoritar / curtir | Optimistic | Ação instantânea, feedback imediato importa |
+| Drag & drop / reordenar | Optimistic | Usuário precisa ver o resultado na hora |
+| Deletar item de lista simples | Optimistic | Remoção visual imediata melhora a percepção |
+
+### Optimistic update (atualização)
+
+```typescript
+const queryClient = useQueryClient();
+
+const atualizarMutation = useMutation({
+  mutationFn: (dados: AtualizarInput) => client.{dominio}.atualizar(dados),
+  onMutate: async (novosDados) => {
+    await queryClient.cancelQueries({ queryKey: orpc.{dominio}.listar.key() });
+    const anterior = queryClient.getQueryData(orpc.{dominio}.listar.key());
+    queryClient.setQueryData(orpc.{dominio}.listar.key(), (old) =>
+      old?.map((item) => (item.id === novosDados.id ? { ...item, ...novosDados } : item))
+    );
+    return { anterior };
+  },
+  onError: (_err, _vars, contexto) => {
+    queryClient.setQueryData(orpc.{dominio}.listar.key(), contexto?.anterior);
+    setFeedback({ tipo: "error", mensagem: "Erro ao atualizar." });
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: orpc.{dominio}.key() });
+  },
+});
+```
+
+### Optimistic update (deleção)
+
+```typescript
+const deletarMutation = useMutation({
+  mutationFn: (id: string) => client.{dominio}.deletar({ id }),
+  onMutate: async (id) => {
+    await queryClient.cancelQueries({ queryKey: orpc.{dominio}.listar.key() });
+    const anterior = queryClient.getQueryData(orpc.{dominio}.listar.key());
+    queryClient.setQueryData(orpc.{dominio}.listar.key(), (old) =>
+      old?.filter((item) => item.id !== id)
+    );
+    return { anterior };
+  },
+  onError: (_err, _vars, contexto) => {
+    queryClient.setQueryData(orpc.{dominio}.listar.key(), contexto?.anterior);
+    setFeedback({ tipo: "error", mensagem: "Erro ao deletar." });
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: orpc.{dominio}.key() });
+  },
+});
+```
+
 ## Invalidação de Cache
 
 ### Invalidar domínio completo
@@ -228,7 +288,7 @@ const criarMutation = useMutation({
 ## Boas Práticas
 
 - **Prefira `isPending`** sobre `isLoading` (TanStack Query v5)
-- **Invalide após mutations** para manter dados sincronizados
+- **Invalidação** como padrão para mutations; **optimistic updates** apenas para interações instantâneas (toggles, deleções)
 - **Use `ensureQueryData`** no loader para SSR/prefetch
 - **Mesmo `queryOptions()`** no loader e no componente
 - **Mutations usam `client`**, queries usam `orpc`
