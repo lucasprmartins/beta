@@ -51,7 +51,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          <ul className="menu w-full grow">
+          <ul className="menu w-full grow gap-2">
             {menuItems.map((item) => (
               <li key={item.to}>
                 <Link
