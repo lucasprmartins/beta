@@ -5,9 +5,11 @@ import type { RouterClient } from "@orpc/server";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { produtoRouter } from "./routers/example";
+import { categoriaRouter } from "./routers/example-crud";
+import { produtoRouter } from "./routers/example-domain";
 
 export const router = {
+  categoria: categoriaRouter,
   produto: produtoRouter,
 };
 

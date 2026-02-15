@@ -1,0 +1,310 @@
+import {
+  adicionarEstoqueProduto,
+  alterarPrecoProduto,
+  ativarProduto,
+  criarProduto,
+  desativarProduto,
+  removerEstoqueProduto,
+} from "@app/core/application/example-domain";
+import { dbProdutoRepository } from "@app/infra/db/repositories/example-domain";
+import { z } from "zod";
+import { o } from "../auth";
+
+const criar = criarProduto(dbProdutoRepository);
+const adicionarEstoque = adicionarEstoqueProduto(dbProdutoRepository);
+const removerEstoque = removerEstoqueProduto(dbProdutoRepository);
+const alterarPreco = alterarPrecoProduto(dbProdutoRepository);
+const ativar = ativarProduto(dbProdutoRepository);
+const desativar = desativarProduto(dbProdutoRepository);
+
+const produtoSchema = z.object({
+  id: z.number().int().describe("ID do produto"),
+  nome: z.string().min(1).describe("Nome do produto"),
+  descricao: z.string().min(1).describe("Descricao do produto"),
+  preco: z.number().min(0.01).describe("Preco do produto"),
+  estoque: z.number().int().min(0).describe("Quantidade em estoque"),
+  ativo: z.boolean().describe("Se o produto esta ativo"),
+  imagemUrl: z.string().url().nullable().describe("URL da imagem do produto"),
+});
+
+const criarProdutoSchema = z.object({
+  nome: z.string().min(1).describe("Nome do produto"),
+  descricao: z.string().min(1).describe("Descricao do produto"),
+  preco: z.number().min(0.01).describe("Preco do produto"),
+  imagemUrl: z.string().url().nullable().describe("URL da imagem do produto"),
+});
+
+export const produtoRouter = {
+  buscar: o
+    .route({
+      method: "GET",
+      path: "/produto/buscar",
+      summary: "Buscar Produto",
+      description: "Busca um produto pelo ID.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z
+          .string()
+          .min(1, "ID e obrigatorio")
+          .transform((val) => Number.parseInt(val, 10))
+          .refine(
+            (val) => !Number.isNaN(val) && val >= 1,
+            "ID deve ser um numero valido maior que 0"
+          )
+          .describe("ID do produto"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const resultado = await dbProdutoRepository.buscarPorId(input.id);
+
+      if (!resultado) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  criar: o
+    .route({
+      method: "POST",
+      path: "/produto/criar",
+      summary: "Criar Produto",
+      description: "Cria um novo produto no sistema.",
+      tags: ["Produto"],
+    })
+    .input(criarProdutoSchema)
+    .output(produtoSchema)
+    .errors({
+      BAD_REQUEST: {
+        message: "Dados invalidos",
+        data: z.object({ motivo: z.string() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const resultado = await criar(input);
+
+      if (!resultado) {
+        throw errors.BAD_REQUEST({
+          data: { motivo: "Preco deve ser maior que zero" },
+        });
+      }
+
+      return resultado;
+    }),
+
+  adicionarEstoque: o
+    .route({
+      method: "POST",
+      path: "/produto/adicionar-estoque",
+      summary: "Adicionar Estoque",
+      description: "Adiciona quantidade ao estoque de um produto.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z.number().int().min(1).describe("ID do produto"),
+        quantidade: z.number().int().min(1).describe("Quantidade a adicionar"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const resultado = await adicionarEstoque(input.id, input.quantidade);
+
+      if (!resultado) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  removerEstoque: o
+    .route({
+      method: "POST",
+      path: "/produto/remover-estoque",
+      summary: "Remover Estoque",
+      description:
+        "Remove quantidade do estoque de um produto. Falha se estoque insuficiente.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z.number().int().min(1).describe("ID do produto"),
+        quantidade: z.number().int().min(1).describe("Quantidade a remover"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+      BAD_REQUEST: {
+        message: "Estoque insuficiente",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const dados = await dbProdutoRepository.buscarPorId(input.id);
+
+      if (!dados) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      const resultado = await removerEstoque(input.id, input.quantidade);
+
+      if (!resultado) {
+        throw errors.BAD_REQUEST({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  alterarPreco: o
+    .route({
+      method: "POST",
+      path: "/produto/alterar-preco",
+      summary: "Alterar Preco",
+      description: "Altera o preco de um produto. Deve ser maior que zero.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z.number().int().min(1).describe("ID do produto"),
+        novoPreco: z.number().min(0.01).describe("Novo preco"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const resultado = await alterarPreco(input.id, input.novoPreco);
+
+      if (!resultado) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  ativar: o
+    .route({
+      method: "POST",
+      path: "/produto/ativar",
+      summary: "Ativar Produto",
+      description: "Ativa um produto. Falha se estoque zerado.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z.number().int().min(1).describe("ID do produto"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+      BAD_REQUEST: {
+        message: "Nao e possivel ativar produto sem estoque",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const dados = await dbProdutoRepository.buscarPorId(input.id);
+
+      if (!dados) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      const resultado = await ativar(input.id);
+
+      if (!resultado) {
+        throw errors.BAD_REQUEST({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  desativar: o
+    .route({
+      method: "POST",
+      path: "/produto/desativar",
+      summary: "Desativar Produto",
+      description: "Desativa um produto.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        id: z.number().int().min(1).describe("ID do produto"),
+      })
+    )
+    .output(produtoSchema)
+    .errors({
+      NOT_FOUND: {
+        message: "Produto nao encontrado",
+        data: z.object({ id: z.number() }),
+      },
+    })
+    .handler(async ({ input, errors }) => {
+      const resultado = await desativar(input.id);
+
+      if (!resultado) {
+        throw errors.NOT_FOUND({ data: { id: input.id } });
+      }
+
+      return resultado;
+    }),
+
+  listar: o
+    .route({
+      method: "GET",
+      path: "/produto/listar",
+      summary: "Listar Produtos",
+      description: "Lista produtos com paginacao cursor-based.",
+      tags: ["Produto"],
+    })
+    .input(
+      z.object({
+        cursor: z.coerce
+          .number()
+          .int()
+          .min(0)
+          .default(0)
+          .describe("Offset para paginacao"),
+        limite: z.coerce
+          .number()
+          .int()
+          .min(1)
+          .max(100)
+          .default(10)
+          .describe("Quantidade de itens por pagina"),
+      })
+    )
+    .output(
+      z.object({
+        itens: z.array(produtoSchema),
+        proximoCursor: z.number().nullable(),
+      })
+    )
+    .handler(async ({ input }) => dbProdutoRepository.listar(input)),
+};
