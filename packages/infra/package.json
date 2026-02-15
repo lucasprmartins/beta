@@ -22,14 +22,16 @@
     "db:generate": "drizzle-kit generate --name=migration",
     "db:studio": "drizzle-kit studio",
     "db:migrate": "drizzle-kit migrate",
+    "db:seed": "bun src/db/seed.ts",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
     "@app/config": "workspace:*",
     "@types/bun": "catalog:",
-    "typescript": "^5.9.3",
     "drizzle-kit": "^0.31.9",
-    "tsx": "^4.21.0"
+    "drizzle-seed": "^0.3.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@app/core": "workspace:*",
