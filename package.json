@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "env": "infisical export --env=dev --path=/web --output-file=./apps/web/.env && infisical export --env=dev --path=/server --output-file=./apps/server/.env",
+    "env": "bash scripts/env.sh",
     "dev": "turbo dev",
     "dev:server": "turbo -F server dev",
     "dev:web": "turbo -F web dev",

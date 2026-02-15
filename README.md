@@ -71,25 +71,18 @@ bun install
 2. Configure as variáveis de ambiente copiando os arquivos de exemplo:
 
 ```bash
-cp apps/server/.env.example apps/server/.env
-cp apps/web/.env.example apps/web/.env
+bun env
 ```
 
 3. Preencha as variáveis no `apps/server/.env`:
 
 ```
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/nome_do_banco
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/db
 CORS_ORIGIN=http://localhost:3001
 BETTER_AUTH_URL=http://localhost:3000
-BETTER_AUTH_SECRET=sua_chave_secreta
-
-# Storage (opcional)
-S3_ENDPOINT=
-S3_REGION=auto
-S3_ACCESS_KEY_ID=
-S3_SECRET_ACCESS_KEY=
-S3_BUCKET=
 ```
+
+> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo script `bun env`.
 
 4. Aplique o schema no banco de dados:
 
