@@ -57,7 +57,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../index";
 import { {dominio} } from "../schema/{dominio}";
 
-function paraDados(row: typeof {dominio}.$inferSelect): {Dominio}Data {
+function exportar(row: typeof {dominio}.$inferSelect): {Dominio}Data {
   return {
     id: row.id,
     nome: row.nome,
@@ -71,12 +71,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
       .from({dominio})
       .where(eq({dominio}.id, id))
       .limit(1);
-    return row ? paraDados(row) : null;
-  },
-
-  async buscarTodos() {
-    const rows = await db.select().from({dominio});
-    return rows.map(paraDados);
+    return row ? exportar(row) : null;
   },
 
   async listar({ cursor, limite }) {
@@ -87,7 +82,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
       .offset(cursor);
 
     const temMais = rows.length > limite;
-    const itens = (temMais ? rows.slice(0, limite) : rows).map(paraDados);
+    const itens = (temMais ? rows.slice(0, limite) : rows).map(exportar);
 
     return {
       itens,
@@ -103,7 +98,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
         nome: data.nome,
       })
       .returning();
-    return row ? paraDados(row) : null;
+    return row ? exportar(row) : null;
   },
 
   async atualizar(id, data) {
@@ -114,7 +109,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
       })
       .where(eq({dominio}.id, id))
       .returning();
-    return row ? paraDados(row) : null;
+    return row ? exportar(row) : null;
   },
 
   async deletar(id) {
@@ -127,7 +122,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 };
 ```
 
-- Helper `paraDados()` converte linha DB → DTO (exclui `createdAt`/`updatedAt`)
+- Helper `exportar()` converte linha DB → DTO (exclui `createdAt`/`updatedAt`)
 - Convenção: `db{Dominio}Repository`
 - Importar `eq` de `drizzle-orm` para where
 - `const [row]` para consultas de linha única
@@ -136,14 +131,14 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 - `listar()`: busca `limite + 1` com offset, `slice(0, limite)` para itens, `proximoCursor = temMais ? cursor + limite : null`
 - `.set()` **não** inclui `id`, `createdAt`, `updatedAt`
 - `.values()` **não** inclui `createdAt`, `updatedAt` (gerados auto)
-- `db.transaction()` para operações que combinam leitura + escrita
+- CRUD Simples inclui `deletar`; Domínio Rico geralmente não precisa
 
-## Transações
+## Transações (opcional)
 
-Use `db.transaction()` para operações que combinam leitura + escrita ou múltiplas escritas:
+Use `db.transaction()` quando precisar de atomicidade (leitura + escrita ou múltiplas escritas):
 
 ```typescript
-async criarSeNaoExiste(data) {
+async criarComVerificacao(data) {
   return db.transaction(async (tx) => {
     const [existente] = await tx
       .select()
@@ -158,37 +153,14 @@ async criarSeNaoExiste(data) {
       .values({ ... })
       .returning();
 
-    return row ? paraDados(row) : null;
-  });
-},
-
-async buscarEAtualizar(id, transformar) {
-  return db.transaction(async (tx) => {
-    const [row] = await tx
-      .select()
-      .from({dominio})
-      .where(eq({dominio}.id, id))
-      .limit(1);
-
-    if (!row) return null;
-
-    const resultado = transformar(paraDados(row));
-    if (!resultado) return null;
-
-    const [atualizado] = await tx
-      .update({dominio})
-      .set({ ... })
-      .where(eq({dominio}.id, id))
-      .returning();
-
-    return atualizado ? paraDados(atualizado) : null;
+    return row ? exportar(row) : null;
   });
 },
 ```
 
 - Use `tx` (não `db`) para todas as queries dentro da transação
 - Rollback é automático se uma exceção for lançada
-- Use para: verificar existência + criar, ler + modificar + salvar, operações multi-tabela
+- Use para: verificar existência + criar, operações multi-tabela
 
 ## Ordem de Criação
 

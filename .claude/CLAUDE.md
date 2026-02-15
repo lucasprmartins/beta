@@ -30,7 +30,11 @@ Server → Auth → Sessão/Cookies
 
 - **Retorne `null`, não `throw`** para fluxos esperados (não encontrado, já existe, inválido)
 - **Injeção de dependência** via closure nos use cases
-- **Factory method estático** em entidades (`Entidade.criar()`) com construtor privado
+- **Dois padrões de domínio**: CRUD Simples e Domínio Rico (ver regras em `.claude/rules/`)
+- **CRUD Simples** — sem `domains/`, use cases passthrough, `Omit<>`/`Partial<>` para tipos
+- **Domínio Rico** — com `domains/`, DTOs separados (`CriarInput` + `Data`), entidade com `criar()` + `restaurar()` + `exportar()`
+- **Factory methods**: `criar()` para novos objetos, `restaurar()` para reconstruir do banco
+- **`exportar()`** converte entidade para DTO
 - **Nomes em pt-br** para domínio de negócio
 
 ## Stack

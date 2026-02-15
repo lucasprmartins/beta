@@ -123,12 +123,52 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 
 ## Criando um novo domínio
 
-O projeto inclui arquivos `example.ts` em cada camada como template. Para criar um novo domínio, siga a ordem:
+O projeto inclui dois padrões de exemplo em cada camada (`example-crud` e `example-domain`). Escolha o padrão adequado, duplique, renomeie e apague os exemplos.
 
-1. **Contrato** -- `packages/core/src/contracts/` (interface do DTO e repositório)
-2. **Domínio** -- `packages/core/src/domains/` (entidade com regras de negócio)
-3. **Use Cases** -- `packages/core/src/application/` (casos de uso)
-4. **Schema** -- `packages/infra/src/db/schema/` (tabela Drizzle)
-5. **Repositório** -- `packages/infra/src/db/repositories/` (implementação)
-6. **Router** -- `packages/api/src/routers/` (rotas oRPC)
-7. **Frontend** -- `apps/web/src/routes/` e `apps/web/src/features/` (páginas e componentes)
+> **Critério de decisão:** Existe lógica de negócio além de validação de formato? Se sim, use **Domínio Rico**. Se não, use **CRUD Simples**.
+
+### CRUD Simples
+
+Quando o domínio é apenas dados sem regras de negócio. Sem arquivo em `domains/`.
+
+| Camada | Arquivo |
+|--------|---------|
+| Contrato | `packages/core/src/contracts/` — `{Dominio}Data` + `{Dominio}Repository` com `Omit<>`/`Partial<>` |
+| Use Cases | `packages/core/src/application/` — passthrough (delegam ao repo) |
+| Schema | `packages/infra/src/db/schema/` — tabela Drizzle |
+| Repositório | `packages/infra/src/db/repositories/` — 5 métodos (buscar, listar, criar, atualizar, deletar) |
+| Router | `packages/api/src/routers/` — rotas oRPC |
+| Frontend | `apps/web/src/routes/` e `apps/web/src/features/` |
+
+### Domínio Rico
+
+Quando existem invariantes, regras de negócio, estados. Com arquivo em `domains/`.
+
+| Camada | Arquivo |
+|--------|---------|
+| Contrato | `packages/core/src/contracts/` — DTOs separados: `Criar{Dominio}Input` + `{Dominio}Data` |
+| Domínio | `packages/core/src/domains/` — entidade com `criar()` + `restaurar()` + `exportar()` |
+| Use Cases | `packages/core/src/application/` — buscar → restaurar → lógica → exportar → atualizar |
+| Schema | `packages/infra/src/db/schema/` — tabela Drizzle |
+| Repositório | `packages/infra/src/db/repositories/` — 4 métodos (buscar, listar, criar, atualizar) |
+| Router | `packages/api/src/routers/` — rotas oRPC |
+| Frontend | `apps/web/src/routes/` e `apps/web/src/features/` |
+
+### Comparativo
+
+| | CRUD Simples | Domínio Rico |
+|--|--|--|
+| `contracts/` | `{Dominio}Data` + utility types | DTOs separados (`CriarInput` + `Data`) |
+| `domains/` | Não existe | `criar()`, `restaurar()`, `exportar()`, métodos de negócio |
+| `application/` | Passthrough | Buscar → restaurar → lógica → exportar → atualizar |
+| Validação | Zod no router | Entidade (invariantes) + Zod (formato) |
+
+### Removendo os exemplos
+
+Após entender os padrões, remova todos os arquivos de exemplo e comece seu projeto:
+
+```bash
+bash scripts/cleanup-examples.sh
+```
+
+O script apaga os arquivos `example-crud` e `example-domain` de todas as camadas, limpa o registro de routers e se auto-apaga.

@@ -170,7 +170,7 @@ O tipo `AppRouterClient` atualiza automaticamente (deriva de `typeof router`).
     throw errors.BAD_REQUEST({ data: { campos: ["nome"] } });
   }
 
-  const result = await repo.criar(entidade.paraDados());
+  const result = await repo.criar(entidade.exportar());
   if (!result) {
     throw errors.NOT_FOUND({ data: { id: input.id } });
   }
