@@ -15,7 +15,8 @@ src/
 │   ├── index.ts            # Conexão com o banco
 │   ├── schema/             # Definição das tabelas (Drizzle)
 │   ├── repositories/       # Implementação dos contratos
-│   └── migrations/         # Migrations geradas
+│   ├── migrations/         # Migrations geradas
+│   └── seed.ts             # Seed com dados falsos (drizzle-seed)
 ├── integrations/
 │   └── index.ts            # Serviços externos (Stripe, etc.)
 ├── storage/
@@ -166,6 +167,46 @@ async criarComVerificacao(data) {
 - Use `tx` (não `db`) para todas as queries dentro da transação
 - Rollback é automático se uma exceção for lançada
 - Use para: verificar existência + criar, operações multi-tabela
+
+## Seed (`src/db/seed.ts`)
+
+Usa `drizzle-seed` para popular o banco com dados falsos. O arquivo template está em `src/db/seed.ts`.
+
+**Como adicionar tabelas ao seed:**
+
+1. Importar o schema
+2. Adicionar ao objeto `schema`
+3. Opcionalmente customizar com `.refine()`
+
+```typescript
+import { exemplo } from "./schema/exemplo";
+
+const schema = {
+  exemplo,
+};
+
+async function main() {
+  await reset(db, schema);
+  await seed(db, schema).refine((f) => ({
+    exemplo: {
+      count: 20,
+      columns: {
+        nome: f.fullName(),
+        email: f.email(),
+        status: f.valuesFromArray({ values: ["ativo", "inativo"] }),
+      },
+    },
+  }));
+}
+```
+
+- `reset()` limpa as tabelas com `TRUNCATE CASCADE` antes de semear
+- `seed()` gera dados automáticos baseado nos tipos das colunas
+- `.refine()` permite customizar geradores por coluna: `fullName()`, `email()`, `int()`, `valuesFromArray()`, etc.
+- Relacionamentos: use `with` para gerar dados relacionados (`with: { posts: 5 }`)
+- Determinístico: passe `{ seed: 1 }` como terceiro argumento para dados reproduzíveis
+
+**Comando:** `bun db:seed`
 
 ## Ordem de Criação
 

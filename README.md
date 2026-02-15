@@ -44,7 +44,7 @@ Server (Elysia)
 
 - **Core** -- Contratos (interfaces/DTOs), domínios (entidades) e use cases. Sem dependências externas.
 - **Infra** -- Schemas Drizzle, repositórios, storage (S3) e integrações com serviços externos.
-- **API** -- Routers oRPC com três níveis de acesso: `publicRouter`, `authRouter` e `adminRouter`.
+- **API** -- Routers oRPC com middlewares de acesso: `requireAuth` e `requireRole("admin", ...)`.
 - **Auth** -- Configuração do Better Auth (server e client).
 
 ### Frontend
@@ -98,6 +98,46 @@ bun dev
 
 O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:3001`.
 
+## Deploy
+
+O template usa [Railway](https://railway.com) para infraestrutura. O script de deploy automatiza a criação do projeto e provisionamento dos serviços (PostgreSQL, etc.).
+
+### Pré-requisitos
+
+- [Railway CLI](https://docs.railway.com/guides/cli) instalado e autenticado (`railway login`)
+
+### Primeiro deploy
+
+```bash
+bun railway:deploy
+```
+
+O script vai pedir:
+
+1. **Nome do projeto** — nome que aparecerá no dashboard do Railway
+2. **Nome do workspace** — workspace onde o projeto será criado
+3. **Código do template** — template de infra a ser aplicado (Enter para usar o padrão)
+
+Após execução, o dashboard do Railway abrirá automaticamente. Aguarde o deploy finalizar e então configure o ambiente local:
+
+```bash
+bun env
+```
+
+### Desenvolvimento
+
+Para trabalhar em novas features ou correções, crie uma branch e abra uma Pull Request. O Railway cria automaticamente um ambiente isolado para cada PR com banco de dados e serviços próprios, permitindo testar sem afetar produção.
+
+Para popular o ambiente da PR com dados de teste:
+
+```bash
+bun railway:seed
+```
+
+O script vai pedir o nome do ambiente (ex: `meu-projeto-pr-4`) e executar o seed contra o banco da PR.
+
+> O arquivo de seed está em `packages/infra/src/db/seed.ts`. Adicione suas tabelas e customize os dados gerados conforme necessário.
+
 ## Scripts
 
 | Comando | Descrição |
@@ -109,7 +149,12 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 | `bun db:push` | Aplica schema no banco |
 | `bun db:generate` | Gera migrations |
 | `bun db:migrate` | Executa migrations |
+| `bun db:seed` | Popula o banco com dados falsos |
 | `bun db:studio` | Abre o Drizzle Studio |
 | `bun lint` | Verifica linting |
 | `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
+| `bun env` | Configura variáveis de ambiente |
+| `bun cleanup` | Remove arquivos de exemplo |
+| `bun railway:deploy` | Cria projeto e provisiona infra no Railway |
+| `bun railway:seed` | Executa seed em ambiente de PR no Railway |
