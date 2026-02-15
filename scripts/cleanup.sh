@@ -24,7 +24,4 @@ echo "Limpando packages/api/src/index.ts..."
 sed -i '/example-crud/d;/example-domain/d' packages/api/src/index.ts
 sed -i '/categoria: categoriaRouter/d;/produto: produtoRouter/d' packages/api/src/index.ts
 
-echo "Removendo este script..."
-rm -f "$0"
-
 echo "Pronto! Exemplos removidos."

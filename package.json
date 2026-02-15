@@ -8,7 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "env": "bash scripts/env.sh",
+    "env": "sh scripts/env.sh",
+    "deploy": "sh scripts/deploy.sh",
+    "cleanup": "sh scripts/cleanup.sh",
     "dev": "turbo dev",
     "dev:server": "turbo -F server dev",
     "dev:web": "turbo -F web dev",
