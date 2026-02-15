@@ -1,8 +1,8 @@
 import {
   boolean,
   integer,
+  numeric,
   pgTable,
-  real,
   serial,
   text,
   timestamp,
@@ -12,7 +12,7 @@ export const produto = pgTable("produto", {
   id: serial("id").primaryKey(),
   nome: text("nome").notNull().unique(),
   descricao: text("descricao").notNull(),
-  preco: real("preco").notNull(),
+  preco: numeric("preco", { precision: 10, scale: 2 }).notNull(),
   estoque: integer("estoque").notNull().default(0),
   ativo: boolean("ativo").notNull().default(true),
   imagemUrl: text("imagem_url"),

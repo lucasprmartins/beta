@@ -11,7 +11,7 @@ function exportar(row: typeof produto.$inferSelect): ProdutoData {
     id: row.id,
     nome: row.nome,
     descricao: row.descricao,
-    preco: row.preco,
+    preco: Number(row.preco),
     estoque: row.estoque,
     ativo: row.ativo,
     imagemUrl: row.imagemUrl,
@@ -51,7 +51,7 @@ export const dbProdutoRepository: ProdutoRepository = {
       .values({
         nome: data.nome,
         descricao: data.descricao,
-        preco: data.preco,
+        preco: String(data.preco),
         estoque: data.estoque,
         ativo: data.ativo,
         imagemUrl: data.imagemUrl,
@@ -67,7 +67,7 @@ export const dbProdutoRepository: ProdutoRepository = {
       .set({
         nome: data.nome,
         descricao: data.descricao,
-        preco: data.preco,
+        preco: String(data.preco),
         estoque: data.estoque,
         ativo: data.ativo,
         imagemUrl: data.imagemUrl,
