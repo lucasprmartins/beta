@@ -12,20 +12,25 @@ Implementações concretas de banco de dados e integrações externas.
 ```
 src/
 ├── db/
-│   ├── index.ts          # Conexão com o banco
-│   ├── schema/           # Definição das tabelas (Drizzle)
-│   ├── repositories/     # Implementação dos contratos
-│   └── drizzle/          # Migrations geradas
-└── integrations/         # Serviços externos (Stripe, etc.)
+│   ├── index.ts            # Conexão com o banco
+│   ├── schema/             # Definição das tabelas (Drizzle)
+│   ├── repositories/       # Implementação dos contratos
+│   └── migrations/         # Migrations geradas
+├── integrations/
+│   └── index.ts            # Serviços externos (Stripe, etc.)
+├── storage/
+│   └── client.ts           # Storage S3-compatível (R2/MinIO)
+├── env.ts                  # Variáveis de ambiente
+└── logger.ts               # Logger (Pino)
 ```
 
 ## Schema (`src/db/schema/`)
 
 ```typescript
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const {dominio} = pgTable("{dominio}", {
-  id: text("id").primaryKey(),
+  id: serial("id").primaryKey(),
   nome: text("nome").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
@@ -37,8 +42,8 @@ export const {dominio} = pgTable("{dominio}", {
 }).enableRLS();
 ```
 
-- Importar tipos de `drizzle-orm/pg-core`: `text`, `integer`, `boolean`, `timestamp`, `numeric`, `jsonb`
-- **Nunca use `real` para valores monetários** — use `numeric("coluna", { precision: 10, scale: 2 })` (retorna `string`, converter com `Number()` no repository)
+- Importar tipos de `drizzle-orm/pg-core`: `serial`, `text`, `integer`, `boolean`, `timestamp`, `numeric`, `jsonb`
+- **Nunca use `real` para valores monetários** — use `numeric("coluna", { precision: 10, scale: 2 })` (retorna `string`; converter com `Number()` na leitura via `exportar()` e com `String()` na escrita via `.values()`/`.set()`)
 - **Sempre** adicionar `.enableRLS()`
 - **Sempre** incluir `createdAt` e `updatedAt`
 - `.unique()` para campos únicos
@@ -95,7 +100,6 @@ export const db{Dominio}Repository: {Dominio}Repository = {
     const [row] = await db
       .insert({dominio})
       .values({
-        id: data.id,
         nome: data.nome,
       })
       .returning();
@@ -131,7 +135,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 - `.limit(1)` em consultas de item único
 - `listar()`: busca `limite + 1` com offset, `slice(0, limite)` para itens, `proximoCursor = temMais ? cursor + limite : null`
 - `.set()` **não** inclui `id`, `createdAt`, `updatedAt`
-- `.values()` **não** inclui `createdAt`, `updatedAt` (gerados auto)
+- `.values()` **não** inclui `id`, `createdAt`, `updatedAt` (gerados auto)
 - CRUD Simples inclui `deletar`; Domínio Rico geralmente não precisa
 
 ## Transações (opcional)
@@ -165,8 +169,8 @@ async criarComVerificacao(data) {
 
 ## Ordem de Criação
 
-4. `packages/infra/src/db/schema/{dominio}.ts`
-5. `packages/infra/src/db/repositories/{dominio}.ts`
+1. `packages/infra/src/db/schema/{dominio}.ts`
+2. `packages/infra/src/db/repositories/{dominio}.ts`
 
 Após criar, executar `bun db:generate` para migration.
 
@@ -180,3 +184,9 @@ Após criar, executar `bun db:generate` para migration.
 
 - Implemente contratos definidos em `@app/core/contracts`
 - Cada integração em arquivo separado
+
+## Referências
+
+- **`env.ts`** — Variáveis de ambiente. Documentação detalhada em `.claude/rules/backend/env.md`
+- **`logger.ts`** — Logger Pino. Uso documentado em `.claude/rules/general.md`
+- **`storage/client.ts`** — Storage S3-compatível (R2/MinIO). Funções exportadas: `gerarUrlUpload(key, contentType, expiresIn?)`, `gerarUrlDownload(key, expiresIn?)`, `removerObjeto(key)`, `listarObjetos(prefix?)`
