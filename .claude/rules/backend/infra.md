@@ -37,7 +37,8 @@ export const {dominio} = pgTable("{dominio}", {
 }).enableRLS();
 ```
 
-- Importar tipos de `drizzle-orm/pg-core`: `text`, `integer`, `boolean`, `timestamp`, `real`, `jsonb`
+- Importar tipos de `drizzle-orm/pg-core`: `text`, `integer`, `boolean`, `timestamp`, `numeric`, `jsonb`
+- **Nunca use `real` para valores monetários** — use `numeric("coluna", { precision: 10, scale: 2 })` (retorna `string`, converter com `Number()` no repository)
 - **Sempre** adicionar `.enableRLS()`
 - **Sempre** incluir `createdAt` e `updatedAt`
 - `.unique()` para campos únicos
