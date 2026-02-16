@@ -33,7 +33,7 @@ function AuthPage() {
             <span>Sua sessão expirou. Faça login novamente.</span>
           </div>
         )}
-        <CubeIcon className="h-12 w-12 text-base-content" weight="bold" />
+        <CubeIcon className="h-12 w-12 text-base-content" weight="fill" />
         {mode === "sign-in" ? (
           <SignInForm onSwitchForm={() => setMode("sign-up")} />
         ) : (

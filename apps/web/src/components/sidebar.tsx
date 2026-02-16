@@ -60,11 +60,8 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
         />
 
         <div className="flex min-h-full is-drawer-close:w-15 is-drawer-open:w-64 flex-col bg-base-200">
-          <div className="flex h-15 items-center justify-center">
-            <CubeIcon
-              className="is-drawer-open:hidden h-6 w-6 text-base-content"
-              weight="bold"
-            />
+          <div className="flex h-15 items-center justify-center gap-2">
+            <CubeIcon className="h-6 w-6 text-base-content" weight="fill" />
             <span className="is-drawer-close:hidden font-bold text-base-content text-lg">
               Beta
             </span>
