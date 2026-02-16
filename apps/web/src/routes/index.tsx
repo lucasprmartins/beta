@@ -23,8 +23,6 @@ const layers = [
     description:
       "Domínios, contratos e casos de uso — sem dependências externas.",
     color: "text-primary",
-    border: "border-primary/30",
-    bg: "bg-primary/5",
   },
   {
     icon: DatabaseIcon,
@@ -32,8 +30,6 @@ const layers = [
     subtitle: "Banco & Integrações",
     description: "Drizzle ORM, PostgreSQL, repositórios e serviços externos.",
     color: "text-accent",
-    border: "border-accent/30",
-    bg: "bg-accent/5",
   },
   {
     icon: GlobeIcon,
@@ -41,8 +37,6 @@ const layers = [
     subtitle: "oRPC Router",
     description: "Rotas type-safe com validação Zod, RPC e REST via OpenAPI.",
     color: "text-secondary",
-    border: "border-secondary/30",
-    bg: "bg-secondary/5",
   },
   {
     icon: LightningIcon,
@@ -50,8 +44,6 @@ const layers = [
     subtitle: "Elysia + Bun",
     description: "Servidor HTTP de alta performance com endpoints RPC e REST.",
     color: "text-warning",
-    border: "border-warning/30",
-    bg: "bg-warning/5",
   },
   {
     icon: BrowserIcon,
@@ -59,8 +51,6 @@ const layers = [
     subtitle: "React 19 + TanStack",
     description: "Router file-based, Query com cache, Tailwind CSS e DaisyUI.",
     color: "text-info",
-    border: "border-info/30",
-    bg: "bg-info/5",
   },
 ];
 
@@ -134,10 +124,10 @@ function WelcomePage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {layers.map((layer) => (
               <div
-                className={`card card-border ${layer.border} ${layer.bg} transition-colors hover:border-opacity-60`}
+                className="rounded-xl bg-base-200 p-5"
                 key={layer.title}
               >
-                <div className="card-body gap-3 p-5">
+                <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <layer.icon
                       className={`h-5 w-5 ${layer.color}`}
@@ -172,7 +162,7 @@ function WelcomePage() {
           <div className="grid gap-4 md:grid-cols-3">
             {features.map((feature) => (
               <div
-                className="flex items-start gap-4 rounded-xl border border-base-300 p-5"
+                className="flex items-start gap-4 rounded-xl bg-base-200 p-5"
                 key={feature.label}
               >
                 <feature.icon
