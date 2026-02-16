@@ -182,7 +182,6 @@ bun seed
 | `bun lint` | Verifica linting |
 | `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
-| `bun beta` | Inicializa novo projeto a partir do template |
 | `bun env` | Configura variáveis de ambiente |
 | `bun env:dev` | Troca para ambiente de PR no Railway |
 | `bun seed` | Popula banco (Railway ou local) |
