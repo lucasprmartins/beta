@@ -24,7 +24,7 @@ fi
 
 if [ "$USA_RAILWAY" = true ]; then
   if echo "$STATUS" | grep -q "production"; then
-    erro "Você está no ambiente de ${BOLD}production${RESET}. Execute 'bun railway:dev' para mudar para um ambiente de PR."
+    erro "Você está no ambiente de ${BOLD}production${RESET}. Execute 'bun env:dev' para mudar para um ambiente de PR."
   fi
 
   info "Executando seed via Railway..."

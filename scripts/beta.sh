@@ -172,7 +172,7 @@ if [ "$USA_N8N" = false ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/railway-dev.sh railway.json
+  rm -f scripts/env-dev.sh railway.json
   sucesso "Scripts Railway removidos"
 fi
 
@@ -185,7 +185,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
 if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
-if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['railway:dev']; }
+if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['env:dev']; }
 delete pkg.scripts['beta'];
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "

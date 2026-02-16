@@ -30,7 +30,7 @@
     "beta": "sh scripts/beta.sh",
     "env": "sh scripts/env.sh",
     "cleanup": "sh scripts/cleanup.sh",
-    "railway:dev": "sh scripts/railway-dev.sh",
+    "env:dev": "sh scripts/env-dev.sh",
     "seed": "sh scripts/seed.sh",
     "n8n:pull": "bun n8n/pull.ts",
     "n8n:push": "bun n8n/push.ts"
