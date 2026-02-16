@@ -77,12 +77,19 @@ function WelcomePage() {
     <div className="min-h-screen bg-base-100">
       <div className="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 md:py-24">
         <header className="flex flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-base-300" />
-            <span className="text-base-content/40 text-xs uppercase tracking-[0.3em]">
-              Beta Template
-            </span>
-            <div className="h-px flex-1 bg-base-300" />
+          <div className="flex flex-col items-center gap-4">
+            <label className="swap swap-rotate text-base-content/40">
+              <input className="theme-controller" type="checkbox" value="dark" />
+              <CubeIcon className="swap-off h-8 w-8" weight="bold" />
+              <CubeIcon className="swap-on h-8 w-8" weight="fill" />
+            </label>
+            <div className="flex w-full items-center gap-3">
+              <div className="h-px flex-1 bg-base-300" />
+              <span className="text-base-content/40 text-xs uppercase tracking-[0.3em]">
+                Beta Template
+              </span>
+              <div className="h-px flex-1 bg-base-300" />
+            </div>
           </div>
 
           <div className="flex flex-col items-center gap-6 text-center">
