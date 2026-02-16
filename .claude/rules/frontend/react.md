@@ -1,6 +1,8 @@
 ---
 paths:
-  - "apps/web/**/*.{ts,tsx}"
+  - "apps/web/src/routes/**"
+  - "apps/web/src/features/**"
+  - "apps/web/src/components/**"
 ---
 
 # Frontend (React 19 + TanStack)

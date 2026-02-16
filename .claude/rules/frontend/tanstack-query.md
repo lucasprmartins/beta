@@ -1,6 +1,7 @@
 ---
 paths:
-  - "apps/web/**/*.{ts,tsx}"
+  - "apps/web/src/lib/orpc.ts"
+  - "apps/web/src/features/**"
 ---
 
 # TanStack Query + oRPC

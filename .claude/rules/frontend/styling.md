@@ -1,6 +1,8 @@
 ---
 paths:
-  - "apps/web/**/*.{ts,tsx}"
+  - "apps/web/src/**/*.css"
+  - "apps/web/src/components/**"
+  - "apps/web/src/features/**"
 ---
 
 # Styling (Tailwind + DaisyUI + Phosphor)
