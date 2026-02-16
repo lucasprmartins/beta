@@ -1,6 +1,3 @@
----
----
-
 # Convenções Gerais
 
 ## Nomenclatura

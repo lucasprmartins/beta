@@ -1,6 +1,3 @@
----
----
-
 # Convenção de Commits
 
 Use **Conventional Commits** em **pt-br**:
