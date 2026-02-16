@@ -50,7 +50,7 @@ railway link -p "$PROJECT_ID" -e "$ENV_NAME"
 
 rodape "Ambiente alterado para ${BOLD}$ENV_NAME${RESET}!"
 
-echo -e "${DIM}Agora você pode executar:${RESET}"
-echo -e "${DIM}  bun env    ${RESET}Configurar .env local"
-echo -e "${DIM}  bun seed   ${RESET}Popular banco com dados de teste"
+echo "${DIM}Agora você pode executar:${RESET}"
+echo "${DIM}  bun env    ${RESET}Configurar .env local"
+echo "${DIM}  bun seed   ${RESET}Popular banco com dados de teste"
 echo ""

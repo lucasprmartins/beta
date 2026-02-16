@@ -120,13 +120,13 @@ echo ""
 
 OPCOES=("$USUARIO (pessoal)")
 INDEX=1
-echo -e "${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
+echo "${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
 
 if [ -n "$ORGS" ]; then
   while IFS= read -r org; do
     INDEX=$((INDEX + 1))
     OPCOES+=("$org")
-    echo -e "${BOLD}${INDEX})${RESET} $org"
+    echo "${BOLD}${INDEX})${RESET} $org"
   done <<< "$ORGS"
 fi
 
@@ -248,17 +248,17 @@ sucesso "Commit inicial enviado para origin/$BRANCH"
 
 rodape "Projeto ${BOLD}$NOME_PROJETO${RESET} criado com sucesso!"
 
-echo -e "${DIM}Owner:${RESET}    $OWNER"
-echo -e "${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
-echo -e "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
+echo "${DIM}Owner:${RESET}    $OWNER"
+echo "${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
+echo "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
 
 banner "Próximos passos"
 
-echo -e "1. ${BOLD}bun env${RESET}       ${DIM}— configurar variáveis de ambiente${RESET}"
+echo "1. ${BOLD}bun env${RESET}       ${DIM}— configurar variáveis de ambiente${RESET}"
 if [ "$USA_RAILWAY" = true ]; then
-  echo -e "2. ${BOLD}bun seed${RESET}      ${DIM}— popular banco de dados${RESET}"
-  echo -e "3. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo "2. ${BOLD}bun seed${RESET}      ${DIM}— popular banco de dados${RESET}"
+  echo "3. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
 else
-  echo -e "2. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo "2. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
 fi
 echo ""
