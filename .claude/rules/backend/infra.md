@@ -18,9 +18,7 @@ src/
 │   ├── migrations/         # Migrations geradas
 │   └── seed.ts             # Seed com dados falsos (drizzle-seed)
 ├── integrations/
-│   └── index.ts            # Serviços externos (Stripe, etc.)
-├── storage/
-│   └── client.ts           # Storage S3-compatível (R2/MinIO)
+│   └── storage.ts          # Storage S3-compatível (R2/MinIO)
 ├── env.ts                  # Variáveis de ambiente
 └── logger.ts               # Logger (Pino)
 ```
@@ -230,4 +228,4 @@ Após criar, executar `bun db:generate` para migration.
 
 - **`env.ts`** — Variáveis de ambiente. Documentação detalhada em `.claude/rules/backend/env.md`. Pode incluir variáveis adicionais de deploy (`CORS_ORIGIN`, `RAILWAY_PUBLIC_DOMAIN`) e integrações (`N8N_*`)
 - **`logger.ts`** — Logger Pino. Uso documentado em `.claude/rules/general.md`
-- **`storage/client.ts`** — Storage S3-compatível (R2/MinIO). Funções exportadas: `gerarUrlUpload(key, contentType, expiresIn?)`, `gerarUrlDownload(key, expiresIn?)`, `removerObjeto(key)`, `listarObjetos(prefix?)`
+- **`integrations/storage.ts`** — Storage S3-compatível (R2/MinIO). Funções exportadas: `gerarUrlUpload(key, contentType, expiresIn?)`, `gerarUrlDownload(key, expiresIn?)`, `removerObjeto(key)`, `listarObjetos(prefix?)`

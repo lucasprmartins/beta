@@ -7,11 +7,8 @@
     "./db": {
       "default": "./src/db/index.ts"
     },
-    "./integrations": {
-      "default": "./src/integrations/index.ts"
-    },
-    "./storage": {
-      "default": "./src/storage/client.ts"
+    "./integrations/*": {
+      "default": "./src/integrations/*.ts"
     },
     "./*": {
       "default": "./src/*.ts"

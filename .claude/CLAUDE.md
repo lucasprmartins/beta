@@ -12,7 +12,7 @@ apps/
 packages/
 ├── config/        # Configurações compartilhadas (tsconfig)
 ├── core/          # Lógica de negócio (sem dependências externas)
-├── infra/         # Infraestrutura (DB + Storage + APIs externas)
+├── infra/         # Infraestrutura (DB + Integrações externas)
 ├── auth/          # Autenticação (Better Auth)
 └── api/           # Definição da API (oRPC)
 ```
