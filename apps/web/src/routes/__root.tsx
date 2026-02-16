@@ -20,20 +20,20 @@ interface RouterContext {
 function RootErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base-100">
-      <div className="flex max-w-md flex-col items-center gap-4 rounded-box border border-error p-8 text-center">
+      <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
         <WarningCircleIcon className="h-12 w-12 text-error" weight="bold" />
-        <h1 className="font-bold text-2xl text-error">Algo deu errado</h1>
-        <p className="text-sm opacity-70">
+        <h1 className="font-bold text-2xl text-base-content">Algo deu errado</h1>
+        <p className="text-base-content/60 text-sm">
           Ocorreu um erro inesperado ao carregar a aplicação.
         </p>
         {import.meta.env.DEV && error.message && (
-          <p className="text-xs opacity-40">{error.message}</p>
+          <p className="text-base-content/40 text-xs">{error.message}</p>
         )}
         <div className="flex gap-2">
           <button className="btn btn-primary" onClick={reset} type="button">
             Tentar novamente
           </button>
-          <Link className="btn btn-outline" to="/">
+          <Link className="btn btn-ghost" to="/">
             Ir para o início
           </Link>
         </div>
@@ -45,12 +45,12 @@ function RootErrorComponent({ error, reset }: ErrorComponentProps) {
 function RootNotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base-100">
-      <div className="flex max-w-md flex-col items-center gap-4 rounded-box border border-warning p-8 text-center">
-        <MagnifyingGlassIcon className="h-12 w-12 text-warning" weight="bold" />
-        <h1 className="font-bold text-2xl text-warning">
+      <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
+        <MagnifyingGlassIcon className="h-12 w-12 text-base-content/30" weight="bold" />
+        <h1 className="font-bold text-2xl text-base-content">
           Página não encontrada
         </h1>
-        <p className="text-sm opacity-70">
+        <p className="text-base-content/60 text-sm">
           A página que você procura não existe ou foi removida.
         </p>
         <Link className="btn btn-primary" to="/dashboard">
