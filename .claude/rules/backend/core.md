@@ -198,3 +198,9 @@ export function atualizar{Dominio}(repo: {Dominio}Repository) {
 
 - Retorne `null` para: não encontrado, já existe, dados inválidos
 - Reserve `throw` apenas para erros inesperados do sistema
+
+### Retornos de Métodos de Negócio
+
+- **`boolean`** — validação + mutação. Retorna `false` se inválido (ex: `adicionarEstoque(qtd)`)
+- **`void`** — mutação sem validação. Sempre sucede (ex: `desativar()`)
+- **Computed getters** — propriedades derivadas de múltiplos campos (ex: `get disponivel(): boolean { return this._ativo && this._estoque > 0; }`)
