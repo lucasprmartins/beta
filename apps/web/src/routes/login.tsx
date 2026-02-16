@@ -1,4 +1,4 @@
-import { WarningCircle as WarningCircleIcon } from "@phosphor-icons/react";
+import { Cube as CubeIcon, WarningCircle as WarningCircleIcon } from "@phosphor-icons/react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { SignInForm, SignUpForm } from "@/features/auth";
@@ -33,13 +33,7 @@ function AuthPage() {
             <span>Sua sessão expirou. Faça login novamente.</span>
           </div>
         )}
-        <img
-          alt="Logo"
-          className="h-16 w-16"
-          height={64}
-          src="/logo-1.svg"
-          width={64}
-        />
+        <CubeIcon className="h-12 w-12 text-base-content" weight="bold" />
         {mode === "sign-in" ? (
           <SignInForm onSwitchForm={() => setMode("sign-up")} />
         ) : (

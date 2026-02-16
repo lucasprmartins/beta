@@ -64,7 +64,7 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
         </div>
       )}
 
-      <fieldset className="fieldset w-sm rounded-box border-base-100 bg-base-300 p-6">
+      <fieldset className="fieldset w-sm rounded-box bg-base-200 p-6">
         <legend className="fieldset-legend text-sm">
           Faça o seu login
           <ThemeToggle />
@@ -123,7 +123,7 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
         <div className="divider">Não possui conta?</div>
 
         <button
-          className="btn btn-secondary btn-block"
+          className="btn btn-ghost btn-block"
           onClick={onSwitchForm}
           type="button"
         >
@@ -169,7 +169,7 @@ export const SignUpForm = ({ onSwitchForm }: SignUpFormProps) => {
         </div>
       )}
 
-      <fieldset className="fieldset w-sm rounded-box border-base-100 bg-base-300 p-6">
+      <fieldset className="fieldset w-sm rounded-box bg-base-200 p-6">
         <legend className="fieldset-legend text-sm">
           Crie sua conta
           <ThemeToggle />
@@ -260,7 +260,7 @@ export const SignUpForm = ({ onSwitchForm }: SignUpFormProps) => {
         <div className="divider">Já possui conta?</div>
 
         <button
-          className="btn btn-secondary btn-block"
+          className="btn btn-ghost btn-block"
           onClick={onSwitchForm}
           type="button"
         >
@@ -276,7 +276,7 @@ export const SignOutButton = ({ disabled, ...props }: SignOutButtonProps) => {
 
   return (
     <button
-      className="btn btn-error btn-soft btn-circle"
+      className="btn btn-ghost btn-circle"
       disabled={disabled || isPending}
       onClick={() => signOut()}
       {...props}
