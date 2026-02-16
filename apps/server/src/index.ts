@@ -11,6 +11,10 @@ import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 const PORT = 3000;
 const isLocal = env.BETTER_AUTH_URL.includes("localhost");
 
+const csp = isLocal
+  ? "default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://fonts.scalar.com; connect-src 'self' https://proxy.scalar.com; frame-ancestors 'none'"
+  : "default-src 'none'; frame-ancestors 'none'";
+
 const app = new Elysia()
   .headers({
     "X-Content-Type-Options": "nosniff",
@@ -18,7 +22,7 @@ const app = new Elysia()
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "geolocation=(), camera=(), microphone=()",
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-    "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
+    "Content-Security-Policy": csp,
   })
 
   .get("/", async () => {

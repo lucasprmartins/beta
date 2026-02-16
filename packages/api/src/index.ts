@@ -1,11 +1,10 @@
 import { logger } from "@app/infra/logger";
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-
 import type { RouterClient } from "@orpc/server";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 
 import { categoriaRouter } from "./routers/example-crud";
 import { produtoRouter } from "./routers/example-domain";
@@ -28,7 +27,16 @@ export const rpcHandler = new RPCHandler(router, {
 export const apiHandler = new OpenAPIHandler(router, {
   plugins: [
     new OpenAPIReferencePlugin({
+      docsProvider: "scalar",
       schemaConverters: [new ZodToJsonSchemaConverter()],
+      specGenerateOptions: {
+        info: {
+          title: "API",
+          version: "1.0.0",
+          description: "API REST do projeto Beta",
+        },
+        servers: [{ url: "http://localhost:3000/api" }],
+      },
     }),
   ],
   interceptors: [
