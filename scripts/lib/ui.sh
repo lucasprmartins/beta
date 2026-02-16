@@ -15,12 +15,12 @@ RESET="\033[0m"
 
 # ─── Mensagens ───────────────────────────────────────────────────────────────
 
-sucesso() { echo -e "  ${GREEN}✓${RESET} $1"; }
-aviso()   { echo -e "  ${YELLOW}▪${RESET} $1"; }
-info()    { echo -e "  ${DIM}$1${RESET}"; }
+sucesso() { echo -e "${GREEN}✓${RESET} $1"; }
+aviso()   { echo -e "${YELLOW}▪${RESET} $1"; }
+info()    { echo -e "${DIM}$1${RESET}"; }
 
 erro() {
-  echo -e "  ${RED}✗${RESET} $1"
+  echo -e "${RED}✗${RESET} $1"
   exit 1
 }
 
@@ -28,47 +28,48 @@ erro() {
 
 pergunta_sn() {
   local resposta
-  echo -ne "  ${CYAN}?${RESET} $1 ${DIM}[s/N]${RESET} "
+  echo -ne "${CYAN}?${RESET} $1 ${DIM}[y/N]${RESET} > "
   read -r resposta
-  [[ "$resposta" =~ ^[sS]$ ]]
+  [[ "$resposta" =~ ^[yY]$ ]]
 }
 
 pergunta() {
-  echo -e "  ${CYAN}?${RESET} $1"
+  echo -e "${CYAN}?${RESET} $1"
 }
 
 # ─── Layout ──────────────────────────────────────────────────────────────────
 
 banner() {
   local texto="$1"
-  local len=${#texto}
-  local largura=$(( len + 6 ))
+  local len
+  len=$(printf '%s' "$texto" | wc -L)
+  local largura=$(( len + 7 ))
   local linha
   linha=$(printf '─%.0s' $(seq 1 "$largura"))
 
   echo ""
-  echo -e "  ${DIM}╭${linha}╮${RESET}"
-  echo -e "  ${DIM}│${RESET}  ${BOLD}◆  ${texto}${RESET}  ${DIM}│${RESET}"
-  echo -e "  ${DIM}╰${linha}╯${RESET}"
+  echo -e "${DIM}╭${linha}╮${RESET}"
+  echo -e "${DIM}│${RESET}  ${BOLD}◆  ${texto}${RESET}  ${DIM}│${RESET}"
+  echo -e "${DIM}╰${linha}╯${RESET}"
   echo ""
 }
 
 titulo() {
   echo ""
-  echo -e "  ${BOLD}$1${RESET}"
-  echo -e "  ${DIM}────────────────────────────────────${RESET}"
+  echo -e "${BOLD}$1${RESET}"
+  echo -e "${DIM}────────────────────────────────────${RESET}"
   echo ""
 }
 
 separador() {
   echo ""
-  echo -e "  ${DIM}────────────────────────────────────${RESET}"
+  echo -e "${DIM}────────────────────────────────────${RESET}"
   echo ""
 }
 
 rodape() {
   separador
-  echo -e "  ${GREEN}✓${RESET} $1"
+  echo -e "${GREEN}✓${RESET} $1"
   echo ""
 }
 
@@ -82,7 +83,7 @@ spinner() {
 
   tput civis 2>/dev/null || true
   while kill -0 "$pid" 2>/dev/null; do
-    echo -ne "\r  ${DIM}${frames[$i]} ${msg}${RESET}"
+    echo -ne "\r${DIM}${frames[$i]} ${msg}${RESET}"
     i=$(( (i + 1) % ${#frames[@]} ))
     sleep 0.08
   done
