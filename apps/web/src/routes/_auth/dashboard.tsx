@@ -1,7 +1,7 @@
 import {
-  CodeIcon,
-  FolderOpenIcon,
+  BookOpenIcon,
   RocketLaunchIcon,
+  TerminalIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -11,22 +11,22 @@ export const Route = createFileRoute("/_auth/dashboard")({
 
 const proximosPassos = [
   {
-    icon: FolderOpenIcon,
-    titulo: "Explore a estrutura",
+    icon: TerminalIcon,
+    titulo: "Prepare o banco",
     descricao:
-      "Navegue pelos pacotes: core (domínio), infra (banco), api (rotas) e auth (autenticação).",
+      "Rode bun db:seed para popular com dados fake e bun db:studio para visualizar as tabelas no Drizzle Studio.",
   },
   {
-    icon: CodeIcon,
-    titulo: "Crie seu primeiro domínio",
+    icon: BookOpenIcon,
+    titulo: "Explore os exemplos",
     descricao:
-      "Adicione entidades no core, repositórios na infra e exponha via api com oRPC.",
+      "Categoria (CRUD Simples) e Produto (Domínio Rico) demonstram os dois padrões. Siga o fluxo: contracts → application → schema → repository → router.",
   },
   {
     icon: RocketLaunchIcon,
-    titulo: "Conecte ao frontend",
+    titulo: "Crie seu domínio",
     descricao:
-      "Use o client oRPC em src/lib/orpc.ts para consumir suas APIs com tipagem end-to-end.",
+      "Descreva o que precisa para a IA — ela conhece os padrões do projeto e cria todo o fluxo de ponta a ponta. Quando não precisar mais dos exemplos, rode bun cleanup.",
   },
 ];
 
@@ -39,7 +39,7 @@ function DashboardPage() {
             <span className="text-primary">Bem-vindo!</span>
           </h1>
           <p className="text-base-content/60">
-            Seu ambiente está configurado e pronto para desenvolvimento.
+            Seu ambiente está configurado. Siga os passos abaixo para começar.
           </p>
         </header>
 
