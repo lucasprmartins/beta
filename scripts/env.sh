@@ -39,6 +39,23 @@ sed -i '/^#/d;/^$/d' apps/server/.env
 sed -i '/^#/d;/^$/d' apps/web/.env
 
 echo ""
+read -p "  Este projeto utiliza n8n? (s/N) " usa_n8n
+if [[ "$usa_n8n" =~ ^[sS]$ ]]; then
+  echo ""
+  read -p "    N8N_URL: " n8n_url
+  read -p "    N8N_API_KEY: " n8n_key
+  read -p "    N8N_PROJECT_TAG: " n8n_tag
+
+  mkdir -p n8n
+  cat > n8n/.env <<EOF
+N8N_URL=$n8n_url
+N8N_API_KEY=$n8n_key
+N8N_PROJECT_TAG=$n8n_tag
+EOF
+  echo -e "  ${GREEN}✓${RESET} n8n/.env configurado"
+fi
+
+echo ""
 echo -e "${DIM}  ─────────────────────────────────${RESET}"
 echo -e "  ${GREEN}✓${RESET} Ambiente configurado!"
 echo ""

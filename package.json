@@ -32,8 +32,8 @@
     "railway:deploy": "sh scripts/railway-deploy.sh",
     "railway:dev": "sh scripts/railway-dev.sh",
     "railway:seed": "sh scripts/railway-seed.sh",
-    "n8n:pull": "bun scripts/n8n-pull.ts",
-    "n8n:push": "bun scripts/n8n-push.ts"
+    "n8n:pull": "bun n8n/pull.ts",
+    "n8n:push": "bun n8n/push.ts"
   },
   "catalog": {
     "typescript": "^5",
