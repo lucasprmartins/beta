@@ -241,7 +241,7 @@ export const apiHandler = new OpenAPIHandler(router, {
 ```
 
 - **`RPCHandler`** — endpoint `/rpc` para o frontend (binary protocol, mais eficiente)
-- **`OpenAPIHandler`** — endpoint `/api` com documentação OpenAPI automática
+- **`OpenAPIHandler`** — endpoint `/api` com documentação OpenAPI automática (montado apenas em dev via `isLocal` no servidor)
 - **`onError`** — interceptor que loga erros via Pino antes de retornar ao client
 - `AppRouterClient` é derivado automaticamente de `typeof router`
 

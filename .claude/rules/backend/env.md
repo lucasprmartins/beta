@@ -29,14 +29,8 @@ Todas as variáveis de ambiente do servidor são validadas no startup via Zod em
 | `DATABASE_URL` | `z.string().min(1)` | URL de conexão PostgreSQL |
 | `BETTER_AUTH_URL` | `z.url()` | URL base do servidor para o Better Auth |
 | `BETTER_AUTH_SECRET` | `z.string().min(1)` | Secret para assinatura de tokens |
-
-### Opcionais
-
-| Variável | Default | Descrição |
-|----------|---------|-----------|
-| `CORS_ORIGIN` | `""` | Origens permitidas (separar por vírgula: `http://localhost:3001,https://app.exemplo.com`) |
-| `LOG_LEVEL` | `"info"` | Nível de log: `debug`, `info`, `warn`, `error`, `fatal` |
-| `RAILWAY_PUBLIC_DOMAIN` | — | Domínio público no Railway (usado para gerar URL do servidor) |
+| `CORS_ORIGIN` | `z.string().optional().default("")` | Origens permitidas (separar por vírgula: `http://localhost:3001,https://app.exemplo.com`) |
+| `LOG_LEVEL` | `z.enum([...]).optional().default("info")` | Nível de log: `debug`, `info`, `warn`, `error`, `fatal` |
 
 ### Storage S3 (opcionais)
 
