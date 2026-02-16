@@ -28,8 +28,7 @@
   },
   "dependencies": {
     "@app/auth": "workspace:*",
-    "zod": "^4.3.6",
-    "@fontsource-variable/dm-sans": "^5.2.8",
+    "@fontsource-variable/geist": "^5.2.8",
     "@orpc/client": "^1.13.5",
     "@orpc/tanstack-query": "^1.13.5",
     "@phosphor-icons/react": "^2.1.10",
@@ -37,6 +36,7 @@
     "@tanstack/react-router": "^1.160.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "serve": "^14.2.5"
+    "serve": "^14.2.5",
+    "zod": "^4.3.6"
   }
 }

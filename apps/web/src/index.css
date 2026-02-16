@@ -1,4 +1,4 @@
-@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/geist";
 @import "tailwindcss";
 @plugin "daisyui" {
   themes:
@@ -7,7 +7,7 @@
 }
 
 @theme {
-  --font-sans: "DM Sans Variable", sans-serif;
+  --font-sans: "Geist Variable", sans-serif;
 }
 
 @plugin "daisyui/theme" {
