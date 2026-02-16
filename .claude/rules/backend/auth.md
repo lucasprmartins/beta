@@ -31,7 +31,7 @@ Autenticação usando Better Auth com email/senha e username.
 
 ## Schema
 
-Tabelas em `@app/infra/db/schema/auth.ts` (schema `better_auth`):
+Tabelas em `@app/infra/db/schema/auth.ts` (schema `auth`):
 - **user** - Dados do usuário
 - **session** - Sessões ativas
 - **account** - Contas de providers

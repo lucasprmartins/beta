@@ -4,9 +4,9 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "better_auth.account": {
+    "auth.account": {
       "name": "account",
-      "schema": "better_auth",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -95,7 +95,7 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "schemaTo": "better_auth",
+          "schemaTo": "auth",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -108,9 +108,9 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "better_auth.session": {
+    "auth.session": {
       "name": "session",
-      "schema": "better_auth",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -175,7 +175,7 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "schemaTo": "better_auth",
+          "schemaTo": "auth",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -194,9 +194,9 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "better_auth.user": {
+    "auth.user": {
       "name": "user",
-      "schema": "better_auth",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -300,9 +300,9 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
-    "better_auth.verification": {
+    "auth.verification": {
       "name": "verification",
-      "schema": "better_auth",
+      "schema": "auth",
       "columns": {
         "id": {
           "name": "id",
@@ -354,7 +354,7 @@
   },
   "enums": {},
   "schemas": {
-    "better_auth": "better_auth"
+    "auth": "auth"
   },
   "sequences": {},
   "roles": {},

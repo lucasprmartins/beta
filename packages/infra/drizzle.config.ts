@@ -15,7 +15,7 @@ export default defineConfig({
     url: process.env.DATABASE_URL as string,
   },
 
-  schemaFilter: ["public", "better_auth"],
+  schemaFilter: ["public", "auth"],
 
   migrations: {
     prefix: "index",

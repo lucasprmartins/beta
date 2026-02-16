@@ -1,6 +1,6 @@
 import { boolean, pgSchema, text, timestamp } from "drizzle-orm/pg-core";
 
-export const authSchema = pgSchema("better_auth");
+export const authSchema = pgSchema("auth");
 
 export const user = authSchema
   .table("user", {
