@@ -1,5 +1,5 @@
 import { CubeIcon, WarningCircleIcon } from "@phosphor-icons/react";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { SignInForm, SignUpForm } from "@/features/auth";
 import { sessionOptions } from "@/lib/auth";
@@ -33,7 +33,12 @@ function AuthPage() {
             <span>Sua sessão expirou. Faça login novamente.</span>
           </div>
         )}
-        <CubeIcon className="h-12 w-12 text-base-content" weight="fill" />
+        <Link
+          className="text-base-content/40 transition-colors hover:text-base-content"
+          to="/"
+        >
+          <CubeIcon className="h-12 w-12" weight="fill" />
+        </Link>
         {mode === "sign-in" ? (
           <SignInForm onSwitchForm={() => setMode("sign-up")} />
         ) : (
