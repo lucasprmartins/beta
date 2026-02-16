@@ -8,12 +8,10 @@ import { Elysia } from "elysia";
 import { rateLimit } from "elysia-rate-limit";
 import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
-const URL = env.RAILWAY_PUBLIC_DOMAIN
-  ? `https://${env.RAILWAY_PUBLIC_DOMAIN}`
-  : "http://localhost";
 const PORT = 3000;
+const isLocal = env.BETTER_AUTH_URL.includes("localhost");
 
-new Elysia()
+const app = new Elysia()
   .headers({
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
@@ -51,8 +49,8 @@ new Elysia()
   .mount(auth.handler)
 
   // RPC endpoint - para Frontend
-  .group("/rpc", (app) =>
-    app
+  .group("/rpc", (rpc) =>
+    rpc
       .use(
         rateLimit({
           duration: RATE_LIMITS.rpc.duration,
@@ -76,15 +74,12 @@ new Elysia()
           parse: "none",
         }
       )
-  )
+  );
 
-  // API endpoint - REST
-  .group("/api", (app) =>
-    app
-      .onAfterHandle(({ set }) => {
-        set.headers["Content-Security-Policy"] =
-          "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src 'self'; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net data:; worker-src 'self' blob:; frame-ancestors 'none'";
-      })
+// API REST + OpenAPI — apenas em desenvolvimento
+if (isLocal) {
+  app.group("/api", (api) =>
+    api
       .use(
         rateLimit({
           duration: RATE_LIMITS.api.duration,
@@ -108,11 +103,9 @@ new Elysia()
           parse: "none",
         }
       )
-  )
+  );
+}
 
-  .listen(PORT, () => {
-    const isLocal = URL.includes("localhost");
-    const baseUrl = isLocal ? `${URL}:${PORT}` : URL;
-    logger.info("servidor executado");
-    logger.info({ url: `${baseUrl}/api/` }, "documentação disponível");
-  });
+app.listen(PORT, () => {
+  logger.info("servidor executado");
+});
