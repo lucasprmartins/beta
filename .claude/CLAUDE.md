@@ -55,4 +55,4 @@ Server → Auth → Sessão/Cookies
 Convenções detalhadas em `.claude/rules/`:
 - **Backend**: `core.md`, `infra.md`, `api.md`, `auth.md`, `server.md`, `env.md`
 - **Frontend**: `react.md`, `styling.md`, `tanstack-query.md`
-- **Geral**: `general.md`, `git.md`, `domain-checklist.md`
+- **Geral**: `general.md`, `git.md`, `domain-checklist.md`, `context7.md`
