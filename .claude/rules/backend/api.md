@@ -28,11 +28,11 @@ Middlewares composáveis para controle de acesso:
 
 ```typescript
 import { criar{Dominio} } from "@app/core/application/{dominio}";
-import { db{Dominio}Repository } from "@app/infra/db/repositories/{dominio}";
+import { {dominio}Repository } from "@app/infra/db/repositories/{dominio}";
 import { z } from "zod";
 import { o } from "../auth";
 
-const criar = criar{Dominio}(db{Dominio}Repository);
+const criar = criar{Dominio}({dominio}Repository);
 
 const {dominio}Schema = z.object({
   id: z.string().describe("ID"),
@@ -57,7 +57,7 @@ export const {dominio}Router = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const result = await db{Dominio}Repository.buscarPorId(input.id);
+      const result = await {dominio}Repository.buscarPorId(input.id);
       if (!result) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
@@ -108,12 +108,12 @@ export const {dominio}Router = {
         proximoCursor: z.number().nullable(),
       })
     )
-    .handler(async ({ input }) => db{Dominio}Repository.listar(input)),
+    .handler(async ({ input }) => {dominio}Repository.listar(input)),
 };
 ```
 
 - Importar middlewares conforme necessidade: `import { o, requireAuth, requireRole } from "../auth"`
-- **Instanciar use cases no nível do módulo**: `const criar = criar{Dominio}(db{Dominio}Repository)`
+- **Instanciar use cases no nível do módulo**: `const criar = criar{Dominio}({dominio}Repository)`
 - Schema Zod com `.describe()` em cada campo para documentação OpenAPI
 - `.route()` com `method`, `path`, `summary`, `description`, `tags`
 - `.errors()` com dados tipados para respostas de erro
@@ -251,7 +251,7 @@ Em handlers de domínio rico, busque o recurso antes de delegar ao use case para
 
 ```typescript
 .handler(async ({ input, errors }) => {
-  const dados = await dbProdutoRepository.buscarPorId(input.id);
+  const dados = await produtoRepository.buscarPorId(input.id);
   if (!dados) {
     throw errors.NOT_FOUND({ data: { id: input.id } });
   }

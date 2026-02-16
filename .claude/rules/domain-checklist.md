@@ -16,7 +16,7 @@ Ao criar um novo domínio, primeiro decida o padrão: **CRUD Simples** ou **Dom�
 1. `packages/core/src/contracts/{dominio}.ts` — Interface `{Dominio}Data` + `{Dominio}Repository` com `Omit<>`/`Partial<>` para criar/atualizar
 2. `packages/core/src/application/{dominio}.ts` — Use cases passthrough (delegam ao repo)
 3. `packages/infra/src/db/schema/{dominio}.ts` — Tabela Drizzle com `.enableRLS()`
-4. `packages/infra/src/db/repositories/{dominio}.ts` — `db{Dominio}Repository` implementando o contrato (5 métodos: buscar, listar, criar, atualizar, deletar)
+4. `packages/infra/src/db/repositories/{dominio}.ts` — `{dominio}Repository` implementando o contrato (5 métodos: buscar, listar, criar, atualizar, deletar)
 5. `packages/api/src/routers/{dominio}.ts` — Router oRPC com schemas Zod
 6. `packages/api/src/index.ts` — Registrar `{dominio}: {dominio}Router`
 
@@ -45,7 +45,7 @@ Ao criar um novo domínio, primeiro decida o padrão: **CRUD Simples** ou **Dom�
 2. `packages/core/src/domains/{dominio}.ts` — Entidade com `criar()` + `restaurar()` + `exportar()` + métodos de negócio
 3. `packages/core/src/application/{dominio}.ts` — Use cases: buscar → `restaurar()` → lógica → `exportar()` → atualizar
 4. `packages/infra/src/db/schema/{dominio}.ts` — Tabela Drizzle com `.enableRLS()`
-5. `packages/infra/src/db/repositories/{dominio}.ts` — `db{Dominio}Repository` enxuto (4 métodos: buscar, listar, criar, atualizar)
+5. `packages/infra/src/db/repositories/{dominio}.ts` — `{dominio}Repository` enxuto (4 métodos: buscar, listar, criar, atualizar)
 6. `packages/api/src/routers/{dominio}.ts` — Router oRPC com schemas Zod
 7. `packages/api/src/index.ts` — Registrar `{dominio}: {dominio}Router`
 

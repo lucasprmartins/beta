@@ -69,7 +69,7 @@ function exportar(row: typeof {dominio}.$inferSelect): {Dominio}Data {
   };
 }
 
-export const db{Dominio}Repository: {Dominio}Repository = {
+export const {dominio}Repository: {Dominio}Repository = {
   async buscarPorId(id) {
     const [row] = await db
       .select()
@@ -127,7 +127,7 @@ export const db{Dominio}Repository: {Dominio}Repository = {
 ```
 
 - Helper `exportar()` converte linha DB → DTO (exclui `createdAt`/`updatedAt`)
-- Convenção: `db{Dominio}Repository`
+- Convenção: `{dominio}Repository`
 - Importar `eq` de `drizzle-orm` para where
 - `const [row]` para consultas de linha única
 - `.returning()` em insert/update/delete
