@@ -17,13 +17,15 @@ packages/
 └── api/           # Definição da API (oRPC)
 ```
 
-## Fluxo de Dados
+## Camadas do Backend
 
 ```
-Server → Auth → Sessão/Cookies
-       → API (oRPC + Middleware) → Application → Domain → Repository (Contrato)
-                                                                ↓
-                                                        Infra (Implementação)
+Server (Elysia)
+├── Auth → Sessão/Cookies
+└── API (oRPC + Middleware)
+    └── Application (Use Cases)
+        └── Domain (Regras de negócio)
+            └── Repository (Core → Infra)
 ```
 
 ## Stack
@@ -48,7 +50,6 @@ Server → Auth → Sessão/Cookies
 | `bun lint:fix` | Corrige lint |
 | `bun check-types` | Verifica tipagem TypeScript |
 | `bun db:generate` | Gera migration Drizzle |
-| `bun db:seed` | Popula banco com dados falsos |
 
 ## Regras
 

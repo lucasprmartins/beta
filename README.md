@@ -21,120 +21,148 @@ Template full-stack TypeScript com arquitetura limpa em monorepo.
 
 ```
 apps/
-  server/          Servidor HTTP (Elysia + Bun)
-  web/             Frontend (React 19 + TanStack)
+├── server/        # Servidor HTTP (Elysia/Bun)
+└── web/           # Frontend (React 19 + TanStack)
 
 packages/
-  config/          Configurações compartilhadas (tsconfig)
-  core/            Lógica de negócio (sem dependências externas)
-  infra/           Infraestrutura (banco de dados + integrações)
-  auth/            Autenticação (Better Auth)
-  api/             Definição da API (oRPC)
+├── config/        # Configurações compartilhadas (tsconfig)
+├── core/          # Lógica de negócio (sem dependências externas)
+├── infra/         # Infraestrutura (DB + Integrações externas)
+├── auth/          # Autenticação (Better Auth)
+└── api/           # Definição da API (oRPC)
 ```
 
-### Camadas do Backend
+### Backend
 
 ```
 Server (Elysia)
-  -> API (oRPC Router + Middleware de Auth)
-    -> Application (Use Cases)
-      -> Domain (Entidades com regras de negócio)
-        -> Repository (Contrato no Core, implementação na Infra)
+├── Auth → Sessão/Cookies
+└── API (oRPC + Middleware)
+    └── Application (Use Cases)
+        └── Domain (Regras de negócio)
+            └── Repository (Core → Infra)
 ```
 
-- **Core** -- Contratos (interfaces/DTOs), domínios (entidades) e use cases. Sem dependências externas.
-- **Infra** -- Schemas Drizzle, repositórios, storage (S3) e integrações com serviços externos.
-- **API** -- Routers oRPC com middlewares de acesso: `requireAuth` e `requireRole("admin", ...)`.
-- **Auth** -- Configuração do Better Auth (server e client).
+| Pacote | Responsabilidade |
+|--------|------------------|
+| **Core** | Contratos, domínios e use cases. Sem dependências externas |
+| **Infra** | Schemas Drizzle, repositórios, storage (S3) e integrações |
+| **API** | Routers oRPC com `requireAuth` e `requireRole("admin", ...)` |
+| **Auth** | Configuração do Better Auth (server e client) |
 
 ### Frontend
 
-- Roteamento file-based com TanStack Router (`src/routes/`)
-- Rotas protegidas via layout `_auth.tsx` com redirect automático
-- Integração type-safe com backend via oRPC + TanStack Query
-- Estilização com Tailwind CSS + DaisyUI
-- Ícones com Phosphor Icons
+| Recurso | Detalhes |
+|---------|----------|
+| **Roteamento** | File-based com TanStack Router (`src/routes/`) |
+| **Rotas protegidas** | Layout `_auth.tsx` com redirect automático |
+| **API client** | Type-safe via oRPC + TanStack Query |
+| **Estilização** | Tailwind CSS + DaisyUI |
+| **Ícones** | Phosphor Icons |
 
 ## Requisitos
 
 - [Bun](https://bun.sh) >= 1.3.9
-- PostgreSQL
+- [GitHub CLI](https://cli.github.com) (`gh`)
+- [Railway CLI](https://docs.railway.com/guides/cli) *(opcional — provisiona PostgreSQL e infra na nuvem)*
+- PostgreSQL *(necessário apenas sem Railway)*
 
-## Setup
+## Começando
 
-1. Instale as dependências:
+1. Clone o template:
 
-```bash
-bun install
-```
+   ```bash
+   gh repo clone lucasprmartins/beta <nome-do-projeto>
+   ```
 
-2. Configure as variáveis de ambiente copiando os arquivos de exemplo:
+   ou
+
+   ```bash
+   git clone https://github.com/lucasprmartins/beta.git <nome-do-projeto>
+   ```
+
+2. Execute o inicializador:
+
+   ```bash
+   cd <nome-do-projeto>
+   sh scripts/beta.sh
+   ```
+
+O script instala as dependências automaticamente, pergunta o nome do projeto e quais módulos ativar (n8n, Railway), cria um repositório GitHub privado e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
+
+## Após o setup
+
+### Com Railway
+
+1. Configure as variáveis de ambiente — o `DATABASE_URL` é puxado do Railway automaticamente:
 
 ```bash
 bun env
 ```
 
-3. Preencha as variáveis no `apps/server/.env`:
-
-```
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/db
-CORS_ORIGIN=http://localhost:3001
-BETTER_AUTH_URL=http://localhost:3000
-```
-
-> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo script `bun env`.
-
-4. Aplique o schema no banco de dados:
-
-```bash
-bun db:migrate
-```
-
-5. Inicie o ambiente de desenvolvimento:
+2. Inicie o ambiente de desenvolvimento — as migrations já foram executadas no pre-deploy do Railway:
 
 ```bash
 bun dev
 ```
 
-O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:3001`.
-
-## Deploy
-
-O template usa [Railway](https://railway.com) para infraestrutura. O script de deploy automatiza a criação do projeto e provisionamento dos serviços (PostgreSQL, etc.).
-
-### Pré-requisitos
-
-- [Railway CLI](https://docs.railway.com/guides/cli) instalado e autenticado (`railway login`)
-
-### Primeiro deploy
+3. Remova os arquivos de exemplo:
 
 ```bash
-bun railway:deploy
+bun cleanup
 ```
 
-O script vai pedir:
+### Sem Railway
 
-1. **Nome do projeto** — nome que aparecerá no dashboard do Railway
-2. **Nome do workspace** — workspace onde o projeto será criado
-3. **Código do template** — template de infra a ser aplicado (Enter para usar o padrão)
-
-Após execução, o dashboard do Railway abrirá automaticamente. Aguarde o deploy finalizar e então configure o ambiente local:
+1. Configure as variáveis de ambiente e preencha o `DATABASE_URL` manualmente em `apps/server/.env`:
 
 ```bash
 bun env
 ```
 
-### Desenvolvimento
+2. Aplique o schema no banco local:
+
+```bash
+bun db:migrate
+```
+
+3. Inicie o ambiente de desenvolvimento:
+
+```bash
+bun dev
+```
+
+4. Remova os arquivos de exemplo:
+
+```bash
+bun cleanup
+```
+
+> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo `bun env`.
+
+O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:3001`.
+
+## Desenvolvimento com Railway
 
 Para trabalhar em novas features ou correções, crie uma branch e abra uma Pull Request. O Railway cria automaticamente um ambiente isolado para cada PR com banco de dados e serviços próprios, permitindo testar sem afetar produção.
 
-Para popular o ambiente da PR com dados de teste:
+1. Troque para o ambiente da PR:
 
 ```bash
-bun railway:seed
+bun env:dev
 ```
 
-O script vai pedir o nome do ambiente (ex: `meu-projeto-pr-4`) e executar o seed contra o banco da PR.
+2. Atualize as variáveis locais com o novo ambiente:
+
+```bash
+bun env
+```
+
+3. Popule o banco da PR com dados de teste:
+
+```bash
+bun seed
+```
 
 > O arquivo de seed está em `packages/infra/src/db/seed.ts`. Adicione suas tabelas e customize os dados gerados conforme necessário.
 
@@ -154,7 +182,8 @@ O script vai pedir o nome do ambiente (ex: `meu-projeto-pr-4`) e executar o seed
 | `bun lint` | Verifica linting |
 | `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
+| `bun beta` | Inicializa novo projeto a partir do template |
 | `bun env` | Configura variáveis de ambiente |
+| `bun env:dev` | Troca para ambiente de PR no Railway |
+| `bun seed` | Popula banco (Railway ou local) |
 | `bun cleanup` | Remove arquivos de exemplo |
-| `bun railway:deploy` | Cria projeto e provisiona infra no Railway |
-| `bun railway:seed` | Executa seed em ambiente de PR no Railway |
