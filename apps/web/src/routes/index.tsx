@@ -80,7 +80,11 @@ function WelcomePage() {
         <header className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4">
             <label className="swap swap-rotate text-base-content/40">
-              <input className="theme-controller" type="checkbox" value="dark" />
+              <input
+                className="theme-controller"
+                type="checkbox"
+                value="dark"
+              />
               <CubeIcon className="swap-off h-8 w-8" weight="bold" />
               <CubeIcon className="swap-on h-8 w-8" weight="fill" />
             </label>
