@@ -35,7 +35,7 @@ sucesso "Projeto detectado."
 
 echo ""
 pergunta "Nome do ambiente ${DIM}(ex: proj-1-pr-4)${RESET}:"
-read -p "    > " ENV_NAME
+read -p "> " ENV_NAME
 if [ -z "$ENV_NAME" ]; then
   erro "Nome do ambiente é obrigatório."
 fi
@@ -50,7 +50,7 @@ railway link -p "$PROJECT_ID" -e "$ENV_NAME"
 
 rodape "Ambiente alterado para ${BOLD}$ENV_NAME${RESET}!"
 
-echo -e "  ${DIM}Agora você pode executar:${RESET}"
-echo -e "  ${DIM}  bun env    ${RESET}Configurar .env local"
-echo -e "  ${DIM}  bun seed   ${RESET}Popular banco com dados de teste"
+echo -e "${DIM}Agora você pode executar:${RESET}"
+echo -e "${DIM}  bun env    ${RESET}Configurar .env local"
+echo -e "${DIM}  bun seed   ${RESET}Popular banco com dados de teste"
 echo ""

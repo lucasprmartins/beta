@@ -33,6 +33,7 @@ sucesso "GitHub CLI autenticado"
 titulo "Instalando dependências"
 
 bun install
+echo ""
 sucesso "Dependências instaladas"
 
 # ─── Coleta de informações ───────────────────────────────────────────────────
@@ -40,7 +41,7 @@ sucesso "Dependências instaladas"
 titulo "Informações do projeto"
 
 pergunta "Nome do projeto:"
-read -p "    > " NOME_PROJETO
+read -p "> " NOME_PROJETO
 if [ -z "$NOME_PROJETO" ]; then
   erro "Nome do projeto é obrigatório."
 fi
@@ -71,9 +72,9 @@ N8N_TAG=""
 if [ "$USA_N8N" = true ]; then
   echo ""
   pergunta "Configuração n8n:"
-  read -p "    N8N_URL: " N8N_URL
-  read -p "    N8N_API_KEY: " N8N_API_KEY
-  read -p "    N8N_PROJECT_TAG: " N8N_TAG
+  read -p "> N8N_URL: " N8N_URL
+  read -p "> N8N_API_KEY: " N8N_API_KEY
+  read -p "> N8N_PROJECT_TAG: " N8N_TAG
 fi
 
 # ─── Dados Railway (condicional) ─────────────────────────────────────────────
@@ -91,14 +92,14 @@ if [ "$USA_RAILWAY" = true ]; then
 
   echo ""
   pergunta "Nome do workspace:"
-  read -p "    > " RAILWAY_WORKSPACE
+  read -p "> " RAILWAY_WORKSPACE
   if [ -z "$RAILWAY_WORKSPACE" ]; then
     erro "Nome do workspace é obrigatório."
   fi
 
   echo ""
   pergunta "Código do template ${DIM}[edQPdo]${RESET}:"
-  read -p "    > " RAILWAY_TEMPLATE
+  read -p "> " RAILWAY_TEMPLATE
   RAILWAY_TEMPLATE="${RAILWAY_TEMPLATE:-edQPdo}"
 fi
 
@@ -119,18 +120,18 @@ echo ""
 
 OPCOES=("$USUARIO (pessoal)")
 INDEX=1
-echo -e "    ${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
+echo -e "${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
 
 if [ -n "$ORGS" ]; then
   while IFS= read -r org; do
     INDEX=$((INDEX + 1))
     OPCOES+=("$org")
-    echo -e "    ${BOLD}${INDEX})${RESET} $org"
+    echo -e "${BOLD}${INDEX})${RESET} $org"
   done <<< "$ORGS"
 fi
 
 echo ""
-read -p "    Selecione [1]: " SELECAO
+read -p "> Selecione [1]: " SELECAO
 SELECAO="${SELECAO:-1}"
 
 if ! [[ "$SELECAO" =~ ^[0-9]+$ ]] || [ "$SELECAO" -lt 1 ] || [ "$SELECAO" -gt "$INDEX" ]; then
@@ -163,10 +164,21 @@ if [ "$USA_RAILWAY" = true ]; then
   spinner $! "Aguardando projeto ficar disponível..."
   sucesso "Projeto disponível"
 
-  info "Abrindo dashboard..."
+  info "Abrindo dashboard no navegador..."
   railway open
 
-  sucesso "Deploy Railway iniciado"
+  echo ""
+  aviso "${BOLD}Ação manual necessária no Railway:${RESET}"
+  echo ""
+  info "Nos serviços ${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
+  info "1. Settings → Source → Disconnect"
+  info "2. Conecte o repo ${BOLD}$OWNER/$NOME_PROJETO${RESET}"
+  echo ""
+  aviso "Não use Eject — ele cria um novo repositório"
+  echo ""
+  read -p "> Pressione Enter após conectar o repositório..."
+
+  sucesso "Deploy Railway configurado"
 fi
 
 # ─── Limpeza condicional ─────────────────────────────────────────────────────
@@ -193,7 +205,6 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
 if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
 if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['env:dev']; }
-delete pkg.scripts['beta'];
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
@@ -229,17 +240,17 @@ sucesso "Commit inicial enviado para origin/$BRANCH"
 
 rodape "Projeto ${BOLD}$NOME_PROJETO${RESET} criado com sucesso!"
 
-echo -e "  ${DIM}Owner:${RESET}    $OWNER"
-echo -e "  ${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
-echo -e "  ${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
+echo -e "${DIM}Owner:${RESET}    $OWNER"
+echo -e "${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
+echo -e "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
 
 banner "Próximos passos"
 
-echo -e "  1. ${BOLD}bun env${RESET}       ${DIM}— configurar variáveis de ambiente${RESET}"
+echo -e "1. ${BOLD}bun env${RESET}       ${DIM}— configurar variáveis de ambiente${RESET}"
 if [ "$USA_RAILWAY" = true ]; then
-  echo -e "  2. ${BOLD}bun seed${RESET}      ${DIM}— popular banco de dados${RESET}"
-  echo -e "  3. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo -e "2. ${BOLD}bun seed${RESET}      ${DIM}— popular banco de dados${RESET}"
+  echo -e "3. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
 else
-  echo -e "  2. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo -e "2. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
 fi
 echo ""
