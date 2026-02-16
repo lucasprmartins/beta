@@ -207,3 +207,63 @@ atualizar: o
 - Valide input com schemas Zod
 - Converta `null` para erros HTTP apropriados (404, 409)
 - Use `.errors()` com dados tipados em vez de `ORPCError` direto
+
+## Setup dos Handlers (`src/index.ts`)
+
+```typescript
+import { logger } from "@app/infra/logger";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+export const rpcHandler = new RPCHandler(router, {
+  interceptors: [
+    onError((error) =>
+      logger.error({ err: error, handler: "rpc" }, "erro no handler")
+    ),
+  ],
+});
+
+export const apiHandler = new OpenAPIHandler(router, {
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+    }),
+  ],
+  interceptors: [
+    onError((error) =>
+      logger.error({ err: error, handler: "api" }, "erro no handler")
+    ),
+  ],
+});
+```
+
+- **`RPCHandler`** — endpoint `/rpc` para o frontend (binary protocol, mais eficiente)
+- **`OpenAPIHandler`** — endpoint `/api` com documentação OpenAPI automática
+- **`onError`** — interceptor que loga erros via Pino antes de retornar ao client
+- `AppRouterClient` é derivado automaticamente de `typeof router`
+
+## Padrão Pre-fetch (Domínio Rico)
+
+Em handlers de domínio rico, busque o recurso antes de delegar ao use case para diferenciar `NOT_FOUND` de `BAD_REQUEST`:
+
+```typescript
+.handler(async ({ input, errors }) => {
+  const dados = await dbProdutoRepository.buscarPorId(input.id);
+  if (!dados) {
+    throw errors.NOT_FOUND({ data: { id: input.id } });
+  }
+
+  const resultado = await removerEstoque(input.id, input.quantidade);
+  if (!resultado) {
+    throw errors.BAD_REQUEST({ data: { id: input.id } });
+  }
+
+  return resultado;
+})
+```
+
+- Primeiro `null` → `NOT_FOUND` (recurso não existe)
+- Segundo `null` → `BAD_REQUEST` (operação inválida no recurso existente)
