@@ -28,6 +28,13 @@ if ! gh auth status &> /dev/null; then
 fi
 sucesso "GitHub CLI autenticado"
 
+# ─── Instalar dependências ───────────────────────────────────────────────────
+
+titulo "Instalando dependências"
+
+bun install
+sucesso "Dependências instaladas"
+
 # ─── Coleta de informações ───────────────────────────────────────────────────
 
 titulo "Informações do projeto"
