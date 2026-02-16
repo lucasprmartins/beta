@@ -6,16 +6,16 @@ import {
   desativarProduto,
   removerEstoqueProduto,
 } from "@app/core/application/example-domain";
-import { dbProdutoRepository } from "@app/infra/db/repositories/example-domain";
+import { produtoRepository } from "@app/infra/db/repositories/example-domain";
 import { z } from "zod";
 import { o } from "../auth";
 
-const criar = criarProduto(dbProdutoRepository);
-const adicionarEstoque = adicionarEstoqueProduto(dbProdutoRepository);
-const removerEstoque = removerEstoqueProduto(dbProdutoRepository);
-const alterarPreco = alterarPrecoProduto(dbProdutoRepository);
-const ativar = ativarProduto(dbProdutoRepository);
-const desativar = desativarProduto(dbProdutoRepository);
+const criar = criarProduto(produtoRepository);
+const adicionarEstoque = adicionarEstoqueProduto(produtoRepository);
+const removerEstoque = removerEstoqueProduto(produtoRepository);
+const alterarPreco = alterarPrecoProduto(produtoRepository);
+const ativar = ativarProduto(produtoRepository);
+const desativar = desativarProduto(produtoRepository);
 
 const produtoSchema = z.object({
   id: z.number().int().describe("ID do produto"),
@@ -64,7 +64,7 @@ export const produtoRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const resultado = await dbProdutoRepository.buscarPorId(input.id);
+      const resultado = await produtoRepository.buscarPorId(input.id);
 
       if (!resultado) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
@@ -159,7 +159,7 @@ export const produtoRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const dados = await dbProdutoRepository.buscarPorId(input.id);
+      const dados = await produtoRepository.buscarPorId(input.id);
 
       if (!dados) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
@@ -230,7 +230,7 @@ export const produtoRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const dados = await dbProdutoRepository.buscarPorId(input.id);
+      const dados = await produtoRepository.buscarPorId(input.id);
 
       if (!dados) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
@@ -306,5 +306,5 @@ export const produtoRouter = {
         proximoCursor: z.number().nullable(),
       })
     )
-    .handler(async ({ input }) => dbProdutoRepository.listar(input)),
+    .handler(async ({ input }) => produtoRepository.listar(input)),
 };

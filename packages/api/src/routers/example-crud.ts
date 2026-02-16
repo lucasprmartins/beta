@@ -3,13 +3,13 @@ import {
   criarCategoria,
   deletarCategoria,
 } from "@app/core/application/example-crud";
-import { dbCategoriaRepository } from "@app/infra/db/repositories/example-crud";
+import { categoriaRepository } from "@app/infra/db/repositories/example-crud";
 import { z } from "zod";
 import { o } from "../auth";
 
-const criar = criarCategoria(dbCategoriaRepository);
-const atualizar = atualizarCategoria(dbCategoriaRepository);
-const deletar = deletarCategoria(dbCategoriaRepository);
+const criar = criarCategoria(categoriaRepository);
+const atualizar = atualizarCategoria(categoriaRepository);
+const deletar = deletarCategoria(categoriaRepository);
 
 const categoriaSchema = z.object({
   id: z.number().int().describe("ID da categoria"),
@@ -47,7 +47,7 @@ export const categoriaRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const resultado = await dbCategoriaRepository.buscarPorId(input.id);
+      const resultado = await categoriaRepository.buscarPorId(input.id);
 
       if (!resultado) {
         throw errors.NOT_FOUND({ data: { id: input.id } });
@@ -176,5 +176,5 @@ export const categoriaRouter = {
         proximoCursor: z.number().nullable(),
       })
     )
-    .handler(async ({ input }) => dbCategoriaRepository.listar(input)),
+    .handler(async ({ input }) => categoriaRepository.listar(input)),
 };

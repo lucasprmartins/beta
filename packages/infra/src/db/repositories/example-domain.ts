@@ -18,7 +18,7 @@ function exportar(row: typeof produto.$inferSelect): ProdutoData {
   };
 }
 
-export const dbProdutoRepository: ProdutoRepository = {
+export const produtoRepository: ProdutoRepository = {
   async buscarPorId(id) {
     const [row] = await db
       .select()

@@ -14,7 +14,7 @@ function exportar(row: typeof categoria.$inferSelect): CategoriaData {
   };
 }
 
-export const dbCategoriaRepository: CategoriaRepository = {
+export const categoriaRepository: CategoriaRepository = {
   async buscarPorId(id) {
     const [row] = await db
       .select()
