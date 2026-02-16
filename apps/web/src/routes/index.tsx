@@ -4,6 +4,7 @@ import {
   CubeIcon,
   DatabaseIcon,
   GitBranchIcon,
+  GithubLogoIcon,
   GlobeIcon,
   LightningIcon,
   RocketLaunchIcon,
@@ -110,12 +111,13 @@ function WelcomePage() {
               <ArrowRightIcon className="h-4 w-4" weight="bold" />
             </Link>
             <a
-              className="btn btn-ghost"
-              href="https://github.com/lucasprmartins/start"
+              className="btn btn-soft"
+              href="https://github.com/lucasprmartins/beta"
               rel="noopener noreferrer"
               target="_blank"
             >
-              Ver documentação
+              <GithubLogoIcon className="h-4 w-4" weight="bold" />
+              Acessar repositório
             </a>
           </div>
         </header>
