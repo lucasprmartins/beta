@@ -43,18 +43,17 @@ function DashboardPage() {
           </p>
         </header>
 
-        <section className="card card-border">
-          <div className="card-body gap-6">
-            <h2 className="font-semibold text-base-content/40 text-sm uppercase tracking-[0.15em]">
-              Próximos passos
-            </h2>
+        <section>
+          <h2 className="mb-6 font-semibold text-base-content/40 text-sm uppercase tracking-[0.15em]">
+            Próximos passos
+          </h2>
 
-            <div className="flex flex-col gap-4">
-              {proximosPassos.map((passo, index) => (
-                <div
-                  className="flex items-start gap-4 rounded-lg border border-base-300 p-4"
-                  key={passo.titulo}
-                >
+          <div className="flex flex-col gap-4">
+            {proximosPassos.map((passo, index) => (
+              <div
+                className="flex items-start gap-4 rounded-xl bg-base-200 p-5"
+                key={passo.titulo}
+              >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-bold text-primary text-sm">
                     {index + 1}
                   </div>
@@ -74,7 +73,6 @@ function DashboardPage() {
                   </div>
                 </div>
               ))}
-            </div>
           </div>
         </section>
       </div>
