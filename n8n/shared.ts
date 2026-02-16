@@ -34,11 +34,16 @@ const N8N_BASE = import.meta.dirname;
 
 export const WORKFLOWS_DIR = join(N8N_BASE, "workflows");
 
-export async function carregarEnv(): Promise<ConfigN8n> {
+async function carregarEnvArquivo(): Promise<Record<string, string>> {
   const envPath = join(N8N_BASE, ".env");
-  const envContent = await readFile(envPath, "utf-8");
-  const vars: Record<string, string> = {};
+  let envContent: string;
+  try {
+    envContent = await readFile(envPath, "utf-8");
+  } catch {
+    return {};
+  }
 
+  const vars: Record<string, string> = {};
   for (const line of envContent.split("\n")) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#")) {
@@ -55,19 +60,33 @@ export async function carregarEnv(): Promise<ConfigN8n> {
       .replace(/^["']|["']$/g, "");
     vars[key] = value;
   }
+  return vars;
+}
 
-  const baseUrl = vars.N8N_URL;
-  const apiKey = vars.N8N_API_KEY;
-  const tag = vars.N8N_PROJECT_TAG;
+export async function carregarEnv(): Promise<ConfigN8n> {
+  const baseUrl = process.env.N8N_URL;
+  const apiKey = process.env.N8N_API_KEY;
+  const tag = process.env.N8N_PROJECT_TAG;
 
-  if (!(baseUrl && apiKey && tag)) {
+  if (baseUrl && apiKey && tag) {
+    return { baseUrl, apiKey, tag };
+  }
+
+  const vars = await carregarEnvArquivo();
+  const config = {
+    baseUrl: baseUrl ?? vars.N8N_URL,
+    apiKey: apiKey ?? vars.N8N_API_KEY,
+    tag: tag ?? vars.N8N_PROJECT_TAG,
+  };
+
+  if (!(config.baseUrl && config.apiKey && config.tag)) {
     ui.erro(
-      "Variáveis N8N_URL, N8N_API_KEY e N8N_PROJECT_TAG são obrigatórias em n8n/.env"
+      "Variáveis N8N_URL, N8N_API_KEY e N8N_PROJECT_TAG não encontradas (process.env ou n8n/.env)"
     );
     process.exit(1);
   }
 
-  return { baseUrl, apiKey, tag };
+  return config as ConfigN8n;
 }
 
 export function slugificar(texto: string): string {
