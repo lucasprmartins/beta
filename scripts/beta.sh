@@ -173,10 +173,18 @@ if [ "$USA_RAILWAY" = true ]; then
   info "Nos serviços ${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
   info "1. Settings → Source → Disconnect"
   info "2. Conecte o repo ${BOLD}$OWNER/$NOME_PROJETO${RESET}"
+  info "3. Settings → Config-as-code → + Add File Path"
+  info "   ${BOLD}server${RESET}${DIM}: /apps/server/railway.json${RESET}"
+  info "   ${BOLD}web${RESET}${DIM}:    /apps/web/railway.json${RESET}"
   echo ""
   aviso "Não use Eject — ele cria um novo repositório"
   echo ""
-  read -p "> Pressione Enter após conectar o repositório..."
+  aviso "${BOLD}Essa etapa é essencial.${RESET} Sem ela, o Railway não saberá como buildar e deployar cada serviço."
+  echo ""
+  read -p "> Você já configurou o repositório e o Config File Path nos dois serviços? [y/N] " CONFIRMOU_RAILWAY
+  if [[ ! "$CONFIRMOU_RAILWAY" =~ ^[yYsS]$ ]]; then
+    erro "Configure os serviços no Railway antes de continuar."
+  fi
 
   sucesso "Deploy Railway configurado"
 fi
@@ -191,7 +199,7 @@ if [ "$USA_N8N" = false ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/env-dev.sh railway.json
+  rm -f scripts/env-dev.sh railway.json apps/server/railway.json apps/web/railway.json
   sucesso "Scripts Railway removidos"
 fi
 
