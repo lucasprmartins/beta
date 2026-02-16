@@ -161,19 +161,19 @@ export function limparWorkflow(workflow: WorkflowRemoto): WorkflowLimpo {
 }
 
 export const ui = {
-  ok: (msg: string) => console.log(`  \x1b[32m✓\x1b[0m ${msg}`),
-  aviso: (msg: string) => console.log(`  \x1b[33m!\x1b[0m ${msg}`),
-  erro: (msg: string) => console.error(`  \x1b[31m✗\x1b[0m ${msg}`),
+  ok: (msg: string) => console.log(`\x1b[32m✓\x1b[0m ${msg}`),
+  aviso: (msg: string) => console.log(`\x1b[33m!\x1b[0m ${msg}`),
+  erro: (msg: string) => console.error(`\x1b[31m✗\x1b[0m ${msg}`),
   titulo: (label: string) => {
     console.log();
-    console.log(`\x1b[1m  ${label}\x1b[0m`);
-    console.log(`\x1b[2m  ${"─".repeat(35)}\x1b[0m`);
+    console.log(`\x1b[1m${label}\x1b[0m`);
+    console.log(`\x1b[2m${"─".repeat(35)}\x1b[0m`);
     console.log();
   },
   resumo: (msg: string) => {
     console.log();
-    console.log(`\x1b[2m  ${"─".repeat(35)}\x1b[0m`);
-    console.log(`  \x1b[32m✓\x1b[0m ${msg}`);
+    console.log(`\x1b[2m${"─".repeat(35)}\x1b[0m`);
+    console.log(`\x1b[32m✓\x1b[0m ${msg}`);
     console.log();
   },
 };
