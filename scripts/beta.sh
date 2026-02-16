@@ -63,20 +63,6 @@ if pergunta_sn "Usar Railway?"; then
   USA_RAILWAY=true
 fi
 
-# ─── Dados n8n (condicional) ─────────────────────────────────────────────────
-
-N8N_URL=""
-N8N_API_KEY=""
-N8N_TAG=""
-
-if [ "$USA_N8N" = true ]; then
-  echo ""
-  pergunta "Configuração n8n:"
-  read -p "> N8N_URL: " N8N_URL
-  read -p "> N8N_API_KEY: " N8N_API_KEY
-  read -p "> N8N_PROJECT_TAG: " N8N_TAG
-fi
-
 # ─── Dados Railway (condicional) ─────────────────────────────────────────────
 
 RAILWAY_WORKSPACE=""
@@ -101,6 +87,20 @@ if [ "$USA_RAILWAY" = true ]; then
   pergunta "Código do template ${DIM}[edQPdo]${RESET}:"
   read -p "> " RAILWAY_TEMPLATE
   RAILWAY_TEMPLATE="${RAILWAY_TEMPLATE:-edQPdo}"
+fi
+
+# ─── Dados n8n (condicional) ─────────────────────────────────────────────────
+
+N8N_URL=""
+N8N_API_KEY=""
+N8N_TAG=""
+
+if [ "$USA_N8N" = true ]; then
+  echo ""
+  pergunta "Configuração n8n ${DIM}(ambiente de desenvolvimento)${RESET}:"
+  read -p "> N8N_URL: " N8N_URL
+  read -p "> N8N_API_KEY: " N8N_API_KEY
+  read -p "> N8N_PROJECT_TAG: " N8N_TAG
 fi
 
 # ─── Setup Git + GitHub ─────────────────────────────────────────────────────
