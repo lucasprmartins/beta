@@ -92,6 +92,14 @@ spinner() {
 
 # ─── Setup ───────────────────────────────────────────────────────────────────
 
+sedi() {
+  if [[ "$(uname)" == "Darwin" ]]; then
+    sed -i '' "$@"
+  else
+    sed -i "$@"
+  fi
+}
+
 setup_root() {
   ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")/.." && pwd)"
   cd "$ROOT_DIR"

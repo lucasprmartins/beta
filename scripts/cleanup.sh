@@ -26,8 +26,8 @@ sucesso "Arquivos de exemplo removidos"
 
 # ─── Limpar imports ──────────────────────────────────────────────────────────
 
-sed -i '/example-crud/d;/example-domain/d' packages/api/src/index.ts
-sed -i '/categoria: categoriaRouter/d;/produto: produtoRouter/d' packages/api/src/index.ts
+sedi '/example-crud/d;/example-domain/d' packages/api/src/index.ts
+sedi '/categoria: categoriaRouter/d;/produto: produtoRouter/d' packages/api/src/index.ts
 sucesso "Imports limpos em packages/api/src/index.ts"
 
 # ─── Resumo ──────────────────────────────────────────────────────────────────
