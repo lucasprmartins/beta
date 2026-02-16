@@ -26,17 +26,6 @@ Server → Auth → Sessão/Cookies
                                                         Infra (Implementação)
 ```
 
-## Princípios
-
-- **Retorne `null`, não `throw`** para fluxos esperados (não encontrado, já existe, inválido)
-- **Injeção de dependência** via closure nos use cases
-- **Dois padrões de domínio**: CRUD Simples e Domínio Rico (ver regras em `.claude/rules/`)
-- **CRUD Simples** — sem `domains/`, use cases passthrough, `Omit<>`/`Partial<>` para tipos
-- **Domínio Rico** — com `domains/`, DTOs separados (`CriarInput` + `Data`), entidade com `criar()` + `restaurar()` + `exportar()`
-- **Factory methods**: `criar()` para novos objetos, `restaurar()` para reconstruir do banco
-- **`exportar()`** converte entidade para DTO
-- **Nomes em pt-br** para domínio de negócio
-
 ## Stack
 
 | Camada | Tecnologia |
@@ -51,34 +40,19 @@ Server → Auth → Sessão/Cookies
 | Icons | Phosphor Icons |
 | Storage | AWS SDK S3 (compatível com R2/MinIO) |
 
-## Decisões Técnicas
-
-| Tecnologia | Por quê |
-|------------|---------|
-| **Bun** | Performance superior ao Node, package manager nativo, compatível com TypeScript sem build |
-| **Elysia** | Framework otimizado para Bun, tipagem end-to-end, plugins extensíveis |
-| **oRPC** | Type-safety completa entre server e client, gera OpenAPI automaticamente, integra com TanStack Query |
-| **Better Auth** | Solução completa de auth sem vendor lock-in, suporte nativo a Drizzle, extensível via plugins |
-| **Drizzle ORM** | Type-safe, SQL-first, migrations versionadas, suporte a RLS e PostgreSQL features |
-| **TanStack Router** | File-based routing, type-safe, code splitting automático, integração nativa com Query |
-| **TanStack Query** | Cache inteligente, deduplicação, prefetch, integração com oRPC via `queryOptions()` |
-| **DaisyUI** | Componentes semânticos sobre Tailwind, temas built-in, sem JavaScript extra |
-| **Phosphor Icons** | Biblioteca consistente, múltiplos pesos (regular, bold, fill), tree-shakeable |
-| **AWS SDK S3** | Compatível com qualquer storage S3 (AWS, Cloudflare R2, MinIO), presigned URLs para upload direto do browser |
-
-## Comandos Úteis
+## Comandos
 
 | Comando | Descrição |
 |---------|-----------|
-| `bun lint` | Verifica erros de lint (Ultracite) |
-| `bun lint:fix` | Corrige erros de lint automaticamente |
-| `bun check-types` | Verifica erros de tipagem TypeScript |
+| `bun lint` | Verifica lint (Ultracite) |
+| `bun lint:fix` | Corrige lint |
+| `bun check-types` | Verifica tipagem TypeScript |
+| `bun db:generate` | Gera migration Drizzle |
+| `bun db:seed` | Popula banco com dados falsos |
 
 ## Regras
 
-- Respeite as boas práticas de desenvolvimento
-- Consulte Context7 (MCP) para documentação de frameworks
-- Não crie comentários no código a não ser que eu peça
-- Não use comando de build a não ser que eu peça
-- Não tente gerar rotas do TanStack Router (ele gera automaticamente)
-- Não use `cd` para o diretório de trabalho — você já está nele. Use `cd` apenas quando realmente precisar mudar de diretório
+Convenções detalhadas em `.claude/rules/`:
+- **Backend**: `core.md`, `infra.md`, `api.md`, `auth.md`, `server.md`, `env.md`
+- **Frontend**: `react.md`, `styling.md`, `tanstack-query.md`
+- **Geral**: `general.md`, `git.md`, `domain-checklist.md`
