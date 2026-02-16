@@ -1,21 +1,40 @@
-# Beta Template
+<div align="center">
 
-Template full-stack TypeScript com arquitetura limpa em monorepo.
+<img src="https://raw.githubusercontent.com/lucasprmartins/beta/main/apps/web/public/logo-1.svg" alt="Beta" width="80" />
+
+# Beta
+
+**Template full-stack TypeScript com arquitetura limpa em monorepo.**
+
+<a href="https://bun.sh/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" width="30" title="Bun" alt="Bun" /></a>&nbsp;&nbsp;
+<a href="https://www.typescriptlang.org/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="30" title="TypeScript" alt="TypeScript" /></a>&nbsp;&nbsp;
+<a href="https://react.dev/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="30" title="React" alt="React" /></a>&nbsp;&nbsp;
+<a href="https://vitejs.dev/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" width="30" title="Vite" alt="Vite" /></a>&nbsp;&nbsp;
+<a href="https://tailwindcss.com/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" width="30" title="Tailwind CSS" alt="Tailwind CSS" /></a>&nbsp;&nbsp;
+<a href="https://www.postgresql.org/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" width="30" title="PostgreSQL" alt="PostgreSQL" /></a>
+
+[Começando](#começando) · [Stack](#stack) · [Estrutura](#estrutura) · [Scripts](#scripts)
+
+</div>
+
+---
 
 ## Stack
 
-- **Runtime**: Bun
-- **Monorepo**: Turborepo
-- **Server**: Elysia
-- **Frontend**: React 19, Vite, Tailwind CSS, DaisyUI
-- **Roteamento**: TanStack Router (file-based)
-- **Estado do servidor**: TanStack Query
-- **API**: oRPC (type-safe RPC + REST/OpenAPI)
-- **Banco de dados**: PostgreSQL, Drizzle ORM
-- **Autenticação**: Better Auth
-- **Validação**: Zod
-- **Storage**: AWS SDK S3 (compatível com S3, Cloudflare R2, MinIO)
-- **Linting**: Biome (Ultracite)
+| Camada | Tecnologia |
+|--------|------------|
+| **Runtime** | Bun |
+| **Monorepo** | Turborepo |
+| **Server** | Elysia |
+| **Frontend** | React 19, Vite, Tailwind CSS, DaisyUI |
+| **Roteamento** | TanStack Router (file-based) |
+| **Estado** | TanStack Query |
+| **API** | oRPC (type-safe RPC + REST/OpenAPI) |
+| **Banco de dados** | PostgreSQL + Drizzle ORM |
+| **Autenticação** | Better Auth |
+| **Validação** | Zod |
+| **Storage** | AWS SDK S3 (S3, Cloudflare R2, MinIO) |
+| **Linting** | Biome (Ultracite) |
 
 ## Estrutura
 
