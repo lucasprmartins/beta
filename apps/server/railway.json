@@ -6,6 +6,7 @@
     "watchPatterns": ["apps/server/**", "packages/**"]
   },
   "deploy": {
+    "preDeployCommand": "bun db:migrate",
     "startCommand": "bun run start:server",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
