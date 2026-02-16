@@ -14,7 +14,7 @@ const deletar = deletarCategoria(categoriaRepository);
 const categoriaSchema = z.object({
   id: z.number().int().describe("ID da categoria"),
   nome: z.string().min(1).describe("Nome da categoria"),
-  descricao: z.string().min(1).describe("Descricao da categoria"),
+  descricao: z.string().min(1).describe("Descrição da categoria"),
 });
 
 export const categoriaRouter = {
@@ -30,11 +30,11 @@ export const categoriaRouter = {
       z.object({
         id: z
           .string()
-          .min(1, "ID e obrigatorio")
+          .min(1, "ID é obrigatório")
           .transform((val) => Number.parseInt(val, 10))
           .refine(
             (val) => !Number.isNaN(val) && val >= 1,
-            "ID deve ser um numero valido maior que 0"
+            "ID deve ser um número válido maior que 0"
           )
           .describe("ID da categoria"),
       })
@@ -42,7 +42,7 @@ export const categoriaRouter = {
     .output(categoriaSchema)
     .errors({
       NOT_FOUND: {
-        message: "Categoria nao encontrada",
+        message: "Categoria não encontrada",
         data: z.object({ id: z.number() }),
       },
     })
@@ -68,7 +68,7 @@ export const categoriaRouter = {
     .output(categoriaSchema)
     .errors({
       CONFLICT: {
-        message: "Categoria ja existe",
+        message: "Categoria já existe",
         data: z.object({ nome: z.string() }),
       },
     })
@@ -94,13 +94,13 @@ export const categoriaRouter = {
       z.object({
         id: z.number().int().min(1).describe("ID da categoria"),
         nome: z.string().min(1).optional().describe("Nome"),
-        descricao: z.string().min(1).optional().describe("Descricao"),
+        descricao: z.string().min(1).optional().describe("Descrição"),
       })
     )
     .output(categoriaSchema)
     .errors({
       NOT_FOUND: {
-        message: "Categoria nao encontrada",
+        message: "Categoria não encontrada",
         data: z.object({ id: z.number() }),
       },
     })
@@ -131,7 +131,7 @@ export const categoriaRouter = {
     .output(z.object({ sucesso: z.boolean() }))
     .errors({
       NOT_FOUND: {
-        message: "Categoria nao encontrada",
+        message: "Categoria não encontrada",
         data: z.object({ id: z.number() }),
       },
     })
@@ -150,7 +150,7 @@ export const categoriaRouter = {
       method: "GET",
       path: "/categoria/listar",
       summary: "Listar Categorias",
-      description: "Lista categorias com paginacao.",
+      description: "Lista categorias com paginação.",
       tags: ["Categoria"],
     })
     .input(
@@ -160,14 +160,14 @@ export const categoriaRouter = {
           .int()
           .min(0)
           .default(0)
-          .describe("Offset para paginacao"),
+          .describe("Offset para paginação"),
         limite: z.coerce
           .number()
           .int()
           .min(1)
           .max(100)
           .default(10)
-          .describe("Itens por pagina"),
+          .describe("Itens por página"),
       })
     )
     .output(

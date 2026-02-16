@@ -20,18 +20,18 @@ const desativar = desativarProduto(produtoRepository);
 const produtoSchema = z.object({
   id: z.number().int().describe("ID do produto"),
   nome: z.string().min(1).describe("Nome do produto"),
-  descricao: z.string().min(1).describe("Descricao do produto"),
-  preco: z.number().min(0.01).describe("Preco do produto"),
+  descricao: z.string().min(1).describe("Descrição do produto"),
+  preco: z.number().min(0.01).describe("Preço do produto"),
   estoque: z.number().int().min(0).describe("Quantidade em estoque"),
-  ativo: z.boolean().describe("Se o produto esta ativo"),
-  imagemUrl: z.string().url().nullable().describe("URL da imagem do produto"),
+  ativo: z.boolean().describe("Se o produto está ativo"),
+  imagemUrl: z.url().nullable().describe("URL da imagem do produto"),
 });
 
 const criarProdutoSchema = z.object({
   nome: z.string().min(1).describe("Nome do produto"),
-  descricao: z.string().min(1).describe("Descricao do produto"),
-  preco: z.number().min(0.01).describe("Preco do produto"),
-  imagemUrl: z.string().url().nullable().describe("URL da imagem do produto"),
+  descricao: z.string().min(1).describe("Descrição do produto"),
+  preco: z.number().min(0.01).describe("Preço do produto"),
+  imagemUrl: z.string().nullable().describe("URL da imagem do produto"),
 });
 
 export const produtoRouter = {
@@ -47,11 +47,11 @@ export const produtoRouter = {
       z.object({
         id: z
           .string()
-          .min(1, "ID e obrigatorio")
+          .min(1, "ID é obrigatório")
           .transform((val) => Number.parseInt(val, 10))
           .refine(
             (val) => !Number.isNaN(val) && val >= 1,
-            "ID deve ser um numero valido maior que 0"
+            "ID deve ser um número válido maior que 0"
           )
           .describe("ID do produto"),
       })
@@ -59,7 +59,7 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
     })
@@ -85,7 +85,7 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       BAD_REQUEST: {
-        message: "Dados invalidos",
+        message: "Dados inválidos",
         data: z.object({ motivo: z.string() }),
       },
     })
@@ -94,7 +94,7 @@ export const produtoRouter = {
 
       if (!resultado) {
         throw errors.BAD_REQUEST({
-          data: { motivo: "Preco deve ser maior que zero" },
+          data: { motivo: "Preço deve ser maior que zero" },
         });
       }
 
@@ -118,7 +118,7 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
     })
@@ -150,7 +150,7 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
       BAD_REQUEST: {
@@ -178,20 +178,20 @@ export const produtoRouter = {
     .route({
       method: "POST",
       path: "/produto/alterar-preco",
-      summary: "Alterar Preco",
-      description: "Altera o preco de um produto. Deve ser maior que zero.",
+      summary: "Alterar Preço",
+      description: "Altera o preço de um produto. Deve ser maior que zero.",
       tags: ["Produto"],
     })
     .input(
       z.object({
         id: z.number().int().min(1).describe("ID do produto"),
-        novoPreco: z.number().min(0.01).describe("Novo preco"),
+        novoPreco: z.number().min(0.01).describe("Novo preço"),
       })
     )
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
     })
@@ -221,11 +221,11 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
       BAD_REQUEST: {
-        message: "Nao e possivel ativar produto sem estoque",
+        message: "Não é possível ativar produto sem estoque",
         data: z.object({ id: z.number() }),
       },
     })
@@ -261,7 +261,7 @@ export const produtoRouter = {
     .output(produtoSchema)
     .errors({
       NOT_FOUND: {
-        message: "Produto nao encontrado",
+        message: "Produto não encontrado",
         data: z.object({ id: z.number() }),
       },
     })
@@ -280,7 +280,7 @@ export const produtoRouter = {
       method: "GET",
       path: "/produto/listar",
       summary: "Listar Produtos",
-      description: "Lista produtos com paginacao cursor-based.",
+      description: "Lista produtos com paginação cursor-based.",
       tags: ["Produto"],
     })
     .input(
@@ -290,14 +290,14 @@ export const produtoRouter = {
           .int()
           .min(0)
           .default(0)
-          .describe("Offset para paginacao"),
+          .describe("Offset para paginação"),
         limite: z.coerce
           .number()
           .int()
           .min(1)
           .max(100)
           .default(10)
-          .describe("Quantidade de itens por pagina"),
+          .describe("Quantidade de itens por página"),
       })
     )
     .output(
