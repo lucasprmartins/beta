@@ -22,7 +22,9 @@ function RootErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex min-h-screen items-center justify-center bg-base-100">
       <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
         <WarningCircleIcon className="h-12 w-12 text-error" weight="bold" />
-        <h1 className="font-bold text-2xl text-base-content">Algo deu errado</h1>
+        <h1 className="font-bold text-2xl text-base-content">
+          Algo deu errado
+        </h1>
         <p className="text-base-content/60 text-sm">
           Ocorreu um erro inesperado ao carregar a aplicação.
         </p>
@@ -46,7 +48,10 @@ function RootNotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base-100">
       <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
-        <MagnifyingGlassIcon className="h-12 w-12 text-base-content/30" weight="bold" />
+        <MagnifyingGlassIcon
+          className="h-12 w-12 text-base-content/30"
+          weight="bold"
+        />
         <h1 className="font-bold text-2xl text-base-content">
           Página não encontrada
         </h1>

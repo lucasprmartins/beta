@@ -1,4 +1,7 @@
-import { Cube as CubeIcon, WarningCircle as WarningCircleIcon } from "@phosphor-icons/react";
+import {
+  Cube as CubeIcon,
+  WarningCircle as WarningCircleIcon,
+} from "@phosphor-icons/react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { SignInForm, SignUpForm } from "@/features/auth";

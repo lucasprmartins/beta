@@ -54,25 +54,25 @@ function DashboardPage() {
                 className="flex items-start gap-4 rounded-xl bg-base-200 p-5"
                 key={passo.titulo}
               >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-bold text-primary text-sm">
-                    {index + 1}
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      <passo.icon
-                        className="h-4 w-4 text-primary"
-                        weight="bold"
-                      />
-                      <span className="font-semibold text-base-content">
-                        {passo.titulo}
-                      </span>
-                    </div>
-                    <p className="text-base-content/60 text-sm leading-relaxed">
-                      {passo.descricao}
-                    </p>
-                  </div>
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-bold text-primary text-sm">
+                  {index + 1}
                 </div>
-              ))}
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <passo.icon
+                      className="h-4 w-4 text-primary"
+                      weight="bold"
+                    />
+                    <span className="font-semibold text-base-content">
+                      {passo.titulo}
+                    </span>
+                  </div>
+                  <p className="text-base-content/60 text-sm leading-relaxed">
+                    {passo.descricao}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </div>

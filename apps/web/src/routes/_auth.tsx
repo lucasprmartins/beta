@@ -15,7 +15,9 @@ function AuthErrorComponent({ error, reset }: ErrorComponentProps) {
       <div className="flex min-h-[calc(100vh-3.75rem)] items-center justify-center">
         <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
           <WarningCircleIcon className="h-12 w-12 text-error" weight="bold" />
-          <h1 className="font-bold text-2xl text-base-content">Algo deu errado</h1>
+          <h1 className="font-bold text-2xl text-base-content">
+            Algo deu errado
+          </h1>
           <p className="text-base-content/60 text-sm">
             Ocorreu um erro inesperado ao carregar esta página.
           </p>

@@ -123,10 +123,7 @@ function WelcomePage() {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {layers.map((layer) => (
-              <div
-                className="rounded-xl bg-base-200 p-5"
-                key={layer.title}
-              >
+              <div className="rounded-xl bg-base-200 p-5" key={layer.title}>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
                     <layer.icon
