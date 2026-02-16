@@ -61,7 +61,7 @@ export async function carregarEnv(): Promise<ConfigN8n> {
   const tag = vars.N8N_PROJECT_TAG;
 
   if (!(baseUrl && apiKey && tag)) {
-    console.error(
+    ui.erro(
       "Variáveis N8N_URL, N8N_API_KEY e N8N_PROJECT_TAG são obrigatórias em n8n/.env"
     );
     process.exit(1);
