@@ -104,7 +104,7 @@ Server (Elysia)
 
    ```bash
    cd <nome-do-projeto>
-   sh scripts/beta.sh
+   sh scripts/setup.sh
    ```
 
 O script instala as dependências automaticamente, pergunta o nome do projeto e quais módulos ativar (n8n, Railway), cria um repositório GitHub privado e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
@@ -116,7 +116,7 @@ O script instala as dependências automaticamente, pergunta o nome do projeto e 
 1. Configure as variáveis de ambiente — o `DATABASE_URL` é puxado do Railway automaticamente:
 
 ```bash
-bun env
+bun env:railway
 ```
 
 2. Inicie o ambiente de desenvolvimento — as migrations já foram executadas no pre-deploy do Railway:
@@ -136,7 +136,7 @@ bun cleanup
 1. Configure as variáveis de ambiente e preencha o `DATABASE_URL` manualmente em `apps/server/.env`:
 
 ```bash
-bun env
+bun env:local
 ```
 
 2. Aplique o schema no banco local:
@@ -157,33 +157,9 @@ bun dev
 bun cleanup
 ```
 
-> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo `bun env`.
+> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo `bun env:local`.
 
 O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:3001`.
-
-## Desenvolvimento com Railway
-
-Para trabalhar em novas features ou correções, crie uma branch e abra uma Pull Request. O Railway cria automaticamente um ambiente isolado para cada PR com banco de dados e serviços próprios, permitindo testar sem afetar produção.
-
-1. Troque para o ambiente da PR:
-
-```bash
-bun env:dev
-```
-
-2. Atualize as variáveis locais com o novo ambiente:
-
-```bash
-bun env
-```
-
-3. Popule o banco da PR com dados de teste:
-
-```bash
-bun seed
-```
-
-> O arquivo de seed está em `packages/infra/src/db/seed.ts`. Adicione suas tabelas e customize os dados gerados conforme necessário.
 
 ## Scripts
 
@@ -201,7 +177,7 @@ bun seed
 | `bun lint` | Verifica linting |
 | `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
-| `bun env` | Configura variáveis de ambiente |
-| `bun env:dev` | Troca para ambiente de PR no Railway |
+| `bun env:local` | Configura variáveis de ambiente |
+| `bun env:railway` | Troca para ambiente de PR no Railway |
 | `bun seed` | Popula banco (Railway ou local) |
 | `bun cleanup` | Remove arquivos de exemplo |
