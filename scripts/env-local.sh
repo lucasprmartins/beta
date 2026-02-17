@@ -7,29 +7,30 @@ setup_root
 
 # ─── Banner ──────────────────────────────────────────────────────────────────
 
-banner "Setup de Ambiente"
+banner "Ambiente Local"
 
 # ─── Criar .env se não existir ───────────────────────────────────────────────
 
 CRIOU_SERVER=false
 if [ ! -f apps/server/.env ]; then
-  cp apps/server/.env.example apps/server/.env
-  sedi 's/\r$//' apps/server/.env
-  sedi '/^# Opcional/,$d' apps/server/.env
-  sedi '/^#/d;/^$/d' apps/server/.env
-  echo "LOG_LEVEL=debug" >> apps/server/.env
+  cat > apps/server/.env << 'ENV'
+DATABASE_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+CORS_ORIGIN=http://localhost:3001
+LOG_LEVEL=debug
+ENV
   CRIOU_SERVER=true
-  sucesso "apps/server/.env criado a partir do template"
+  sucesso "apps/server/.env criado"
 else
   info "apps/server/.env já existe, mantendo"
 fi
 
 if [ ! -f apps/web/.env ]; then
-  cp apps/web/.env.example apps/web/.env
-  sedi 's/\r$//' apps/web/.env
-  sedi '/^# Opcional/,$d' apps/web/.env
-  sedi '/^#/d;/^$/d' apps/web/.env
-  sucesso "apps/web/.env criado a partir do template"
+  cat > apps/web/.env << 'ENV'
+VITE_SERVER_URL=http://localhost:3000
+ENV
+  sucesso "apps/web/.env criado"
 else
   info "apps/web/.env já existe, mantendo"
 fi
@@ -44,7 +45,7 @@ else
   info "BETTER_AUTH_SECRET mantido (já existente)"
 fi
 
-# ─── Configurar DATABASE_URL via Railway (sempre) ───────────────────────────
+# ─── Configurar DATABASE_URL via Railway ─────────────────────────────────────
 
 if command -v railway &> /dev/null; then
   DB_URL=$(railway variables --kv --service=postgres 2>/dev/null | grep '^DATABASE_PUBLIC_URL=' | cut -d'=' -f2-)
@@ -52,7 +53,7 @@ if command -v railway &> /dev/null; then
     sedi "s|^DATABASE_URL=.*|DATABASE_URL=$DB_URL|" apps/server/.env
     sucesso "DATABASE_URL configurado via Railway"
   else
-    aviso "DATABASE_URL não encontrado no Railway"
+    aviso "DATABASE_URL não encontrado no Railway, aguarde o deploy."
   fi
 else
   aviso "Railway CLI não encontrado, pulando DATABASE_URL"

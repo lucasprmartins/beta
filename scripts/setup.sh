@@ -7,7 +7,7 @@ setup_root
 
 # ─── Banner ──────────────────────────────────────────────────────────────────
 
-banner "Beta — Setup de Projeto"
+banner "Setup de Projeto"
 
 # ─── Pré-requisitos ──────────────────────────────────────────────────────────
 
@@ -201,10 +201,10 @@ if [ "$USA_S3" = false ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/env-dev.sh railway.json apps/server/railway.json apps/web/railway.json
+  rm -f scripts/env-railway.sh railway.json apps/server/railway.json apps/web/railway.json
 
-  # env.sh: remover bloco DATABASE_URL via Railway (linha do comentário até o fi)
-  sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env.sh
+  # env-local.sh: remover bloco DATABASE_URL via Railway (linha do comentário até o fi)
+  sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env-local.sh
 
   # seed.sh: substituir por versão simplificada (sem Railway)
   cat > scripts/seed.sh << 'SEED'
@@ -244,7 +244,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
 if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
-if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['env:dev']; }
+if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['env:railway']; }
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
@@ -259,8 +259,8 @@ sucesso "Dependências instaladas"
 
 # ─── Auto-remoção ────────────────────────────────────────────────────────────
 
-rm -f scripts/beta.sh
-sucesso "Script beta removido"
+rm -f scripts/setup.sh
+sucesso "Script setup removido"
 
 # ─── Commit inicial + push ───────────────────────────────────────────────────
 
@@ -283,11 +283,12 @@ echo "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || e
 
 banner "Próximos passos"
 
-echo "1. ${BOLD}bun env${RESET}       ${DIM}— configurar variáveis de ambiente${RESET}"
 if [ "$USA_RAILWAY" = true ]; then
-  echo "2. ${BOLD}bun seed${RESET}      ${DIM}— popular banco de dados${RESET}"
-  echo "3. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo "1. ${BOLD}bun env:railway${RESET} ${DIM}— configurar variáveis de ambiente${RESET}"
+  echo "2. ${BOLD}bun seed${RESET}        ${DIM}— popular banco de dados${RESET}"
+  echo "3. ${BOLD}bun cleanup${RESET}     ${DIM}— remover exemplos${RESET}"
 else
-  echo "2. ${BOLD}bun cleanup${RESET}   ${DIM}— remover exemplos${RESET}"
+  echo "1. ${BOLD}bun env:local${RESET}   ${DIM}— configurar variáveis de ambiente${RESET}"
+  echo "2. ${BOLD}bun cleanup${RESET}     ${DIM}— remover exemplos${RESET}"
 fi
 echo ""
