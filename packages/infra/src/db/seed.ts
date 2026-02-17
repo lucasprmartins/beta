@@ -6,6 +6,7 @@ dotenv.config({
 });
 
 import { reset, seed } from "drizzle-seed";
+import { logger } from "../logger";
 import { db } from "./index";
 
 // Importe seus schemas aqui:
@@ -31,10 +32,10 @@ async function main() {
   //   },
   // }));
 
-  console.log("Seed concluído!");
+  logger.info("Seed concluído!");
 }
 
 main().catch((err) => {
-  console.error("Seed falhou:", err);
+  logger.error({ err }, "Seed falhou");
   process.exit(1);
 });
