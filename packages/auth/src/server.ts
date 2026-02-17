@@ -5,7 +5,7 @@ import {
   user,
   verification,
 } from "@app/infra/db/schema/auth";
-import { env } from "@app/infra/env";
+import { env, isLocal } from "@app/infra/env";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin as adminPlugin, openAPI, username } from "better-auth/plugins";
@@ -48,7 +48,7 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    openAPI(),
+    ...(isLocal ? [openAPI()] : []),
     adminPlugin(),
     username({
       minUsernameLength: 3,
