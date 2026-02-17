@@ -41,3 +41,10 @@ Todas as variáveis de ambiente do servidor são validadas no startup via Zod em
 | `S3_ACCESS_KEY_ID` | — | Access key |
 | `S3_SECRET_ACCESS_KEY` | — | Secret key |
 | `S3_BUCKET` | — | Nome do bucket |
+
+### n8n Webhooks (opcionais)
+
+| Variável | Default | Descrição |
+|----------|---------|-----------|
+| `N8N_WEBHOOK_URL` | — | URL base dos webhooks n8n |
+| `N8N_WEBHOOK_TOKEN` | — | Token para Header Auth nos webhooks |
