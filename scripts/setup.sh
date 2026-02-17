@@ -218,7 +218,7 @@ setup_root
 banner "Database Seed"
 
 info "Executando seed..."
-bun db:seed
+turbo -F @app/infra db:seed
 
 rodape "Seed concluído!"
 SEED
@@ -285,7 +285,7 @@ banner "Próximos passos"
 
 if [ "$USA_RAILWAY" = true ]; then
   echo "1. ${BOLD}bun env:railway${RESET} ${DIM}— configurar variáveis de ambiente${RESET}"
-  echo "2. ${BOLD}bun seed${RESET}        ${DIM}— popular banco de dados${RESET}"
+  echo "2. ${BOLD}bun db:seed${RESET}     ${DIM}— popular banco de dados${RESET}"
   echo "3. ${BOLD}bun cleanup${RESET}     ${DIM}— remover exemplos${RESET}"
 else
   echo "1. ${BOLD}bun env:local${RESET}   ${DIM}— configurar variáveis de ambiente${RESET}"

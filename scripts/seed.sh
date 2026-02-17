@@ -28,11 +28,11 @@ if [ "$USA_RAILWAY" = true ]; then
   fi
 
   info "Executando seed via Railway..."
-  railway run bun db:seed
+  railway run turbo -F @app/infra db:seed
 else
   aviso "Railway não configurado, executando seed local"
   info "Executando seed..."
-  bun db:seed
+  turbo -F @app/infra db:seed
 fi
 
 # ─── Resumo ──────────────────────────────────────────────────────────────────

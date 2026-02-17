@@ -168,7 +168,9 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 | `bun dev` | Inicia todos os apps em modo desenvolvimento |
 | `bun dev:server` | Inicia apenas o servidor |
 | `bun dev:web` | Inicia apenas o frontend |
-| `bun build` | Build de produção |
+| `bun run build` | Build de produção |
+| `bun run build:server` | Build apenas do servidor |
+| `bun run build:web` | Build apenas do frontend |
 | `bun db:push` | Aplica schema no banco |
 | `bun db:generate` | Gera migrations |
 | `bun db:migrate` | Executa migrations |
@@ -179,5 +181,4 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 | `bun check-types` | Verifica tipos TypeScript |
 | `bun env:local` | Configura variáveis de ambiente |
 | `bun env:railway` | Troca para ambiente de PR no Railway |
-| `bun seed` | Popula banco (Railway ou local) |
 | `bun cleanup` | Remove arquivos de exemplo |

@@ -20,7 +20,7 @@
     "db:push": "turbo -F @app/infra db:push",
     "db:generate": "turbo -F @app/infra db:generate",
     "db:migrate": "turbo -F @app/infra db:migrate",
-    "db:seed": "turbo -F @app/infra db:seed",
+    "db:seed": "sh scripts/seed.sh",
     "db:studio": "turbo -F @app/infra db:studio",
     "lint": "bun ultracite check",
     "lint:fix": "bun ultracite fix",
@@ -30,7 +30,6 @@
     "env:local": "sh scripts/env-local.sh",
     "env:railway": "sh scripts/env-railway.sh",
     "cleanup": "sh scripts/cleanup.sh",
-    "seed": "sh scripts/seed.sh",
     "n8n:pull": "bun n8n/pull.ts",
     "n8n:push": "bun n8n/push.ts"
   },
