@@ -9,21 +9,41 @@ setup_root
 
 banner "Setup de Ambiente"
 
-# ─── Copiar .env ─────────────────────────────────────────────────────────────
+# ─── Criar .env se não existir ───────────────────────────────────────────────
 
-cp apps/server/.env.example apps/server/.env
-cp apps/web/.env.example apps/web/.env
-sucesso "Arquivos .env copiados"
+CRIOU_SERVER=false
+if [ ! -f apps/server/.env ]; then
+  cp apps/server/.env.example apps/server/.env
+  sedi 's/\r$//' apps/server/.env
+  sedi '/^# Apenas/,$d' apps/server/.env
+  sedi '/^#/d;/^$/d' apps/server/.env
+  CRIOU_SERVER=true
+  sucesso "apps/server/.env criado a partir do template"
+else
+  info "apps/server/.env já existe, mantendo"
+fi
 
-sedi 's/\r$//' apps/server/.env apps/web/.env
+if [ ! -f apps/web/.env ]; then
+  cp apps/web/.env.example apps/web/.env
+  sedi 's/\r$//' apps/web/.env
+  sedi '/^# Apenas/,$d' apps/web/.env
+  sedi '/^#/d;/^$/d' apps/web/.env
+  sucesso "apps/web/.env criado a partir do template"
+else
+  info "apps/web/.env já existe, mantendo"
+fi
 
-# ─── Gerar secrets ───────────────────────────────────────────────────────────
+# ─── Gerar BETTER_AUTH_SECRET (apenas na criação) ────────────────────────────
 
-SECRET=$(openssl rand -base64 32)
-sedi "s|^BETTER_AUTH_SECRET=.*|BETTER_AUTH_SECRET=$SECRET|" apps/server/.env
-sucesso "BETTER_AUTH_SECRET gerado"
+if [ "$CRIOU_SERVER" = true ]; then
+  SECRET=$(openssl rand -base64 32)
+  sedi "s|^BETTER_AUTH_SECRET=.*|BETTER_AUTH_SECRET=$SECRET|" apps/server/.env
+  sucesso "BETTER_AUTH_SECRET gerado"
+else
+  info "BETTER_AUTH_SECRET mantido (já existente)"
+fi
 
-# ─── Configurar DATABASE_URL via Railway ─────────────────────────────────────
+# ─── Configurar DATABASE_URL via Railway (sempre) ───────────────────────────
 
 if command -v railway &> /dev/null; then
   DB_URL=$(railway variables --kv --service=postgres 2>/dev/null | grep '^DATABASE_PUBLIC_URL=' | cut -d'=' -f2-)
@@ -36,13 +56,6 @@ if command -v railway &> /dev/null; then
 else
   aviso "Railway CLI não encontrado, pulando DATABASE_URL"
 fi
-
-# ─── Limpar comentários e linhas vazias ──────────────────────────────────────
-
-sedi '/^# Apenas/,$d' apps/server/.env
-sedi '/^# Apenas/,$d' apps/web/.env
-sedi '/^#/d;/^$/d' apps/server/.env
-sedi '/^#/d;/^$/d' apps/web/.env
 
 # ─── Resumo ──────────────────────────────────────────────────────────────────
 
