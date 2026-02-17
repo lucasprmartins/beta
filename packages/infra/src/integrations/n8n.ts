@@ -33,18 +33,25 @@ export class N8n {
           headers.Authorization = `Bearer ${token}`;
         }
 
-        const response = await fetch(url, {
-          method: "POST",
-          headers,
-          body: JSON.stringify(payload),
-        });
+        let response: Response;
+        try {
+          response = await fetch(url, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(payload),
+          });
+        } catch (err) {
+          logger.error({ err, url }, "erro de rede ao chamar workflow n8n");
+          throw err;
+        }
 
         if (!response.ok) {
+          const body = await response.text().catch(() => "");
           logger.error(
-            { status: response.status, url },
+            { status: response.status, url, body },
             "erro ao executar workflow n8n"
           );
-          return;
+          throw new Error(`n8n webhook falhou: ${response.status}`);
         }
 
         if (retorno) {

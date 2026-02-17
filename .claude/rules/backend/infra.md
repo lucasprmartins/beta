@@ -18,7 +18,8 @@ src/
 │   ├── migrations/         # Migrations geradas
 │   └── seed.ts             # Seed com dados falsos (drizzle-seed)
 ├── integrations/
-│   └── storage.ts          # Storage S3-compatível (R2/MinIO)
+│   ├── storage.ts          # Storage S3-compatível (R2/MinIO)
+│   └── n8n.ts              # Cliente n8n webhooks
 ├── env.ts                  # Variáveis de ambiente
 └── logger.ts               # Logger (Pino)
 ```
@@ -229,3 +230,4 @@ Após criar, executar `bun db:generate` para migration.
 - **`env.ts`** — Variáveis de ambiente. Documentação detalhada em `.claude/rules/backend/env.md`. Pode incluir variáveis adicionais de deploy (`CORS_ORIGIN`) e integrações (`N8N_*`)
 - **`logger.ts`** — Logger Pino. Uso documentado em `.claude/rules/general.md`
 - **`integrations/storage.ts`** — Storage S3-compatível (R2/MinIO). Funções exportadas: `gerarUrlUpload(key, contentType, expiresIn?)`, `gerarUrlDownload(key, expiresIn?)`, `removerObjeto(key)`, `listarObjetos(prefix?)`
+- **`integrations/n8n.ts`** — Cliente n8n webhooks. Classe `N8n` com método `path()` para definir workflows tipados.
