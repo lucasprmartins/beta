@@ -15,8 +15,9 @@ CRIOU_SERVER=false
 if [ ! -f apps/server/.env ]; then
   cp apps/server/.env.example apps/server/.env
   sedi 's/\r$//' apps/server/.env
-  sedi '/^# Apenas/,$d' apps/server/.env
+  sedi '/^# Opcional/,$d' apps/server/.env
   sedi '/^#/d;/^$/d' apps/server/.env
+  echo "LOG_LEVEL=debug" >> apps/server/.env
   CRIOU_SERVER=true
   sucesso "apps/server/.env criado a partir do template"
 else
@@ -26,7 +27,7 @@ fi
 if [ ! -f apps/web/.env ]; then
   cp apps/web/.env.example apps/web/.env
   sedi 's/\r$//' apps/web/.env
-  sedi '/^# Apenas/,$d' apps/web/.env
+  sedi '/^# Opcional/,$d' apps/web/.env
   sedi '/^#/d;/^$/d' apps/web/.env
   sucesso "apps/web/.env criado a partir do template"
 else
