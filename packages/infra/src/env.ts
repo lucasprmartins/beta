@@ -16,6 +16,10 @@ const envSchema = z.object({
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
   S3_BUCKET: z.string().optional(),
+
+  // n8n Webhooks (descomentar se necessário)
+  // N8N_WEBHOOK_URL: z.url().optional(),
+  // N8N_WEBHOOK_TOKEN: z.string().optional(),
 });
 
 const result = envSchema.safeParse(process.env);
