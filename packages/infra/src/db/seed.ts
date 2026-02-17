@@ -1,25 +1,15 @@
 import dotenv from "dotenv";
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { reset, seed } from "drizzle-seed";
-import postgres from "postgres";
-
-// Importe seus schemas aqui:
-// import { exemplo } from "./schema/exemplo";
 
 dotenv.config({
   path: "../../apps/server/.env",
 });
 
-const DATABASE_URL = process.env.DATABASE_URL;
+import { reset, seed } from "drizzle-seed";
+import { db } from "./index";
 
-if (!DATABASE_URL) {
-  console.error("DATABASE_URL não definida.");
-  process.exit(1);
-}
-
-const client = postgres(DATABASE_URL, { prepare: false });
-const db = drizzle(client);
+// Importe seus schemas aqui:
+// import { exemplo } from "./schema/exemplo";
 
 const schema = {
   // Adicione suas tabelas aqui:
@@ -42,7 +32,6 @@ async function main() {
   // }));
 
   console.log("Seed concluído!");
-  await client.end();
 }
 
 main().catch((err) => {

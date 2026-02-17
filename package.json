@@ -41,7 +41,6 @@
     "drizzle-orm": "^0.45.1",
     "drizzle-kit": "^0.31.9",
     "tsx": "^4.21.0",
-    "postgres": "^3.4.8",
     "@orpc/server": "^1.13.5",
     "@orpc/client": "^1.13.5",
     "@orpc/openapi": "^1.13.5",

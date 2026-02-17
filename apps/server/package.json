@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "bun@1.3.9",
   "scripts": {
-    "dev": "bun run src/index.ts | bunx pino-pretty",
-    "build": "bun build --compile src/index.ts --outfile server --minify",
+    "dev": "bun --sql-preconnect run src/index.ts | bunx pino-pretty",
+    "build": "bun build --compile --compile-exec-argv=\"--sql-preconnect\" src/index.ts --outfile server --minify",
     "start": "./server",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf ./server"

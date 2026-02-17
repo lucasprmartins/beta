@@ -19,7 +19,7 @@
     "db:generate": "drizzle-kit generate --name=migration",
     "db:studio": "drizzle-kit studio",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "bun src/db/seed.ts",
+    "db:seed": "bun --sql-preconnect src/db/seed.ts",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
@@ -37,7 +37,6 @@
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "pino": "^9.14.0",
-    "postgres": "^3.4.8",
     "zod": "^4.3.6"
   }
 }

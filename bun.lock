@@ -113,7 +113,6 @@
         "dotenv": "^17.3.1",
         "drizzle-orm": "^0.45.1",
         "pino": "^9.14.0",
-        "postgres": "^3.4.8",
         "zod": "^4.3.6",
       },
       "devDependencies": {
@@ -137,7 +136,6 @@
     "drizzle-kit": "^0.31.9",
     "drizzle-orm": "^0.45.1",
     "pino": "^9.6.0",
-    "postgres": "^3.4.8",
     "tsx": "^4.21.0",
     "typescript": "^5",
     "zod": "^4.3.6",

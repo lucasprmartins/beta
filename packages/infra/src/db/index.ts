@@ -1,6 +1,6 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { SQL } from "bun";
+import { drizzle } from "drizzle-orm/bun-sql";
 import { env } from "../env";
 
-const client = postgres(env.DATABASE_URL, { prepare: false });
-export const db = drizzle(client);
+const client = new SQL(env.DATABASE_URL);
+export const db = drizzle({ client });
