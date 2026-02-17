@@ -27,6 +27,7 @@ export const rpcHandler = new RPCHandler(router, {
 export const apiHandler = new OpenAPIHandler(router, {
   plugins: [
     new OpenAPIReferencePlugin({
+      docsPath: "/reference",
       docsProvider: "scalar",
       schemaConverters: [new ZodToJsonSchemaConverter()],
       specGenerateOptions: {
