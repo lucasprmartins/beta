@@ -28,14 +28,6 @@ if ! gh auth status &> /dev/null; then
 fi
 sucesso "GitHub CLI autenticado"
 
-# ─── Instalar dependências ───────────────────────────────────────────────────
-
-titulo "Instalando dependências"
-
-bun install
-echo ""
-sucesso "Dependências instaladas"
-
 # ─── Coleta de informações ───────────────────────────────────────────────────
 
 titulo "Informações do projeto"
@@ -52,8 +44,13 @@ fi
 
 echo ""
 
+USA_S3=false
 USA_N8N=false
 USA_RAILWAY=false
+
+if pergunta_sn "Usar Storage S3?"; then
+  USA_S3=true
+fi
 
 if pergunta_sn "Usar n8n?"; then
   USA_N8N=true
@@ -87,20 +84,6 @@ if [ "$USA_RAILWAY" = true ]; then
   pergunta "Código do template ${DIM}[edQPdo]${RESET}:"
   read -p "> " RAILWAY_TEMPLATE
   RAILWAY_TEMPLATE="${RAILWAY_TEMPLATE:-edQPdo}"
-fi
-
-# ─── Dados n8n (condicional) ─────────────────────────────────────────────────
-
-N8N_URL=""
-N8N_API_KEY=""
-N8N_TAG=""
-
-if [ "$USA_N8N" = true ]; then
-  echo ""
-  pergunta "Configuração n8n ${DIM}(ambiente de desenvolvimento)${RESET}:"
-  read -p "> N8N_URL: " N8N_URL
-  read -p "> N8N_API_KEY: " N8N_API_KEY
-  read -p "> N8N_PROJECT_TAG: " N8N_TAG
 fi
 
 # ─── Setup Git + GitHub ─────────────────────────────────────────────────────
@@ -195,19 +178,68 @@ titulo "Limpeza"
 
 if [ "$USA_N8N" = false ]; then
   rm -rf n8n/
-  sucesso "Diretório n8n/ removido"
+  rm -f packages/infra/src/integrations/n8n.ts
+  sedi '/N8N_WEBHOOK/d' packages/infra/src/env.ts
+  sedi '/n8n Webhooks/d;/N8N_WEBHOOK/d' apps/server/.env.example
+  sedi '/n8n Webhooks/,/N8N_WEBHOOK_TOKEN/d' .claude/rules/backend/env.md
+  sedi '/n8n\.ts/d' .claude/rules/backend/infra.md
+  sedi 's/ e integrações (`N8N_\*`)//' .claude/rules/backend/infra.md
+  sedi '/bun n8n/d' .claude/settings.json
+  sedi '/"files"/,/}/d' biome.jsonc
+  sucesso "Diretório n8n/ e referências removidos"
+fi
+
+if [ "$USA_S3" = false ]; then
+  rm -f packages/infra/src/integrations/storage.ts
+  sedi '/S3_/d' packages/infra/src/env.ts
+  sedi '/Buckets S3/d;/S3_/d' apps/server/.env.example
+  sedi '/Storage S3/,/S3_BUCKET/d' .claude/rules/backend/env.md
+  sedi '/storage\.ts/d' .claude/rules/backend/infra.md
+  sedi '/@aws-sdk/d' packages/infra/package.json
+  sedi '/Storage.*AWS SDK S3/d' .claude/CLAUDE.md
+  sucesso "Storage S3 e referências removidos"
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
   rm -f scripts/env-dev.sh railway.json apps/server/railway.json apps/web/railway.json
-  sucesso "Scripts Railway removidos"
+
+  # env.sh: remover bloco DATABASE_URL via Railway (linha do comentário até o fi)
+  sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env.sh
+
+  # seed.sh: substituir por versão simplificada (sem Railway)
+  cat > scripts/seed.sh << 'SEED'
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib/ui.sh"
+setup_root
+
+banner "Database Seed"
+
+info "Executando seed..."
+bun db:seed
+
+rodape "Seed concluído!"
+SEED
+
+  sucesso "Scripts Railway e referências removidos"
 fi
+
+# ─── Substituir README.md ────────────────────────────────────────────────────
+
+cat > README.md << EOF
+# $NOME_PROJETO
+
+<!-- Adicione aqui a descrição do seu projeto -->
+EOF
+sucesso "README.md substituído"
 
 # ─── Atualizar package.json ──────────────────────────────────────────────────
 
 info "Atualizando package.json..."
 
-NOME_PROJETO="$NOME_PROJETO" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" bun -e "
+NOME_PROJETO="$NOME_PROJETO" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" bun -e "
 import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
@@ -217,17 +249,13 @@ writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
 
-# ─── Configurar n8n/.env (condicional) ───────────────────────────────────────
+# ─── Instalar dependências ───────────────────────────────────────────────────
 
-if [ "$USA_N8N" = true ]; then
-  mkdir -p n8n
-  {
-    printf 'N8N_URL=%s\n' "$N8N_URL"
-    printf 'N8N_API_KEY=%s\n' "$N8N_API_KEY"
-    printf 'N8N_PROJECT_TAG=%s\n' "$N8N_TAG"
-  } > n8n/.env
-  sucesso "n8n/.env configurado"
-fi
+titulo "Instalando dependências"
+
+bun install
+echo ""
+sucesso "Dependências instaladas"
 
 # ─── Auto-remoção ────────────────────────────────────────────────────────────
 
@@ -249,6 +277,7 @@ sucesso "Commit inicial enviado para origin/$BRANCH"
 rodape "Projeto ${BOLD}$NOME_PROJETO${RESET} criado com sucesso!"
 
 echo "${DIM}Owner:${RESET}    $OWNER"
+echo "${DIM}Storage:${RESET}  $([ "$USA_S3" = true ] && echo "ativado" || echo "removido")"
 echo "${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
 echo "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
 
