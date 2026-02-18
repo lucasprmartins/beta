@@ -1,11 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
 
-  "effortLevel": "medium",
   "cleanupPeriodDays": 7,
 
   "permissions": {
     "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
       "mcp__context7__resolve-library-id",
@@ -15,7 +19,7 @@
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
-      "Bash(git branch --list*)",
+      "Bash(git branch*)",
       "Bash(git add*)",
       "Bash(git commit*)"
     ],
@@ -31,10 +35,14 @@
       "Bash(gh pr*)"
     ],
     "deny": [
+      "Read(.env*)",
+      "Edit(.env*)",
+      "Write(.env*)",
       "Bash(bun start*)",
       "Bash(bun env*)",
       "Bash(bun n8n*)",
-      "Bash(rm -rf*)"
+      "Bash(rm -rf*)",
+      "Bash(rm *)"
     ]
   },
 
