@@ -181,9 +181,7 @@ if [ "$USA_N8N" = false ]; then
   rm -f packages/infra/src/integrations/n8n.ts
   sedi '/N8N_WEBHOOK/d' packages/infra/src/env.ts
   sedi '/n8n Webhooks/d;/N8N_WEBHOOK/d' apps/server/.env.example
-  sedi '/n8n Webhooks/,/N8N_WEBHOOK_TOKEN/d' .claude/rules/backend/env.md
-  sedi '/n8n\.ts/d' .claude/rules/backend/infra.md
-  sedi 's/ e integrações (`N8N_\*`)//' .claude/rules/backend/infra.md
+  sedi '/n8n/d' .claude/rules/server/infra.md
   sedi '/bun n8n/d' .claude/settings.json
   sedi '/"files"/,/}/d' biome.jsonc
   sucesso "Diretório n8n/ e referências removidos"
@@ -193,8 +191,7 @@ if [ "$USA_S3" = false ]; then
   rm -f packages/infra/src/integrations/storage.ts
   sedi '/S3_/d' packages/infra/src/env.ts
   sedi '/Buckets S3/d;/S3_/d' apps/server/.env.example
-  sedi '/Storage S3/,/S3_BUCKET/d' .claude/rules/backend/env.md
-  sedi '/storage\.ts/d' .claude/rules/backend/infra.md
+  sedi '/Storage S3/d' .claude/rules/server/infra.md
   sedi '/@aws-sdk/d' packages/infra/package.json
   sedi '/Storage.*AWS SDK S3/d' .claude/CLAUDE.md
   sucesso "Storage S3 e referências removidos"
