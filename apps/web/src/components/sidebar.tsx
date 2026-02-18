@@ -1,25 +1,14 @@
-import type { Icon } from "@phosphor-icons/react";
 import {
   CubeIcon,
-  HouseIcon,
   MoonIcon,
   SidebarSimpleIcon,
   SunIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { SignOutButton } from "@/features/auth";
-
-interface MenuItem {
-  label: string;
-  icon: Icon;
-  to: string;
-}
+import { menuItems } from "@/lib/navigation";
 
 const DRAWER_ID = "app-sidebar";
-
-const menuItems: MenuItem[] = [
-  { label: "Dashboard", icon: HouseIcon, to: "/dashboard" },
-];
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
   return (

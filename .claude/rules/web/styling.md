@@ -32,9 +32,9 @@ Importar de `@phosphor-icons/react`, todos com sufixo `Icon`.
 | `bold` | Ações (botões, stats) |
 | `fill` | Preenchido (estados ativos) |
 
-## Sidebar
+## Navegação
 
-Ao adicionar uma nova rota, incluir navegação em `src/components/sidebar.tsx`:
+Ao adicionar uma nova rota, incluir em `src/lib/navigation.ts`:
 
 - Adicionar item a `menuItems` com `label`, `icon`, `to`
 - `to` sem prefixo `_auth` (TanStack Router resolve)
