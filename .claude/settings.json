@@ -1,8 +1,9 @@
 {
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "effortLevel": "medium",
+  "cleanupPeriodDays": 7,
+
   "permissions": {
     "allow": [
       "mcp__plugin_context7_context7__resolve-library-id",
@@ -37,6 +38,7 @@
       "Bash(rm -rf*)"
     ]
   },
+
   "extraKnownMarketplaces": {
     "codepowers": {
       "source": {
@@ -48,5 +50,52 @@
   "enabledPlugins": {
     "codepowers@codepowers": true,
     "context7@claude-plugins-official": true
-  }
+  },
+
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+
+  "statusLine": {
+    "type": "command",
+    "command": "BRANCH=$(git branch --show-current 2>/dev/null); DIRTY=$(git diff --quiet 2>/dev/null && echo '✅' || echo '⚡'); COMMIT=$(git log -1 --pretty=%s 2>/dev/null | cut -c1-40); echo \"🔀 $BRANCH $DIRTY $COMMIT\""
+  },
+  "terminalProgressBarEnabled": true,
+  "showTurnDuration": true,
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "Usando a Força",
+      "Estalando os dedos",
+      "Consultando o Conselho Jedi",
+      "Montando o Vibranium",
+      "Hackeando a Estrela da Morte",
+      "Ativando o Mjölnir",
+      "Abrindo portal com o Doutor Estranho",
+      "Calculando o salto pro hiperespaço",
+      "Reunindo as Jóias do Infinito",
+      "Analisando com a FRIDAY",
+      "Canalizando o lado sombrio",
+      "Forjando em Nidavellir",
+      "Decifrando com o JARVIS",
+      "Consultando o Holocron",
+      "Ativando protocolo Vingadores"
+    ]
+  },
+
+  "companyAnnouncements": [
+    "Um commit atômico por vez, jovem padawan.",
+    "Usar any é como o Thanos: parece resolver, mas destrói metade do projeto.",
+    "console.log é o lado sombrio da Força: seduz fácil, mas te consome.",
+    "Que a tipagem esteja com você. Sempre.",
+    "throw é pra erro inesperado, não pra drama. Isso não é uma novela do Loki.",
+    "Se o código tá difícil de entender, nem o Doutor Estranho viu esse futuro.",
+    "early return > pirâmide do inferno. Até o Yoda concorda.",
+    "Bun tá rodando mais rápido que o Millennium Falcon no hiperespaço.",
+    "Não é bug, é uma variante do multiverso. 🫠",
+    "Com grandes poderes vêm grandes responsabilidades... de tipar corretamente.",
+    "Café carregado, reator arc ligado... bora codar! ☕",
+    "Faça ou não faça. Não existe tentar... sem check-types antes."
+  ]
 }
