@@ -38,7 +38,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .tanstack
 .turbo
 .infisical.json
-.claude/settings.local.json
+.claude/*.local.*
 .codepowers
 apps/*server
 
