@@ -59,7 +59,7 @@
 
   "statusLine": {
     "type": "command",
-    "command": "BRANCH=$(git branch --show-current 2>/dev/null); DIRTY=$(git diff --quiet 2>/dev/null && echo '✅' || echo '⚡'); COMMIT=$(git log -1 --pretty=%s 2>/dev/null | cut -c1-40); echo \"🔀 $BRANCH $DIRTY $COMMIT\""
+    "command": "bun .claude/statusline.mjs"
   },
   "terminalProgressBarEnabled": true,
   "showTurnDuration": true,
