@@ -28,6 +28,10 @@ fi
 
 # ─── Link ────────────────────────────────────────────────────────────────────
 
-info "Vinculando projeto $NOME no workspace $WORKSPACE..."
-railway link -p "$NOME" -w "$WORKSPACE"
-sucesso "Projeto vinculado com sucesso"
+if railway status &> /dev/null; then
+  sucesso "Projeto já está vinculado"
+else
+  info "Vinculando projeto $NOME no workspace $WORKSPACE..."
+  railway link -p "$NOME" -w "$WORKSPACE"
+  sucesso "Projeto vinculado com sucesso"
+fi

@@ -25,6 +25,10 @@ if echo "$STATUS_JSON" | grep -q "No linked project found"; then
   STATUS_JSON=$(railway status --json 2>&1 || true)
 fi
 
+if ! echo "$STATUS_JSON" | bun -e "JSON.parse(await Bun.stdin.text())" &> /dev/null; then
+  erro "Falha ao obter status do Railway. Verifique se está autenticado: railway login"
+fi
+
 sucesso "Projeto detectado."
 
 echo ""
