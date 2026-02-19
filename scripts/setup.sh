@@ -247,6 +247,20 @@ writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
 
+# ─── Gerar config.json ─────────────────────────────────────────────────────
+
+info "Gerando config.json..."
+
+NOME_PROJETO="$NOME_PROJETO" OWNER="$OWNER" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" bun -e "
+import { writeFileSync } from 'fs';
+const config = { name: process.env.NOME_PROJETO, owner: process.env.OWNER };
+if (process.env.USA_S3 === 'true') config.storage = true;
+if (process.env.USA_N8N === 'true') config.n8n = true;
+if (process.env.USA_RAILWAY === 'true') config.railway = true;
+writeFileSync('config.json', JSON.stringify(config, null, 2) + '\n');
+"
+sucesso "config.json gerado"
+
 # ─── Instalar dependências ───────────────────────────────────────────────────
 
 titulo "Instalando dependências"
