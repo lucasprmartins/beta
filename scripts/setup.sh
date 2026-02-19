@@ -93,92 +93,6 @@ if [ "$USA_RAILWAY" = true ]; then
   fi
 fi
 
-# ─── Setup Git + GitHub ─────────────────────────────────────────────────────
-
-titulo "Configurando repositório"
-
-rm -rf .git
-git init --quiet
-sucesso "Repositório Git inicializado"
-
-USUARIO=$(gh api user --jq '.login')
-ORGS=$(gh api user/orgs --jq '.[].login' 2>/dev/null || true)
-
-echo ""
-pergunta "Selecione o owner do repositório:"
-echo ""
-
-OPCOES=("$USUARIO (pessoal)")
-INDEX=1
-echo "${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
-
-if [ -n "$ORGS" ]; then
-  while IFS= read -r org; do
-    INDEX=$((INDEX + 1))
-    OPCOES+=("$org")
-    echo "${BOLD}${INDEX})${RESET} $org"
-  done <<< "$ORGS"
-fi
-
-echo ""
-read -p "> Selecione [1]: " SELECAO
-SELECAO="${SELECAO:-1}"
-
-if ! [[ "$SELECAO" =~ ^[0-9]+$ ]] || [ "$SELECAO" -lt 1 ] || [ "$SELECAO" -gt "$INDEX" ]; then
-  erro "Seleção inválida. Escolha entre 1 e $INDEX."
-fi
-
-if [ "$SELECAO" -eq 1 ]; then
-  OWNER="$USUARIO"
-else
-  OWNER="${OPCOES[$((SELECAO - 1))]}"
-fi
-
-echo ""
-info "Criando repositório $OWNER/$NOME_PROJETO..."
-gh repo create "$OWNER/$NOME_PROJETO" --private --source=. --remote=origin
-sucesso "Repositório criado: $OWNER/$NOME_PROJETO"
-
-# ─── Deploy Railway (condicional) ────────────────────────────────────────────
-
-if [ "$USA_RAILWAY" = true ]; then
-  titulo "Deploy Railway"
-
-  info "Criando projeto..."
-  railway init -n "$NOME_PROJETO" -w "$RAILWAY_WORKSPACE"
-
-  info "Aplicando template..."
-  railway deploy -t "$RAILWAY_TEMPLATE"
-
-  sleep 10 &
-  spinner $! "Aguardando projeto ficar disponível..."
-  sucesso "Projeto disponível"
-
-  info "Abrindo dashboard no navegador..."
-  railway open
-
-  echo ""
-  aviso "${BOLD}Ação manual necessária no Railway:${RESET}"
-  echo ""
-  info "Nos serviços ${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
-  info "1. Settings → Source → Disconnect"
-  info "2. Conecte o repo ${BOLD}$OWNER/$NOME_PROJETO${RESET}"
-  info "3. Settings → Config-as-code → + Add File Path"
-  info "   ${BOLD}server${RESET}${DIM}: /apps/server/railway.json${RESET}"
-  info "   ${BOLD}web${RESET}${DIM}:    /apps/web/railway.json${RESET}"
-  echo ""
-  aviso "Não use Eject — ele cria um novo repositório"
-  echo ""
-  aviso "${BOLD}Essa etapa é essencial.${RESET} Sem ela, o Railway não saberá como buildar e deployar cada serviço."
-  echo ""
-  read -p "> Você já configurou o repositório e o Config File Path nos dois serviços? [y/N] " CONFIRMOU_RAILWAY
-  if [[ ! "$CONFIRMOU_RAILWAY" =~ ^[yYsS]$ ]]; then
-    erro "Configure os serviços no Railway antes de continuar."
-  fi
-
-  sucesso "Deploy Railway configurado"
-fi
-
 # ─── Limpeza condicional ─────────────────────────────────────────────────────
 
 titulo "Limpeza"
@@ -254,6 +168,60 @@ writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
 
+# ─── Instalar dependências ───────────────────────────────────────────────────
+
+titulo "Instalando dependências"
+
+bun install
+echo ""
+sucesso "Dependências instaladas"
+
+# ─── Setup Git + GitHub ─────────────────────────────────────────────────────
+
+titulo "Configurando repositório"
+
+rm -rf .git
+git init --quiet
+sucesso "Repositório Git inicializado"
+
+USUARIO=$(gh api user --jq '.login')
+ORGS=$(gh api user/orgs --jq '.[].login' 2>/dev/null || true)
+
+echo ""
+pergunta "Selecione o owner do repositório:"
+echo ""
+
+OPCOES=("$USUARIO (pessoal)")
+INDEX=1
+echo "${BOLD}${INDEX})${RESET} $USUARIO ${DIM}(pessoal)${RESET}"
+
+if [ -n "$ORGS" ]; then
+  while IFS= read -r org; do
+    INDEX=$((INDEX + 1))
+    OPCOES+=("$org")
+    echo "${BOLD}${INDEX})${RESET} $org"
+  done <<< "$ORGS"
+fi
+
+echo ""
+read -p "> Selecione [1]: " SELECAO
+SELECAO="${SELECAO:-1}"
+
+if ! [[ "$SELECAO" =~ ^[0-9]+$ ]] || [ "$SELECAO" -lt 1 ] || [ "$SELECAO" -gt "$INDEX" ]; then
+  erro "Seleção inválida. Escolha entre 1 e $INDEX."
+fi
+
+if [ "$SELECAO" -eq 1 ]; then
+  OWNER="$USUARIO"
+else
+  OWNER="${OPCOES[$((SELECAO - 1))]}"
+fi
+
+echo ""
+info "Criando repositório $OWNER/$NOME_PROJETO..."
+gh repo create "$OWNER/$NOME_PROJETO" --private --source=. --remote=origin
+sucesso "Repositório criado: $OWNER/$NOME_PROJETO"
+
 # ─── Gerar config.json ─────────────────────────────────────────────────────
 
 info "Gerando config.json..."
@@ -268,13 +236,45 @@ writeFileSync('config.json', JSON.stringify(config, null, 2) + '\n');
 "
 sucesso "config.json gerado"
 
-# ─── Instalar dependências ───────────────────────────────────────────────────
+# ─── Deploy Railway (condicional) ────────────────────────────────────────────
 
-titulo "Instalando dependências"
+if [ "$USA_RAILWAY" = true ]; then
+  titulo "Deploy Railway"
 
-bun install
-echo ""
-sucesso "Dependências instaladas"
+  info "Criando projeto..."
+  railway init -n "$NOME_PROJETO" -w "$RAILWAY_WORKSPACE"
+
+  info "Aplicando template..."
+  railway deploy -t "$RAILWAY_TEMPLATE"
+
+  sleep 10 &
+  spinner $! "Aguardando projeto ficar disponível..."
+  sucesso "Projeto disponível"
+
+  info "Abrindo dashboard no navegador..."
+  railway open
+
+  echo ""
+  aviso "${BOLD}Ação manual necessária no Railway:${RESET}"
+  echo ""
+  info "Nos serviços ${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
+  info "1. Settings → Source → Disconnect"
+  info "2. Conecte o repo ${BOLD}$OWNER/$NOME_PROJETO${RESET}"
+  info "3. Settings → Config-as-code → + Add File Path"
+  info "   ${BOLD}server${RESET}${DIM}: /apps/server/railway.json${RESET}"
+  info "   ${BOLD}web${RESET}${DIM}:    /apps/web/railway.json${RESET}"
+  echo ""
+  aviso "Não use Eject — ele cria um novo repositório"
+  echo ""
+  aviso "${BOLD}Essa etapa é essencial.${RESET} Sem ela, o Railway não saberá como buildar e deployar cada serviço."
+  echo ""
+  read -p "> Você já configurou o repositório e o Config File Path nos dois serviços? [y/N] " CONFIRMOU_RAILWAY
+  if [[ ! "$CONFIRMOU_RAILWAY" =~ ^[yYsS]$ ]]; then
+    erro "Configure os serviços no Railway antes de continuar."
+  fi
+
+  sucesso "Deploy Railway configurado"
+fi
 
 # ─── Auto-remoção ────────────────────────────────────────────────────────────
 
