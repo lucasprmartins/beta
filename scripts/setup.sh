@@ -16,7 +16,7 @@ titulo "Verificando pré-requisitos"
 if ! command -v gh &> /dev/null; then
   erro "GitHub CLI não está instalado. Instale em: https://cli.github.com"
 fi
-sucesso "GitHub CLI encontrado"
+sucesso "GitHub CLI instalado"
 
 if ! gh auth status &> /dev/null; then
   erro "GitHub CLI não está autenticado. Execute: gh auth login"
@@ -64,9 +64,20 @@ if [ "$USA_RAILWAY" = true ]; then
   echo ""
 
   if ! command -v railway &> /dev/null; then
-    erro "Railway CLI não está instalado. Instale em: https://docs.railway.com/guides/cli"
+    aviso "Railway CLI não está instalado."
+    info "Instale em: https://docs.railway.com/guides/cli"
+    echo ""
+    erro "Instale o Railway CLI e execute o setup novamente."
   fi
-  sucesso "Railway CLI encontrado"
+  sucesso "Railway CLI instalado"
+
+  if ! railway whoami &> /dev/null; then
+    aviso "Railway CLI não está autenticado."
+    info "Execute: railway login"
+    echo ""
+    erro "Autentique o Railway CLI e execute o setup novamente."
+  fi
+  sucesso "Railway CLI autenticado"
 
   echo ""
   pergunta "Nome do workspace:"
