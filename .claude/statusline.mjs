@@ -1,7 +1,4 @@
 import { execSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 
 let input = "";
 for await (const chunk of process.stdin) {
@@ -43,24 +40,15 @@ try {
 
 parts.push(`⎇  ${branch}${gitStatus}`);
 
-// Session timer (PPID no nome = isolamento entre sessões + reset ao reiniciar)
-const sessionFile = join(tmpdir(), `claude-session-${process.ppid}`);
-try {
-  let startTime;
-  if (existsSync(sessionFile)) {
-    startTime = Number.parseInt(readFileSync(sessionFile, "utf-8").trim(), 10);
-  } else {
-    startTime = Date.now();
-    writeFileSync(sessionFile, String(startTime));
-  }
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+// Session timer
+const duration = data?.cost?.total_duration_ms;
+if (duration != null) {
+  const elapsed = Math.floor(duration / 1000);
   const hours = Math.floor(elapsed / 3600);
   const minutes = Math.floor((elapsed % 3600) / 60);
   const time =
     hours > 0 ? `${hours}h${String(minutes).padStart(2, "0")}m` : `${minutes}m`;
   parts.push(`⏱  ${time}`);
-} catch (_) {
-  // fallback
 }
 
 // Model
