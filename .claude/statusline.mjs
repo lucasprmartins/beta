@@ -43,8 +43,8 @@ try {
 
 parts.push(`⎇  ${branch}${gitStatus}`);
 
-// Session timer
-const sessionFile = join(tmpdir(), "claude-session-start");
+// Session timer (PPID no nome = isolamento entre sessões + reset ao reiniciar)
+const sessionFile = join(tmpdir(), `claude-session-${process.ppid}`);
 try {
   let startTime;
   if (existsSync(sessionFile)) {
