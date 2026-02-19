@@ -8,7 +8,11 @@
 
     "topo": { "dependsOn": ["^topo"] },
 
-    "build": { "dependsOn": ["^build"], "outputs": ["dist/**", "server"] },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
+      "outputs": ["dist/**", "server"]
+    },
     "check-types": {
       "dependsOn": ["topo"],
       "inputs": ["**/*.{ts,tsx}", "tsconfig.json"],
@@ -17,7 +21,11 @@
         "dist/tsconfig.tsbuildinfo"
       ]
     },
-    "test": { "dependsOn": ["^build"], "outputs": ["coverage/**"] },
+    "test": {
+      "dependsOn": ["topo"],
+      "inputs": ["**/*.{ts,tsx}", "tsconfig.json"],
+      "outputs": ["coverage/**"]
+    },
 
     "db:generate": { "cache": false, "persistent": true },
     "db:migrate": { "cache": false, "persistent": true },
