@@ -104,10 +104,10 @@ Server (Elysia)
 
    ```bash
    cd <nome-do-projeto>
-   sh scripts/setup.sh
+   bun setup
    ```
 
-O script instala as dependências automaticamente, pergunta o nome do projeto e quais módulos ativar (n8n, Railway), cria um repositório GitHub privado e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
+O script pergunta o nome do projeto, o owner (pessoal ou organização) e quais módulos ativar (Storage S3, n8n, Railway). Em seguida, cria um repositório GitHub privado, instala as dependências e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
 
 ## Após o setup
 
