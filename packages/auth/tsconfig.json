@@ -9,7 +9,5 @@
     "strictNullChecks": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
   },
-  "references": [
-    { "path": "../infra" }
-  ]
+  "references": [{ "path": "../infra" }]
 }
