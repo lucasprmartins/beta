@@ -18,7 +18,11 @@ fi
 STATUS_JSON=$(railway status --json 2>&1 || true)
 
 if echo "$STATUS_JSON" | grep -q "No linked project found"; then
-  erro "Nenhum projeto Railway vinculado. Execute 'railway link' primeiro."
+  aviso "Nenhum projeto Railway vinculado. Linkando automaticamente..."
+  echo ""
+  bash "$SCRIPT_DIR/railway.sh"
+  echo ""
+  STATUS_JSON=$(railway status --json 2>&1 || true)
 fi
 
 sucesso "Projeto detectado."
