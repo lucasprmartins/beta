@@ -80,10 +80,11 @@ if [ "$USA_RAILWAY" = true ]; then
     erro "Nome do workspace é obrigatório."
   fi
 
-  echo ""
-  pergunta "Código do template ${DIM}[edQPdo]${RESET}:"
-  read -p "> " RAILWAY_TEMPLATE
-  RAILWAY_TEMPLATE="${RAILWAY_TEMPLATE:-edQPdo}"
+  if [ "$USA_S3" = true ]; then
+    RAILWAY_TEMPLATE="XGuIs7"
+  else
+    RAILWAY_TEMPLATE="edQPdo"
+  fi
 fi
 
 # ─── Setup Git + GitHub ─────────────────────────────────────────────────────
