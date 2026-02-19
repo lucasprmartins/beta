@@ -14,7 +14,7 @@
       "outputs": ["dist/**", "server"]
     },
     "check-types": {
-      "dependsOn": ["topo"],
+      "dependsOn": ["^build"],
       "inputs": ["**/*.{ts,tsx}", "tsconfig.json"],
       "outputs": [
         "node_modules/.cache/tsbuildinfo.json",

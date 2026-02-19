@@ -8,5 +8,10 @@
     "composite": true,
     "strictNullChecks": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
-  }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../infra" },
+    { "path": "../auth" }
+  ]
 }
