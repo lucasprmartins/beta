@@ -205,10 +205,11 @@ if [ "$USA_S3" = false ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/railway.sh scripts/env-railway.sh railway.json apps/server/railway.json apps/web/railway.json
+  rm -f scripts/railway.sh railway.json apps/server/railway.json apps/web/railway.json
 
-  # env-local.sh: remover bloco DATABASE_URL via Railway (linha do comentário até o fi)
-  sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env-local.sh
+  # env.sh: remover bloco Railway (link + ambiente) e DATABASE_URL via Railway
+  sedi '/Railway.*link.*ambiente/,/^echo ""/d' scripts/env.sh
+  sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env.sh
 
   # seed.sh: substituir por versão simplificada (sem Railway)
   cat > scripts/seed.sh << 'SEED'
@@ -248,7 +249,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
 if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
-if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['railway']; delete pkg.scripts['env:railway']; }
+if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['railway']; }
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
@@ -303,11 +304,11 @@ echo "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || e
 banner "Próximos passos"
 
 if [ "$USA_RAILWAY" = true ]; then
-  echo "1. ${BOLD}bun env:railway${RESET} ${DIM}— configurar variáveis de ambiente${RESET}"
+  echo "1. ${BOLD}bun env${RESET}         ${DIM}— configurar variáveis de ambiente${RESET}"
   echo "2. ${BOLD}bun db:seed${RESET}     ${DIM}— popular banco de dados${RESET}"
   echo "3. ${BOLD}bun cleanup${RESET}     ${DIM}— remover exemplos${RESET}"
 else
-  echo "1. ${BOLD}bun env:local${RESET}   ${DIM}— configurar variáveis de ambiente${RESET}"
+  echo "1. ${BOLD}bun env${RESET}         ${DIM}— configurar variáveis de ambiente${RESET}"
   echo "2. ${BOLD}bun cleanup${RESET}     ${DIM}— remover exemplos${RESET}"
 fi
 echo ""

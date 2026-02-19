@@ -7,7 +7,60 @@ setup_root
 
 # ─── Banner ──────────────────────────────────────────────────────────────────
 
-banner "Ambiente Local"
+banner "Configurar Ambiente"
+
+# ─── Railway (link + ambiente) ────────────────────────────────────────────────
+
+if ! command -v railway &> /dev/null; then
+  erro "Railway CLI não está instalado. Instale em: https://docs.railway.com/guides/cli"
+fi
+
+STATUS_JSON=$(railway status --json 2>&1 || true)
+
+if echo "$STATUS_JSON" | grep -q "No linked project found"; then
+  aviso "Nenhum projeto Railway vinculado. Linkando automaticamente..."
+  echo ""
+  bash "$SCRIPT_DIR/railway.sh"
+  echo ""
+  STATUS_JSON=$(railway status --json 2>&1 || true)
+fi
+
+sucesso "Projeto detectado."
+
+echo ""
+pergunta "Selecione o ambiente:"
+echo ""
+
+ENVS=$(echo "$STATUS_JSON" | bun -e "
+  const data = JSON.parse(await Bun.stdin.text());
+  for (const e of data.environments.edges) console.log(e.node.name);
+")
+
+OPCOES=()
+INDEX=0
+while IFS= read -r env; do
+  INDEX=$((INDEX + 1))
+  OPCOES+=("$env")
+  echo "${BOLD}${INDEX})${RESET} $env"
+done <<< "$ENVS"
+
+if [ "$INDEX" -eq 0 ]; then
+  erro "Nenhum ambiente encontrado no projeto."
+fi
+
+echo ""
+read -p "> Selecione [1]: " SELECAO
+SELECAO="${SELECAO:-1}"
+
+if ! [[ "$SELECAO" =~ ^[0-9]+$ ]] || [ "$SELECAO" -lt 1 ] || [ "$SELECAO" -gt "$INDEX" ]; then
+  erro "Seleção inválida. Escolha entre 1 e $INDEX."
+fi
+
+ENV_NAME="${OPCOES[$((SELECAO - 1))]}"
+
+railway environment "$ENV_NAME"
+
+echo ""
 
 # ─── Criar .env se não existir ───────────────────────────────────────────────
 
@@ -47,16 +100,12 @@ fi
 
 # ─── Configurar DATABASE_URL via Railway ─────────────────────────────────────
 
-if command -v railway &> /dev/null; then
-  DB_URL=$(railway variables --kv --service=postgres 2>/dev/null | grep '^DATABASE_PUBLIC_URL=' | cut -d'=' -f2-)
-  if [ -n "$DB_URL" ]; then
-    sedi "s|^DATABASE_URL=.*|DATABASE_URL=$DB_URL|" apps/server/.env
-    sucesso "DATABASE_URL configurado via Railway"
-  else
-    aviso "DATABASE_URL não encontrado no Railway, aguarde o deploy."
-  fi
+DB_URL=$(railway variables --kv --service=postgres 2>/dev/null | grep '^DATABASE_PUBLIC_URL=' | cut -d'=' -f2-)
+if [ -n "$DB_URL" ]; then
+  sedi "s|^DATABASE_URL=.*|DATABASE_URL=$DB_URL|" apps/server/.env
+  sucesso "DATABASE_URL configurado via Railway"
 else
-  aviso "Railway CLI não encontrado, pulando DATABASE_URL"
+  aviso "DATABASE_URL não encontrado no Railway, aguarde o deploy."
 fi
 
 # ─── Resumo ──────────────────────────────────────────────────────────────────

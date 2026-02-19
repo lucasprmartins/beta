@@ -116,7 +116,7 @@ O script instala as dependências automaticamente, pergunta o nome do projeto e 
 1. Configure as variáveis de ambiente — o `DATABASE_URL` é puxado do Railway automaticamente:
 
 ```bash
-bun env:railway
+bun env
 ```
 
 2. Inicie o ambiente de desenvolvimento — as migrations já foram executadas no pre-deploy do Railway:
@@ -136,7 +136,7 @@ bun cleanup
 1. Configure as variáveis de ambiente e preencha o `DATABASE_URL` manualmente em `apps/server/.env`:
 
 ```bash
-bun env:local
+bun env
 ```
 
 2. Aplique o schema no banco local:
@@ -157,7 +157,7 @@ bun dev
 bun cleanup
 ```
 
-> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo `bun env:local`.
+> O `BETTER_AUTH_SECRET` é gerado automaticamente pelo `bun env`.
 
 O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:3001`.
 
@@ -179,6 +179,5 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 | `bun lint` | Verifica linting |
 | `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
-| `bun env:local` | Configura variáveis de ambiente |
-| `bun env:railway` | Troca para ambiente de PR no Railway |
+| `bun env` | Configura variáveis de ambiente |
 | `bun cleanup` | Remove arquivos de exemplo |
