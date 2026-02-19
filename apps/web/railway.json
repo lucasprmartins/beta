@@ -6,6 +6,17 @@
     "watchPatterns": ["apps/web/**", "packages/**"]
   },
   "deploy": {
-    "startCommand": "bun run start:web"
+    "startCommand": "bun run start:web",
+    "overlapSeconds": 15,
+    "drainingSeconds": 10
+  },
+  "environments": {
+    "pr": {
+      "deploy": {
+        "overlapSeconds": 0,
+        "drainingSeconds": 0,
+        "sleepApplication": true
+      }
+    }
   }
 }
