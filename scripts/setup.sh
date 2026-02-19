@@ -199,7 +199,7 @@ if [ "$USA_S3" = false ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/env-railway.sh railway.json apps/server/railway.json apps/web/railway.json
+  rm -f scripts/railway.sh scripts/env-railway.sh railway.json apps/server/railway.json apps/web/railway.json
 
   # env-local.sh: remover bloco DATABASE_URL via Railway (linha do comentário até o fi)
   sedi '/DATABASE_URL via Railway/,/^fi$/d' scripts/env-local.sh
@@ -242,7 +242,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
 if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
-if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['env:railway']; }
+if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['railway']; delete pkg.scripts['env:railway']; }
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
 sucesso "package.json atualizado"
@@ -251,12 +251,12 @@ sucesso "package.json atualizado"
 
 info "Gerando config.json..."
 
-NOME_PROJETO="$NOME_PROJETO" OWNER="$OWNER" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" bun -e "
+NOME_PROJETO="$NOME_PROJETO" OWNER="$OWNER" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" RAILWAY_WORKSPACE="$RAILWAY_WORKSPACE" bun -e "
 import { writeFileSync } from 'fs';
 const config = { name: process.env.NOME_PROJETO, owner: process.env.OWNER };
 if (process.env.USA_S3 === 'true') config.storage = true;
 if (process.env.USA_N8N === 'true') config.n8n = true;
-if (process.env.USA_RAILWAY === 'true') config.railway = true;
+if (process.env.USA_RAILWAY === 'true') config.railway = { workspace: process.env.RAILWAY_WORKSPACE };
 writeFileSync('config.json', JSON.stringify(config, null, 2) + '\n');
 "
 sucesso "config.json gerado"
