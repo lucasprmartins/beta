@@ -218,9 +218,14 @@ else
 fi
 
 echo ""
-info "Criando repositório $OWNER/$NOME_PROJETO..."
-gh repo create "$OWNER/$NOME_PROJETO" --private --source=. --remote=origin
-sucesso "Repositório criado: $OWNER/$NOME_PROJETO"
+if gh repo view "$OWNER/$NOME_PROJETO" &> /dev/null; then
+  git remote add origin "https://github.com/$OWNER/$NOME_PROJETO.git" 2>/dev/null || true
+  sucesso "Repositório $OWNER/$NOME_PROJETO já existe, reutilizando"
+else
+  info "Criando repositório $OWNER/$NOME_PROJETO..."
+  gh repo create "$OWNER/$NOME_PROJETO" --private --source=. --remote=origin
+  sucesso "Repositório criado: $OWNER/$NOME_PROJETO"
+fi
 
 # ─── Gerar config.json ─────────────────────────────────────────────────────
 
@@ -241,15 +246,19 @@ sucesso "config.json gerado"
 if [ "$USA_RAILWAY" = true ]; then
   titulo "Deploy Railway"
 
-  info "Criando projeto..."
-  railway init -n "$NOME_PROJETO" -w "$RAILWAY_WORKSPACE"
+  if railway status &> /dev/null; then
+    sucesso "Projeto Railway já existe, reutilizando"
+  else
+    info "Criando projeto..."
+    railway init -n "$NOME_PROJETO" -w "$RAILWAY_WORKSPACE"
 
-  info "Aplicando template..."
-  railway deploy -t "$RAILWAY_TEMPLATE"
+    info "Aplicando template..."
+    railway deploy -t "$RAILWAY_TEMPLATE"
 
-  sleep 10 &
-  spinner $! "Aguardando projeto ficar disponível..."
-  sucesso "Projeto disponível"
+    sleep 10 &
+    spinner $! "Aguardando projeto ficar disponível..."
+    sucesso "Projeto disponível"
+  fi
 
   info "Abrindo dashboard no navegador..."
   railway open
