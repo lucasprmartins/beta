@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "setup": "sh scripts/setup.sh",
     "dev": "turbo dev",
     "dev:server": "turbo -F server dev",
     "dev:web": "turbo -F web dev",

@@ -13,11 +13,6 @@ banner "Setup de Projeto"
 
 titulo "Verificando pré-requisitos"
 
-if ! command -v bun &> /dev/null; then
-  erro "Bun não está instalado. Instale em: https://bun.sh"
-fi
-sucesso "Bun encontrado"
-
 if ! command -v gh &> /dev/null; then
   erro "GitHub CLI não está instalado. Instale em: https://cli.github.com"
 fi
@@ -272,6 +267,7 @@ sucesso "Dependências instaladas"
 # ─── Auto-remoção ────────────────────────────────────────────────────────────
 
 rm -f scripts/setup.sh
+sedi '/"setup"/d' package.json
 sucesso "Script setup removido"
 
 # ─── Commit inicial + push ───────────────────────────────────────────────────
