@@ -37,8 +37,8 @@
   },
   "dependencies": {
     "@app/core": "workspace:*",
-    "@aws-sdk/client-s3": "^3.993.0",
-    "@aws-sdk/s3-request-presigner": "^3.993.0",
+    "@aws-sdk/client-s3": "^3.995.0",
+    "@aws-sdk/s3-request-presigner": "^3.995.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "pino": "^9.14.0",

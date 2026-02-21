@@ -18,13 +18,13 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "vite": "^7.3.1",
-    "@tanstack/react-router-devtools": "^1.161.1",
-    "@tanstack/router-plugin": "^1.161.1",
+    "@tanstack/react-router-devtools": "^1.161.4",
+    "@tanstack/router-plugin": "^1.161.4",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@vitejs/plugin-react-swc": "^4.2.3",
     "tailwindcss": "^4.2.0",
     "@tailwindcss/vite": "^4.2.0",
-    "daisyui": "^5.5.18"
+    "daisyui": "^5.5.19"
   },
   "dependencies": {
     "@app/auth": "workspace:*",
@@ -33,7 +33,7 @@
     "@orpc/tanstack-query": "^1.13.5",
     "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-query": "^5.90.21",
-    "@tanstack/react-router": "^1.161.1",
+    "@tanstack/react-router": "^1.161.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "serve": "^14.2.5",
