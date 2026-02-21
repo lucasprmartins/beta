@@ -42,9 +42,15 @@ Implementações concretas: banco de dados e integrações externas.
 
 ## Integrações (`src/integrations/`)
 
-- Storage S3: `gerarUrlUpload()`, `gerarUrlDownload()`, `removerObjeto()`, `listarObjetos()`
+Cada integração em arquivo separado.
+
+### Storage S3
+
+- Funções: `gerarUrlUpload()`, `gerarUrlDownload()`, `removerObjeto()`, `listarObjetos()`
 - Imagens: guardar a **key** no banco; na API, gerar presigned URL com `gerarUrlDownload(key, 900)`
 - Upload: gerar key no backend (`"prefixo/${crypto.randomUUID()}"`), retornar com `gerarUrlUpload(key, contentType, 900)`
-- n8n: classe `N8n` com `path()` para webhooks tipados
-- Cada integração em arquivo separado
+
+### n8n
+
+- Classe `N8n` com `path()` para webhooks tipados
 

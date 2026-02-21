@@ -102,7 +102,7 @@ if [ "$USA_N8N" = false ]; then
   rm -f packages/infra/src/integrations/n8n.ts
   sedi '/N8N_WEBHOOK/d' packages/infra/src/env.ts
   sedi '/n8n Webhooks/d;/N8N_WEBHOOK/d' apps/server/.env.example
-  sedi '/n8n/d' .claude/rules/server/infra.md
+  sedi '/^### n8n/,$d' .claude/rules/server/infra.md
   sedi '/bun n8n/d' .claude/settings.json
   sedi '/"files"/,/}/d' biome.jsonc
   sucesso "Diretório n8n/ e referências removidos"
@@ -113,7 +113,7 @@ if [ "$USA_S3" = false ]; then
   rm -f packages/infra/src/integrations/storage-cors.ts
   sedi '/S3_/d' packages/infra/src/env.ts
   sedi '/Buckets S3/d;/S3_/d' apps/server/.env.example
-  sedi '/Storage S3/d' .claude/rules/server/infra.md
+  sedi -e '/^### Storage S3/,/^### [^S]/{' -e '/^### [^S]/!d' -e '}' .claude/rules/server/infra.md
   sedi '/@aws-sdk/d' packages/infra/package.json
   sedi '/"storage"/d' packages/infra/package.json
   sedi '/"storage"/d' package.json
