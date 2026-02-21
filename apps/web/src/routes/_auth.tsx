@@ -6,12 +6,16 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+// Layout alternativo: import { Header } from "@/components/header"
 import { Sidebar } from "@/components/sidebar";
 import { sessionOptions } from "@/lib/auth";
 
+// Layout: Sidebar | Header
+const LayoutComponent = Sidebar;
+
 function AuthErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
-    <Sidebar>
+    <LayoutComponent>
       <div className="flex min-h-[calc(100vh-3.75rem)] items-center justify-center">
         <div className="flex max-w-md flex-col items-center gap-4 rounded-xl bg-base-200 p-8 text-center">
           <WarningCircleIcon className="h-12 w-12 text-error" weight="bold" />
@@ -34,7 +38,7 @@ function AuthErrorComponent({ error, reset }: ErrorComponentProps) {
           </div>
         </div>
       </div>
-    </Sidebar>
+    </LayoutComponent>
   );
 }
 
@@ -49,12 +53,12 @@ export const Route = createFileRoute("/_auth")({
     return { session };
   },
   component: () => (
-    <Sidebar>
+    <LayoutComponent>
       <Outlet />
-    </Sidebar>
+    </LayoutComponent>
   ),
   pendingComponent: () => (
-    <Sidebar>
+    <LayoutComponent>
       <div className="p-6">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {["s1", "s2", "s3", "s4", "s5", "s6"].map((id, i) => (
@@ -72,7 +76,7 @@ export const Route = createFileRoute("/_auth")({
           ))}
         </div>
       </div>
-    </Sidebar>
+    </LayoutComponent>
   ),
   errorComponent: AuthErrorComponent,
 });
