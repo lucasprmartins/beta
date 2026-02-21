@@ -73,8 +73,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       }}
     >
       <Outlet />
-      <TanStackRouterDevtools />
-      <ReactQueryDevtools />
+      {import.meta.env.VITE_DEVTOOLS === "true" && (
+        <>
+          <TanStackRouterDevtools />
+          <ReactQueryDevtools />
+        </>
+      )}
     </AuthProvider>
   ),
   pendingComponent: () => (

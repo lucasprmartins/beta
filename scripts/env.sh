@@ -86,6 +86,7 @@ fi
 if [ ! -f apps/web/.env ]; then
   cat > apps/web/.env << 'ENV'
 VITE_SERVER_URL=http://localhost:3000
+VITE_DEVTOOLS=true
 ENV
   sucesso "apps/web/.env criado"
 else
