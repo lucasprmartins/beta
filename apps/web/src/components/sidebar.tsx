@@ -60,13 +60,25 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
             {menuItems.map((item) => (
               <li key={item.to}>
                 <Link
-                  activeProps={{ className: "menu-active" }}
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  activeProps={{
+                    className:
+                      "!bg-primary/20 !text-primary font-bold hover:!bg-primary/10 hover:!text-secondary",
+                  }}
+                  className="hover:!bg-base-content/5 is-drawer-close:tooltip is-drawer-close:tooltip-right text-secondary hover:text-base-content"
                   data-tip={item.label}
                   to={item.to}
                 >
-                  <item.icon className="h-5 w-5 shrink-0" weight="bold" />
-                  <span className="is-drawer-close:hidden">{item.label}</span>
+                  {({ isActive }) => (
+                    <>
+                      <item.icon
+                        className="h-5 w-5 shrink-0"
+                        weight={isActive ? "fill" : "bold"}
+                      />
+                      <span className="is-drawer-close:hidden">
+                        {item.label}
+                      </span>
+                    </>
+                  )}
                 </Link>
               </li>
             ))}
