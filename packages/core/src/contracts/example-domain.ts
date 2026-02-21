@@ -4,7 +4,7 @@ export interface CriarProdutoInput {
   nome: string;
   descricao: string;
   preco: number;
-  imagemUrl: string | null;
+  imagemKey: string | null;
 }
 
 export interface ProdutoData {
@@ -14,7 +14,7 @@ export interface ProdutoData {
   preco: number;
   estoque: number;
   ativo: boolean;
-  imagemUrl: string | null;
+  imagemKey: string | null;
 }
 
 export interface ProdutoRepository {

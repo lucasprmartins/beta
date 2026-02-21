@@ -15,7 +15,7 @@ export const produto = pgTable("produto", {
   preco: numeric("preco", { precision: 10, scale: 2 }).notNull(),
   estoque: integer("estoque").notNull().default(0),
   ativo: boolean("ativo").notNull().default(true),
-  imagemUrl: text("imagem_url"),
+  imagemKey: text("imagem_key"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
