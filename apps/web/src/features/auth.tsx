@@ -2,14 +2,13 @@ import {
   CaretDownIcon,
   EnvelopeIcon,
   LockIcon,
-  MoonIcon,
   SignOutIcon,
-  SunIcon,
   UserIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { type ComponentPropsWithoutRef, useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { sessionOptions, useSignIn, useSignOut, useSignUp } from "../lib/auth";
 
 export interface SignInFormProps {
@@ -24,14 +23,6 @@ export type SignOutButtonProps = Omit<
   ComponentPropsWithoutRef<"button">,
   "onClick"
 >;
-
-const ThemeToggle = () => (
-  <label className="swap swap-rotate">
-    <input className="theme-controller" type="checkbox" value="dark" />
-    <SunIcon className="swap-off h-5 w-5" />
-    <MoonIcon className="swap-on h-5 w-5" />
-  </label>
-);
 
 export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
   const { mutateAsync: signIn, isPending } = useSignIn();
@@ -69,7 +60,7 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
       <fieldset className="fieldset w-sm rounded-box bg-base-200 p-6">
         <legend className="fieldset-legend text-sm">
           Faça o seu login
-          <ThemeToggle />
+          <ThemeToggle size="sm" />
         </legend>
 
         <label className="fieldset-label" htmlFor="sign-in-username">
@@ -174,7 +165,7 @@ export const SignUpForm = ({ onSwitchForm }: SignUpFormProps) => {
       <fieldset className="fieldset w-sm rounded-box bg-base-200 p-6">
         <legend className="fieldset-legend text-sm">
           Crie sua conta
-          <ThemeToggle />
+          <ThemeToggle size="sm" />
         </legend>
 
         <label className="fieldset-label" htmlFor="sign-up-name">

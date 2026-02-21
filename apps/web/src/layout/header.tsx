@@ -1,6 +1,6 @@
-import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { HeaderLogo } from "@/components/header-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/features/auth";
 import { menuItems } from "@/lib/navigation";
 
@@ -36,16 +36,8 @@ export function Header({ children }: { children: React.ReactNode }) {
             ))}
           </ul>
 
-          <div className="ml-auto flex items-center gap-1">
-            <label className="btn btn-ghost btn-circle swap swap-rotate">
-              <input
-                className="theme-controller"
-                type="checkbox"
-                value="dark"
-              />
-              <SunIcon className="swap-off h-5 w-5" weight="bold" />
-              <MoonIcon className="swap-on h-5 w-5" weight="bold" />
-            </label>
+          <div className="ml-auto flex items-center gap-4">
+            <ThemeToggle />
             <UserMenu />
           </div>
         </div>
