@@ -5,7 +5,7 @@ import {
   SunIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
-import { SignOutButton } from "@/features/auth";
+import { UserMenu } from "@/features/auth";
 import { menuItems } from "@/lib/navigation";
 
 const DRAWER_ID = "app-sidebar";
@@ -24,8 +24,8 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
           >
             <SidebarSimpleIcon className="h-5 w-5" weight="bold" />
           </label>
-          <div className="ml-auto flex items-center gap-2">
-            <label className="swap swap-rotate">
+          <div className="ml-auto flex items-center gap-1">
+            <label className="swap swap-rotate btn btn-ghost btn-circle">
               <input
                 className="theme-controller"
                 type="checkbox"
@@ -34,7 +34,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
               <SunIcon className="swap-off h-5 w-5" weight="bold" />
               <MoonIcon className="swap-on h-5 w-5" weight="bold" />
             </label>
-            <SignOutButton />
+            <UserMenu />
           </div>
         </nav>
 
