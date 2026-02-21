@@ -1,10 +1,6 @@
-import {
-  CubeIcon,
-  MoonIcon,
-  SidebarSimpleIcon,
-  SunIcon,
-} from "@phosphor-icons/react";
+import { MoonIcon, SidebarSimpleIcon, SunIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
+import { HeaderLogo } from "@/components/header-logo";
 import { UserMenu } from "@/features/auth";
 import { menuItems } from "@/lib/navigation";
 
@@ -49,10 +45,12 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
         />
 
         <div className="flex min-h-full is-drawer-close:w-15 is-drawer-open:w-64 flex-col bg-base-200">
-          <div className="flex h-15 items-center justify-center gap-2">
-            <CubeIcon className="h-6 w-6 text-base-content" weight="fill" />
-            <span className="is-drawer-close:hidden font-bold text-base-content text-lg">
-              Beta
+          <div className="flex h-15 items-center justify-center">
+            <span className="is-drawer-open:hidden">
+              <HeaderLogo iconOnly />
+            </span>
+            <span className="is-drawer-close:hidden">
+              <HeaderLogo />
             </span>
           </div>
 

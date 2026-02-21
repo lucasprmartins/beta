@@ -1,5 +1,6 @@
-import { CubeIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
+import { HeaderLogo } from "@/components/header-logo";
 import { UserMenu } from "@/features/auth";
 import { menuItems } from "@/lib/navigation";
 
@@ -8,10 +9,7 @@ export function Header({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <nav className="sticky top-0 z-30 h-15 border-base-300 border-b bg-base-100">
         <div className="relative flex h-full items-center px-4">
-          <div className="flex items-center gap-2">
-            <CubeIcon className="h-6 w-6 text-base-content" weight="fill" />
-            <span className="font-bold text-base-content text-lg">Beta</span>
-          </div>
+          <HeaderLogo />
 
           <ul className="menu menu-horizontal absolute left-1/2 -translate-x-1/2 gap-1 p-0">
             {menuItems.map((item) => (
