@@ -1,7 +1,4 @@
-import {
-  MagnifyingGlass as MagnifyingGlassIcon,
-  WarningCircle as WarningCircleIcon,
-} from "@phosphor-icons/react";
+import { MagnifyingGlassIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { ErrorComponentProps } from "@tanstack/react-router";

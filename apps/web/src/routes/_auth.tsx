@@ -1,4 +1,4 @@
-import { WarningCircle as WarningCircleIcon } from "@phosphor-icons/react";
+import { WarningCircleIcon } from "@phosphor-icons/react";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import {
   createFileRoute,
