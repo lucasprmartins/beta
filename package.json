@@ -23,6 +23,7 @@
     "db:migrate": "turbo -F @app/infra db:migrate",
     "db:seed": "sh scripts/seed.sh",
     "db:studio": "turbo -F @app/infra db:studio",
+    "storage": "turbo -F @app/infra storage",
     "lint": "bun ultracite check",
     "lint:fix": "bun ultracite fix",
     "lint:fix:unsafe": "bun ultracite fix --unsafe",

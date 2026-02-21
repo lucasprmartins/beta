@@ -110,10 +110,14 @@ fi
 
 if [ "$USA_S3" = false ]; then
   rm -f packages/infra/src/integrations/storage.ts
+  rm -f packages/infra/src/integrations/storage-cors.ts
   sedi '/S3_/d' packages/infra/src/env.ts
   sedi '/Buckets S3/d;/S3_/d' apps/server/.env.example
   sedi '/Storage S3/d' .claude/rules/server/infra.md
   sedi '/@aws-sdk/d' packages/infra/package.json
+  sedi '/"storage"/d' packages/infra/package.json
+  sedi '/"storage"/d' package.json
+  sedi 's/ && bun storage//g' apps/server/railway.json
   sedi '/Storage.*AWS SDK S3/d' .claude/CLAUDE.md
   sucesso "Storage S3 e referências removidos"
 fi

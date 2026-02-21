@@ -24,6 +24,7 @@
     "db:studio": "drizzle-kit studio",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "bun --sql-preconnect src/db/seed.ts",
+    "storage": "bun src/integrations/storage-cors.ts",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
