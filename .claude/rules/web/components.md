@@ -1,5 +1,6 @@
 ---
 paths:
+  - "apps/web/src/layout/**"
   - "apps/web/src/components/**"
   - "apps/web/src/features/**"
 ---

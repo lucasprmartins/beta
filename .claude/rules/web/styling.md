@@ -1,6 +1,7 @@
 ---
 paths:
   - "apps/web/src/**/*.css"
+  - "apps/web/src/layout/**"
   - "apps/web/src/components/**"
   - "apps/web/src/features/**"
 ---

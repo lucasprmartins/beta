@@ -6,8 +6,8 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
-// Layout alternativo: import { Header } from "@/components/header"
-import { Sidebar } from "@/components/sidebar";
+// Layout alternativo: import { Header } from "@/layout/header"
+import { Sidebar } from "@/layout/sidebar";
 import { sessionOptions } from "@/lib/auth";
 
 // Layout: Sidebar | Header
