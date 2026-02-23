@@ -10,20 +10,7 @@ import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
 const PORT = 3000;
 
-const securityHeaders = (app: Elysia) =>
-  isLocal
-    ? app
-    : app.headers({
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "geolocation=(), camera=(), microphone=()",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
-      });
-
 new Elysia()
-  .use(securityHeaders)
 
   .get("/", async () => {
     try {
@@ -38,15 +25,19 @@ new Elysia()
     }
   })
 
-  .use(
-    cors({
-      origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
-      methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
-      exposeHeaders: ["Content-Length"],
-      maxAge: 600,
-      credentials: true,
-    })
+  .use((app) =>
+    isLocal
+      ? app.use(
+          cors({
+            origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
+            methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+            allowedHeaders: ["Content-Type", "Authorization"],
+            exposeHeaders: ["Content-Length"],
+            maxAge: 600,
+            credentials: true,
+          })
+        )
+      : app
   )
 
   // Better-Auth

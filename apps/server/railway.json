@@ -6,7 +6,7 @@
     "watchPatterns": ["apps/server/**", "packages/**"]
   },
   "deploy": {
-    "preDeployCommand": "bun db:migrate && bun storage",
+    "preDeployCommand": "bun db:migrate",
     "startCommand": "bun run start:server",
     "overlapSeconds": 30,
     "drainingSeconds": 15,
@@ -16,7 +16,7 @@
   "environments": {
     "pr": {
       "deploy": {
-        "preDeployCommand": "bun db:migrate && bun storage && bun db:seed || true",
+        "preDeployCommand": "bun db:migrate && bun db:seed || true",
         "overlapSeconds": 0,
         "drainingSeconds": 0,
         "restartPolicyType": "NEVER",

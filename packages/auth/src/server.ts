@@ -41,11 +41,6 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: "app",
-    defaultCookieAttributes: {
-      sameSite: "none",
-      secure: true,
-      partitioned: true,
-    },
   },
   plugins: [
     ...(isLocal ? [openAPI()] : []),
