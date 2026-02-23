@@ -7,10 +7,8 @@
 }
 
 :{$PORT} {
-    handle /auth/* {
-        reverse_proxy http://{$SERVER_DOMAIN}:{$SERVER_PORT}
-    }
-    handle /rpc/* {
+    @backend path /auth /auth/* /rpc /rpc/*
+    handle @backend {
         reverse_proxy http://{$SERVER_DOMAIN}:{$SERVER_PORT}
     }
     handle {
