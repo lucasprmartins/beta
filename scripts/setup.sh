@@ -127,7 +127,7 @@ if [ "$USA_S3" = true ]; then
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
-  rm -f scripts/railway.sh railway.json apps/server/railway.json apps/web/railway.json
+  rm -f scripts/railway.sh railway.json apps/server/railway.json apps/web/railway.json apps/caddy/railway.json
 
   # env.sh: remover bloco Railway (link + ambiente) e DATABASE_URL via Railway
   sedi '/Railway.*link.*ambiente/,/^echo ""/d' scripts/env.sh
@@ -274,10 +274,11 @@ if [ "$USA_RAILWAY" = true ]; then
   echo ""
   aviso "${BOLD}Ação manual necessária no Railway:${RESET}"
   echo ""
-  info "Nos serviços ${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
+  info "Nos serviços ${BOLD}caddy${RESET}${DIM}, ${RESET}${BOLD}web${RESET}${DIM} e ${RESET}${BOLD}server${RESET}${DIM}:${RESET}"
   info "1. Settings → Source → Disconnect"
   info "2. Conecte o repo ${BOLD}$OWNER/$NOME_PROJETO${RESET}"
   info "3. Settings → Config-as-code → + Add File Path"
+  info "   ${BOLD}caddy${RESET}${DIM}:  /apps/caddy/railway.json${RESET}"
   info "   ${BOLD}server${RESET}${DIM}: /apps/server/railway.json${RESET}"
   info "   ${BOLD}web${RESET}${DIM}:    /apps/web/railway.json${RESET}"
   echo ""
@@ -285,7 +286,7 @@ if [ "$USA_RAILWAY" = true ]; then
   echo ""
   aviso "${BOLD}Essa etapa é essencial.${RESET} Sem ela, o Railway não saberá como buildar e deployar cada serviço."
   echo ""
-  read -p "> Você já configurou o repositório e o Config File Path nos dois serviços? [y/N] " CONFIRMOU_RAILWAY
+  read -p "> Você já configurou o repositório e o Config File Path nos três serviços? [y/N] " CONFIRMOU_RAILWAY
   if [[ ! "$CONFIRMOU_RAILWAY" =~ ^[yYsS]$ ]]; then
     erro "Configure os serviços no Railway antes de continuar."
   fi
