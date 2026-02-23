@@ -38,15 +38,19 @@ new Elysia()
     }
   })
 
-  .use(
-    cors({
-      origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
-      methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
-      exposeHeaders: ["Content-Length"],
-      maxAge: 600,
-      credentials: true,
-    })
+  .use((app) =>
+    isLocal
+      ? app.use(
+          cors({
+            origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
+            methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+            allowedHeaders: ["Content-Type", "Authorization"],
+            exposeHeaders: ["Content-Length"],
+            maxAge: 600,
+            credentials: true,
+          })
+        )
+      : app
   )
 
   // Better-Auth

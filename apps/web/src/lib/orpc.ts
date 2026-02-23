@@ -6,7 +6,9 @@ import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 let redirecionando = false;
 
 export const link = new RPCLink({
-  url: `${import.meta.env.VITE_SERVER_URL}/rpc`,
+  url: import.meta.env.VITE_SERVER_URL
+    ? `${import.meta.env.VITE_SERVER_URL}/rpc`
+    : "/rpc",
   async fetch(input, options) {
     const response = await globalThis.fetch(input, {
       ...options,
