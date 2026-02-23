@@ -117,9 +117,13 @@ if [ "$USA_S3" = false ]; then
   sedi '/@aws-sdk/d' packages/infra/package.json
   sedi '/"storage"/d' packages/infra/package.json
   sedi '/"storage"/d' package.json
-  sedi 's/ && bun storage//g' apps/server/railway.json
   sedi '/Storage.*AWS SDK S3/d' .claude/CLAUDE.md
   sucesso "Storage S3 e referências removidos"
+fi
+
+if [ "$USA_S3" = true ]; then
+  sedi 's/bun db:migrate/bun db:migrate \&\& bun storage/g' apps/server/railway.json
+  sucesso "Storage adicionado ao preDeployCommand"
 fi
 
 if [ "$USA_RAILWAY" = false ]; then
