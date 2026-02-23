@@ -10,20 +10,7 @@ import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
 const PORT = 3000;
 
-const securityHeaders = (app: Elysia) =>
-  isLocal
-    ? app
-    : app.headers({
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "geolocation=(), camera=(), microphone=()",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
-      });
-
 new Elysia()
-  .use(securityHeaders)
 
   .get("/", async () => {
     try {
