@@ -87,7 +87,7 @@ if [ "$USA_RAILWAY" = true ]; then
   fi
 
   if [ "$USA_S3" = true ]; then
-    RAILWAY_TEMPLATE="XGuIs7"
+    RAILWAY_TEMPLATE="CjONVg"
   else
     RAILWAY_TEMPLATE="edQPdo"
   fi
