@@ -3,7 +3,7 @@
   "build": {
     "builder": "RAILPACK",
     "buildCommand": "bun run build:server",
-    "watchPatterns": ["apps/server/**", "packages/**"]
+    "watchPatterns": ["apps/server/**", "packages/core/**", "packages/infra/**", "packages/api/**", "packages/auth/**"]
   },
   "deploy": {
     "preDeployCommand": "bun db:migrate",
