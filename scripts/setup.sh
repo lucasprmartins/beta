@@ -292,6 +292,19 @@ if [ "$USA_RAILWAY" = true ]; then
   fi
 
   sucesso "Deploy Railway configurado"
+
+  info "Configurando timezone do banco..."
+  railway service postgres > /dev/null
+  TMP_TZ=$(mktemp /tmp/tz-XXXXXX.ts)
+  cat > "$TMP_TZ" << 'TZSCRIPT'
+import postgres from "postgres";
+const sql = postgres(process.env.DATABASE_PUBLIC_URL!);
+await sql.unsafe(`ALTER DATABASE "railway" SET timezone TO 'America/Sao_Paulo'`);
+await sql.end();
+TZSCRIPT
+  railway run -- bun "$TMP_TZ"
+  rm -f "$TMP_TZ"
+  sucesso "Timezone configurado: America/Sao_Paulo"
 fi
 
 # ─── Auto-remoção ────────────────────────────────────────────────────────────
