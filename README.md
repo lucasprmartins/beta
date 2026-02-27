@@ -99,14 +99,14 @@ Server (Elysia)
    git clone https://github.com/lucasprmartins/beta.git <nome-do-projeto>
    ```
 
-2. Execute o inicializador:
+2. Instale as dependências e execute o inicializador:
 
    ```bash
    cd <nome-do-projeto>
-   bun setup
+   bun install && bun setup
    ```
 
-O script pergunta o nome do projeto, o owner (pessoal ou organização) e se deseja usar Railway. Em seguida, cria um repositório GitHub privado, instala as dependências e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
+O script pergunta o nome do projeto, o owner (pessoal ou organização) e se deseja usar Railway. Em seguida, cria um repositório GitHub privado e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
 
 ## Após o setup
 
