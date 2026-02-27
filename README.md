@@ -80,7 +80,7 @@ Server (Elysia)
 
 ## Requisitos
 
-- [Bun](https://bun.sh) >= 1.3.9
+- [Bun](https://bun.sh) >= 1.3.10
 - [GitHub CLI](https://cli.github.com) (`gh`)
 - [Railway CLI](https://docs.railway.com/guides/cli) *(opcional — provisiona PostgreSQL e infra na nuvem)*
 - PostgreSQL *(necessário apenas sem Railway)*
