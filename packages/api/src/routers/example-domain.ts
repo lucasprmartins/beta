@@ -35,7 +35,7 @@ const criarProdutoSchema = z.object({
   nome: z.string().min(1).describe("Nome do produto"),
   descricao: z.string().min(1).describe("Descrição do produto"),
   preco: z.number().min(0.01).describe("Preço do produto"),
-  imagemKey: z.string().nullable().describe("Chave da imagem do produto"),
+  imagemUrl: z.string().nullable().describe("URL da imagem do produto"),
 });
 
 export const produtoRouter = {

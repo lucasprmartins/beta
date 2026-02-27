@@ -7,7 +7,7 @@ export class Produto {
   readonly id: number;
   readonly nome: string;
   readonly descricao: string;
-  readonly imagemKey: string | null;
+  readonly imagemUrl: string | null;
   private _preco: number;
   private _estoque: number;
   private _ativo: boolean;
@@ -16,7 +16,7 @@ export class Produto {
     this.id = data.id;
     this.nome = data.nome;
     this.descricao = data.descricao;
-    this.imagemKey = data.imagemKey;
+    this.imagemUrl = data.imagemUrl;
     this._preco = data.preco;
     this._estoque = data.estoque;
     this._ativo = data.ativo;
@@ -34,7 +34,7 @@ export class Produto {
       preco: input.preco,
       estoque: 0,
       ativo: true,
-      imagemKey: input.imagemKey,
+      imagemUrl: input.imagemUrl,
     });
   }
 
@@ -105,7 +105,7 @@ export class Produto {
       preco: this._preco,
       estoque: this._estoque,
       ativo: this._ativo,
-      imagemKey: this.imagemKey,
+      imagemUrl: this.imagemUrl,
     };
   }
 }

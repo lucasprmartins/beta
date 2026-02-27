@@ -14,7 +14,7 @@ function exportar(row: typeof produto.$inferSelect): ProdutoData {
     preco: Number(row.preco),
     estoque: row.estoque,
     ativo: row.ativo,
-    imagemKey: row.imagemKey,
+    imagemUrl: row.imagemUrl,
   };
 }
 
@@ -54,7 +54,7 @@ export const produtoRepository: ProdutoRepository = {
         preco: String(data.preco),
         estoque: data.estoque,
         ativo: data.ativo,
-        imagemKey: data.imagemKey,
+        imagemUrl: data.imagemUrl,
       })
       .returning();
 
@@ -70,7 +70,7 @@ export const produtoRepository: ProdutoRepository = {
         preco: String(data.preco),
         estoque: data.estoque,
         ativo: data.ativo,
-        imagemKey: data.imagemKey,
+        imagemUrl: data.imagemUrl,
       })
       .where(eq(produto.id, id))
       .returning();
