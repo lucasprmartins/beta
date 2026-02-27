@@ -11,6 +11,7 @@ import {
   ShieldCheckIcon,
 } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const Route = createFileRoute("/")({
   component: WelcomePage,
@@ -79,15 +80,7 @@ function WelcomePage() {
       <div className="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 md:py-24">
         <header className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4">
-            <label className="swap swap-rotate text-base-content/40">
-              <input
-                className="theme-controller"
-                type="checkbox"
-                value="dark"
-              />
-              <CubeIcon className="swap-off h-8 w-8" weight="bold" />
-              <CubeIcon className="swap-on h-8 w-8" weight="fill" />
-            </label>
+            <ThemeToggle size="lg" />
             <div className="flex w-full items-center gap-3">
               <div className="h-px flex-1 bg-base-300" />
               <span className="text-base-content/40 text-xs uppercase tracking-[0.3em]">
@@ -98,10 +91,13 @@ function WelcomePage() {
           </div>
 
           <div className="flex flex-col items-center gap-6 text-center">
-            <h1 className="font-bold text-4xl text-base-content leading-tight tracking-tight md:text-6xl">
-              Beta
-              <span className="text-primary"> Template</span>
-            </h1>
+            <img
+              alt="Beta Template"
+              className="h-12 md:h-16"
+              height={420}
+              src="/logo-1.svg"
+              width={1398}
+            />
             <p className="max-w-xl text-base text-base-content/60 leading-relaxed">
               Um template fullstack com arquitetura limpa, tipagem end-to-end e
               ferramentas modernas — pronto para escalar do primeiro commit à

@@ -1,4 +1,4 @@
-import { CubeIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import { WarningCircleIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { SignInForm, SignUpForm } from "@/features/auth";
@@ -37,7 +37,13 @@ function AuthPage() {
           className="text-base-content/40 transition-colors hover:text-base-content"
           to="/"
         >
-          <CubeIcon className="h-12 w-12" weight="fill" />
+          <img
+            alt="Beta"
+            className="h-12 w-12"
+            height={420}
+            src="/icon-1.svg"
+            width={390}
+          />
         </Link>
         {mode === "sign-in" ? (
           <SignInForm onSwitchForm={() => setMode("sign-up")} />

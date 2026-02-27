@@ -2,8 +2,6 @@
 
 <img src="https://raw.githubusercontent.com/lucasprmartins/beta/main/apps/web/public/logo-1.svg" alt="Beta" width="80" />
 
-# Beta
-
 **Template full-stack TypeScript com arquitetura limpa em monorepo.**
 
 <a href="https://bun.sh/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" width="30" title="Bun" alt="Bun" /></a>&nbsp;&nbsp;
