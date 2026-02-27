@@ -314,3 +314,15 @@ const passos = usaRailway
     ];
 
 log.message(passos.join("\n"));
+
+log.step("Integrações opcionais");
+log.message(
+  [
+    `Clone o ${pc.bold("beta-tools")} ao lado deste projeto para adicionar integrações:`,
+    "",
+    `  ${pc.bold("gh repo clone lucasprmartins/beta-tools")}`,
+    `  ${pc.bold("cd beta-tools && bun install && bun beta")}`,
+    "",
+    pc.dim("https://github.com/lucasprmartins/beta-tools"),
+  ].join("\n")
+);

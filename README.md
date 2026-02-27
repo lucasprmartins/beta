@@ -180,3 +180,12 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 | `bun check-types` | Verifica tipos TypeScript |
 | `bun env` | Configura variáveis de ambiente |
 | `bun cleanup` | Remove arquivos de exemplo |
+
+## Integrações
+
+Integrações opcionais estão disponíveis via [beta-tools](https://github.com/lucasprmartins/beta-tools).
+
+```bash
+gh repo clone lucasprmartins/beta-tools
+cd beta-tools && bun install && bun beta
+```
