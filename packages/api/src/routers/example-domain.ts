@@ -8,19 +8,11 @@ import {
 } from "@app/core/application/example-domain";
 import type { ProdutoData } from "@app/core/contracts/example-domain";
 import { produtoRepository } from "@app/infra/db/repositories/example-domain";
-import {
-  gerarUrlDownload,
-  gerarUrlUpload,
-} from "@app/infra/integrations/storage";
 import { z } from "zod";
 import { o } from "../auth";
 
 async function exportarProduto(dados: ProdutoData) {
-  const { imagemKey, ...resto } = dados;
-  return {
-    ...resto,
-    imagemUrl: imagemKey ? await gerarUrlDownload(imagemKey, 900) : null,
-  };
+  return dados;
 }
 
 const criar = criarProduto(produtoRepository);
@@ -37,14 +29,13 @@ const produtoSchema = z.object({
   preco: z.number().min(0.01).describe("Preço do produto"),
   estoque: z.number().int().min(0).describe("Quantidade em estoque"),
   ativo: z.boolean().describe("Se o produto está ativo"),
-  imagemUrl: z.url().nullable().describe("URL da imagem do produto"),
 });
 
 const criarProdutoSchema = z.object({
   nome: z.string().min(1).describe("Nome do produto"),
   descricao: z.string().min(1).describe("Descrição do produto"),
   preco: z.number().min(0.01).describe("Preço do produto"),
-  imagemKey: z.string().nullable().describe("Chave S3 da imagem do produto"),
+  imagemKey: z.string().nullable().describe("Chave da imagem do produto"),
 });
 
 export const produtoRouter = {
@@ -325,34 +316,5 @@ export const produtoRouter = {
         itens: await Promise.all(itens.map(exportarProduto)),
         proximoCursor,
       };
-    }),
-
-  gerarUrlUpload: o
-    .route({
-      method: "POST",
-      path: "/produto/imagem/upload-url",
-      summary: "Gerar URL de Upload",
-      description:
-        "Gera uma presigned URL para upload direto de imagem ao S3. Válida por 15 minutos.",
-      tags: ["Produto"],
-    })
-    .input(
-      z.object({
-        contentType: z
-          .string()
-          .min(1)
-          .describe("MIME type da imagem (ex: image/jpeg)"),
-      })
-    )
-    .output(
-      z.object({
-        key: z.string().describe("Chave S3 gerada para o objeto"),
-        uploadUrl: z.url().describe("URL pré-assinada para PUT direto no S3"),
-      })
-    )
-    .handler(async ({ input }) => {
-      const key = `produtos/${crypto.randomUUID()}`;
-      const uploadUrl = await gerarUrlUpload(key, input.contentType, 900);
-      return { key, uploadUrl };
     }),
 };
