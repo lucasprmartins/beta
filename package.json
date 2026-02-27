@@ -57,6 +57,6 @@
     "ultracite": "7.1.5"
   },
   "dependencies": {
-    "turbo": "^2.8.10"
+    "turbo": "^2.8.12"
   }
 }
