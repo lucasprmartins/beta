@@ -284,7 +284,7 @@ if (usaRailway) {
     ].join("\n")
   );
 
-  await $`railway run -s postgres -- bun ${tmpFile}`.quiet();
+  await $`railway run -s database -- bun ${tmpFile}`.quiet();
   unlinkSync(tmpFile);
   sTz.stop("Timezone configurado: America/Sao_Paulo");
 }
