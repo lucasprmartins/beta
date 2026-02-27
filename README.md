@@ -33,7 +33,6 @@
 | **Banco de dados** | PostgreSQL + Drizzle ORM |
 | **Autenticação** | Better Auth |
 | **Validação** | Zod |
-| **Storage** | AWS SDK S3 (S3, Cloudflare R2, MinIO) |
 | **Linting** | Biome (Ultracite) |
 
 ## Estrutura
@@ -65,7 +64,7 @@ Server (Elysia)
 | Pacote | Responsabilidade |
 |--------|------------------|
 | **Core** | Contratos, domínios e use cases. Sem dependências externas |
-| **Infra** | Schemas Drizzle, repositórios, storage (S3) e integrações |
+| **Infra** | Schemas Drizzle, repositórios e integrações |
 | **API** | Routers oRPC com `requireAuth` e `requireRole("admin", ...)` |
 | **Auth** | Configuração do Better Auth (server e client) |
 
@@ -107,7 +106,7 @@ Server (Elysia)
    bun setup
    ```
 
-O script pergunta o nome do projeto, o owner (pessoal ou organização) e quais módulos ativar (Storage S3, n8n, Railway). Em seguida, cria um repositório GitHub privado, instala as dependências e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
+O script pergunta o nome do projeto, o owner (pessoal ou organização) e se deseja usar Railway. Em seguida, cria um repositório GitHub privado, instala as dependências e faz o commit inicial. Se Railway for selecionado, a infra é provisionada automaticamente com PostgreSQL incluso na nuvem.
 
 ## Após o setup
 

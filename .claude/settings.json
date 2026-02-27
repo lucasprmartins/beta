@@ -44,17 +44,16 @@
       "Bash(bun ci)",
       "Bash(git push*)",
       "Bash(git checkout*)",
-      "Bash(gh pr*)"
+      "Bash(gh pr*)",
+      "Bash(rm -rf*)",
+      "Bash(rm *)"
     ],
     "deny": [
       "Read(.env*)",
       "Edit(.env*)",
       "Write(.env*)",
       "Bash(bun start*)",
-      "Bash(bun env*)",
-      "Bash(bun n8n*)",
-      "Bash(rm -rf*)",
-      "Bash(rm *)"
+      "Bash(bun env*)"
     ]
   },
 

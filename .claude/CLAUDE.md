@@ -29,7 +29,6 @@ packages/
 | Frontend | React 19 + TanStack Router/Query |
 | Styling | Tailwind CSS + DaisyUI |
 | Icons | Phosphor Icons |
-| Storage | AWS SDK S3 (R2/MinIO) |
 
 ## Dependências entre Pacotes
 
@@ -55,11 +54,3 @@ Dois padrões: **CRUD Simples** (sem lógica de negócio) e **Domínio Rico** (c
 | `bun lint:fix` | Corrige lint |
 | `bun check-types` | Verifica tipagem TypeScript |
 | `bun db:generate` | Gera migration Drizzle |
-
-## Regras
-
-Convenções detalhadas em `.claude/rules/`:
-
-- **Config**: `conventions.md`, `git.md`, `context7.md`
-- **Server**: `server.md`, `core.md`, `infra.md`, `api.md`, `auth.md`
-- **Web**: `components.md`, `queries.md`, `routes.md`, `styling.md`
