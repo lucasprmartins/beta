@@ -39,17 +39,7 @@ fi
 
 echo ""
 
-USA_S3=false
-USA_N8N=false
 USA_RAILWAY=false
-
-if pergunta_sn "Usar Storage S3?"; then
-  USA_S3=true
-fi
-
-if pergunta_sn "Usar n8n?"; then
-  USA_N8N=true
-fi
 
 if pergunta_sn "Usar Railway?"; then
   USA_RAILWAY=true
@@ -86,45 +76,12 @@ if [ "$USA_RAILWAY" = true ]; then
     erro "Nome do workspace é obrigatório."
   fi
 
-  if [ "$USA_S3" = true ]; then
-    RAILWAY_TEMPLATE="CjONVg"
-  else
-    RAILWAY_TEMPLATE="edQPdo"
-  fi
+  RAILWAY_TEMPLATE="edQPdo"
 fi
 
 # ─── Limpeza condicional ─────────────────────────────────────────────────────
 
 titulo "Limpeza"
-
-if [ "$USA_N8N" = false ]; then
-  rm -rf n8n/
-  rm -f packages/infra/src/integrations/n8n.ts
-  sedi '/N8N_WEBHOOK/d' packages/infra/src/env.ts
-  sedi '/n8n Webhooks/d;/N8N_WEBHOOK/d' apps/server/.env.example
-  sedi '/^### n8n/,$d' .claude/rules/server/infra.md
-  sedi '/bun n8n/d' .claude/settings.json
-  sedi '/"files"/,/}/d' biome.jsonc
-  sucesso "Diretório n8n/ e referências removidos"
-fi
-
-if [ "$USA_S3" = false ]; then
-  rm -f packages/infra/src/integrations/storage.ts
-  rm -f packages/infra/src/integrations/storage-cors.ts
-  sedi '/S3_/d' packages/infra/src/env.ts
-  sedi '/Buckets S3/d;/S3_/d' apps/server/.env.example
-  sedi -e '/^### Storage S3/,/^### [^S]/{' -e '/^### [^S]/!d' -e '}' .claude/rules/server/infra.md
-  sedi '/@aws-sdk/d' packages/infra/package.json
-  sedi '/"storage"/d' packages/infra/package.json
-  sedi '/"storage"/d' package.json
-  sedi '/Storage.*AWS SDK S3/d' .claude/CLAUDE.md
-  sucesso "Storage S3 e referências removidos"
-fi
-
-if [ "$USA_S3" = true ]; then
-  sedi 's/bun db:migrate/bun db:migrate \&\& bun storage/g' apps/server/railway.json
-  sucesso "Storage adicionado ao preDeployCommand"
-fi
 
 if [ "$USA_RAILWAY" = false ]; then
   rm -f scripts/railway.sh railway.json apps/server/railway.json apps/web/railway.json apps/caddy/railway.json
@@ -166,11 +123,10 @@ sucesso "README.md substituído"
 
 info "Atualizando package.json..."
 
-NOME_PROJETO="$NOME_PROJETO" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" bun -e "
+NOME_PROJETO="$NOME_PROJETO" USA_RAILWAY="$USA_RAILWAY" bun -e "
 import { readFileSync, writeFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 pkg.name = process.env.NOME_PROJETO;
-if (process.env.USA_N8N === 'false') { delete pkg.scripts['n8n:pull']; delete pkg.scripts['n8n:push']; }
 if (process.env.USA_RAILWAY === 'false') { delete pkg.scripts['railway']; }
 writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
 "
@@ -239,11 +195,9 @@ fi
 
 info "Gerando config.json..."
 
-NOME_PROJETO="$NOME_PROJETO" OWNER="$OWNER" USA_S3="$USA_S3" USA_N8N="$USA_N8N" USA_RAILWAY="$USA_RAILWAY" RAILWAY_WORKSPACE="$RAILWAY_WORKSPACE" bun -e "
+NOME_PROJETO="$NOME_PROJETO" OWNER="$OWNER" USA_RAILWAY="$USA_RAILWAY" RAILWAY_WORKSPACE="$RAILWAY_WORKSPACE" bun -e "
 import { writeFileSync } from 'fs';
 const config = { name: process.env.NOME_PROJETO, owner: process.env.OWNER };
-if (process.env.USA_S3 === 'true') config.storage = true;
-if (process.env.USA_N8N === 'true') config.n8n = true;
 if (process.env.USA_RAILWAY === 'true') config.railway = { workspace: process.env.RAILWAY_WORKSPACE };
 writeFileSync('config.json', JSON.stringify(config, null, 2) + '\n');
 "
@@ -328,8 +282,6 @@ sucesso "Commit inicial enviado para origin/$BRANCH"
 rodape "Projeto ${BOLD}$NOME_PROJETO${RESET} criado com sucesso!"
 
 echo "${DIM}Owner:${RESET}    $OWNER"
-echo "${DIM}Storage:${RESET}  $([ "$USA_S3" = true ] && echo "ativado" || echo "removido")"
-echo "${DIM}n8n:${RESET}      $([ "$USA_N8N" = true ] && echo "ativado" || echo "removido")"
 echo "${DIM}Railway:${RESET}  $([ "$USA_RAILWAY" = true ] && echo "ativado" || echo "removido")"
 
 banner "Próximos passos"
