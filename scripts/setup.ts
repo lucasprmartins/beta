@@ -133,6 +133,7 @@ const scripts = pkg.scripts as Record<string, unknown>;
 if (!usaRailway) {
   scripts.railway = undefined;
 }
+scripts.setup = undefined;
 await escreverJson(resolve(root, "package.json"), pkg);
 log.success("package.json atualizado");
 
@@ -141,7 +142,7 @@ log.success("package.json atualizado");
 log.step("Configurando repositório");
 
 await $`rm -rf .git`.nothrow().quiet();
-await $`git init --quiet`;
+await $`git init --quiet -b main`;
 log.success("Repositório Git inicializado");
 
 const usuario = (await $`gh api user --jq '.login'`.text()).trim();
@@ -186,6 +187,24 @@ if (usaRailway) {
 await escreverJson(resolve(root, "config.json"), config);
 log.success("config.json gerado");
 
+// ─── Auto-remoção ──────────────────────────────────────────────────────────────
+
+const setupPath = resolve(root, "scripts/setup.ts");
+if (existsSync(setupPath)) {
+  unlinkSync(setupPath);
+}
+log.success("Script setup removido");
+
+// ─── Commit inicial + push ─────────────────────────────────────────────────────
+
+log.step("Enviando commit inicial");
+
+const branch = (await $`git branch --show-current`.text()).trim();
+await $`git add .`;
+await $`git commit --quiet -m "feat: setup inicial do projeto"`;
+await $`git push --quiet -u origin ${branch}`;
+log.success(`Commit inicial enviado para origin/${branch}`);
+
 // ─── Deploy Railway (condicional) ──────────────────────────────────────────────
 
 if (usaRailway) {
@@ -212,12 +231,17 @@ if (usaRailway) {
     sWait.stop("Projeto disponível");
   }
 
-  await $`railway open`.nothrow().quiet();
-  log.info("Dashboard aberto no navegador.");
+  const railwayDashboardUrl = (
+    await $`railway open --print`.nothrow().quiet().text()
+  ).trim();
 
   log.warn("Ação manual necessária no Railway:");
   log.message(
     [
+      railwayDashboardUrl
+        ? `${pc.dim("Dashboard:")} ${pc.underline(railwayDashboardUrl)}`
+        : `${pc.dim("Execute")} ${pc.bold("railway open")} ${pc.dim("para abrir o dashboard.")}`,
+      "",
       `Nos serviços ${pc.bold("proxy")}, ${pc.bold("web")} e ${pc.bold("server")}:`,
       "",
       "  1. Settings → Source → Disconnect",
@@ -249,48 +273,21 @@ if (usaRailway) {
 
   const sTz = spinner();
   sTz.start("Configurando timezone do banco...");
-  await $`railway service postgres`.nothrow().quiet();
-
   const tmpFile = resolve(root, `.tmp-tz-${Date.now()}.ts`);
   await escreverArquivo(
     tmpFile,
     [
-      'import postgres from "postgres";',
-      "const sql = postgres(process.env.DATABASE_PUBLIC_URL!);",
+      'import { SQL } from "bun";',
+      "const sql = new SQL(process.env.DATABASE_PUBLIC_URL!);",
       `await sql.unsafe("ALTER DATABASE \\"railway\\" SET timezone TO 'America/Sao_Paulo'");`,
-      "await sql.end();",
+      "sql.close();",
     ].join("\n")
   );
 
-  await $`railway run -- bun ${tmpFile}`.quiet();
+  await $`railway run -s postgres -- bun ${tmpFile}`.quiet();
   unlinkSync(tmpFile);
   sTz.stop("Timezone configurado: America/Sao_Paulo");
 }
-
-// ─── Auto-remoção ──────────────────────────────────────────────────────────────
-
-const setupPath = resolve(root, "scripts/setup.ts");
-if (existsSync(setupPath)) {
-  unlinkSync(setupPath);
-}
-
-const pkgFinal = await lerJson<Record<string, unknown>>(
-  resolve(root, "package.json")
-);
-const scriptsFinal = pkgFinal.scripts as Record<string, unknown>;
-scriptsFinal.setup = undefined;
-await escreverJson(resolve(root, "package.json"), pkgFinal);
-log.success("Script setup removido");
-
-// ─── Commit inicial + push ─────────────────────────────────────────────────────
-
-log.step("Finalizando");
-
-const branch = (await $`git branch --show-current`.text()).trim();
-await $`git add .`;
-await $`git commit --quiet -m "feat: setup inicial do projeto"`;
-await $`git push --quiet -u origin ${branch}`;
-log.success(`Commit inicial enviado para origin/${branch}`);
 
 // ─── Resumo final ──────────────────────────────────────────────────────────────
 
