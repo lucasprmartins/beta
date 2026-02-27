@@ -19,5 +19,5 @@ export const ARQUIVOS_RAILWAY = [
   "railway.json",
   "apps/server/railway.json",
   "apps/web/railway.json",
-  "apps/caddy/railway.json",
+  "apps/proxy/railway.json",
 ] as const;

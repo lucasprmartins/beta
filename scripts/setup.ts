@@ -218,12 +218,12 @@ if (usaRailway) {
   log.warn("Ação manual necessária no Railway:");
   log.message(
     [
-      `Nos serviços ${pc.bold("caddy")}, ${pc.bold("web")} e ${pc.bold("server")}:`,
+      `Nos serviços ${pc.bold("proxy")}, ${pc.bold("web")} e ${pc.bold("server")}:`,
       "",
       "  1. Settings → Source → Disconnect",
       `  2. Conecte o repo ${pc.bold(`${owner}/${nomeProjeto}`)}`,
       "  3. Settings → Config-as-code → + Add File Path",
-      `     ${pc.bold("caddy")}:  /apps/caddy/railway.json`,
+      `     ${pc.bold("proxy")}:  /apps/proxy/railway.json`,
       `     ${pc.bold("server")}: /apps/server/railway.json`,
       `     ${pc.bold("web")}:    /apps/web/railway.json`,
       "",

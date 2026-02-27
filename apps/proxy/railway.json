@@ -2,8 +2,8 @@
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
     "builder": "DOCKERFILE",
-    "dockerfilePath": "apps/caddy/Dockerfile",
-    "watchPatterns": ["apps/caddy/**"]
+    "dockerfilePath": "apps/proxy/Dockerfile",
+    "watchPatterns": ["apps/proxy/**"]
   },
   "deploy": {
     "restartPolicyType": "ON_FAILURE",
