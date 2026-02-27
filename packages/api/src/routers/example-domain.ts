@@ -11,7 +11,7 @@ import { produtoRepository } from "@app/infra/db/repositories/example-domain";
 import { z } from "zod";
 import { o } from "../auth";
 
-async function exportarProduto(dados: ProdutoData) {
+function exportarProduto(dados: ProdutoData) {
   return dados;
 }
 
