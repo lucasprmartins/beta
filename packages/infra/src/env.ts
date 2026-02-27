@@ -10,15 +10,6 @@ const envSchema = z.object({
     .enum(["debug", "info", "warn", "error", "fatal"])
     .optional()
     .default("info"),
-
-  S3_ENDPOINT: z.url().optional(),
-  S3_REGION: z.string().optional(),
-  S3_ACCESS_KEY_ID: z.string().optional(),
-  S3_SECRET_ACCESS_KEY: z.string().optional(),
-  S3_BUCKET: z.string().optional(),
-
-  N8N_WEBHOOK_URL: z.url().optional(),
-  N8N_WEBHOOK_TOKEN: z.string().min(32).optional(),
 });
 
 const result = envSchema.safeParse(process.env);
