@@ -58,16 +58,16 @@
   },
 
   "extraKnownMarketplaces": {
-    "plughub": {
+    "beta-plugins": {
       "source": {
         "source": "github",
-        "repo": "lucasprmartins/plughub"
+        "repo": "lucasprmartins/beta-plugins"
       }
     }
   },
   "enabledPlugins": {
-    "spellbook@plughub": true,
-    "powertools@plughub": true
+    "workflow@beta-plugins": true,
+    "essentials@beta-plugins": true
   },
 
   "attribution": {
