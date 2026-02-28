@@ -7,76 +7,37 @@
 **Template full-stack TypeScript com arquitetura limpa em monorepo.**
 
 <a href="https://bun.sh/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" width="30" title="Bun" alt="Bun" /></a>&nbsp;&nbsp;
-<a href="https://www.typescriptlang.org/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="30" title="TypeScript" alt="TypeScript" /></a>&nbsp;&nbsp;
+<a href="https://elysiajs.com/"><img src="https://raw.githubusercontent.com/elysiajs/documentation/main/docs/public/assets/elysia.svg" width="30" title="Elysia" alt="Elysia" /></a>&nbsp;&nbsp;
+<a href="https://www.better-auth.com/"><img src="https://svgl.app/library/better-auth_dark.svg" width="30" title="Better Auth" alt="Better Auth" /></a>&nbsp;&nbsp;
+<a href="https://www.postgresql.org/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" width="30" title="PostgreSQL" alt="PostgreSQL" /></a>&nbsp;&nbsp;
+<a href="https://orm.drizzle.team/"><img src="https://cdn.simpleicons.org/drizzle" width="30" title="Drizzle ORM" alt="Drizzle ORM" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://tanstack.com/router"><img src="https://tanstack.com/images/logos/logo-color-100.png" width="30" title="TanStack Router" alt="TanStack Router" /></a>&nbsp;&nbsp;
 <a href="https://react.dev/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="30" title="React" alt="React" /></a>&nbsp;&nbsp;
-<a href="https://vitejs.dev/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" width="30" title="Vite" alt="Vite" /></a>&nbsp;&nbsp;
 <a href="https://tailwindcss.com/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" width="30" title="Tailwind CSS" alt="Tailwind CSS" /></a>&nbsp;&nbsp;
-<a href="https://www.postgresql.org/"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" width="30" title="PostgreSQL" alt="PostgreSQL" /></a>
+<a href="https://daisyui.com/"><img src="https://img.daisyui.com/images/daisyui/mark-static.svg" width="30" title="DaisyUI" alt="DaisyUI" /></a>
 
-[Começando](#começando) · [Stack](#stack) · [Estrutura](#estrutura) · [Scripts](#scripts)
+
+[Começando](#começando) · [Estrutura](#estrutura) · [Scripts](#scripts)
 
 </div>
 
 ---
 
-## Stack
-
-| Camada | Tecnologia |
-|--------|------------|
-| **Runtime** | Bun |
-| **Monorepo** | Turborepo |
-| **Server** | Elysia |
-| **Frontend** | React 19, Vite, Tailwind CSS, DaisyUI |
-| **Roteamento** | TanStack Router (file-based) |
-| **Estado** | TanStack Query |
-| **API** | oRPC (type-safe RPC + REST/OpenAPI) |
-| **Banco de dados** | PostgreSQL + Drizzle ORM |
-| **Autenticação** | Better Auth |
-| **Validação** | Zod |
-| **Linting** | Biome (Ultracite) |
-
 ## Estrutura
 
 ```
 apps/
-├── server/        # Servidor HTTP (Elysia/Bun)
-└── web/           # Frontend (React 19 + TanStack)
+├── proxy/         # Proxy reverso (Caddy)
+├── server/        # Backend (Elysia)
+└── web/           # Frontend (React 19)
 
 packages/
-├── config/        # Configurações compartilhadas (tsconfig)
-├── core/          # Lógica de negócio (sem dependências externas)
-├── infra/         # Infraestrutura (DB + Integrações externas)
-├── auth/          # Autenticação (Better Auth)
-└── api/           # Definição da API (oRPC)
+├── core/          # Lógica de negócio
+├── infra/         # Banco de Dados e Integrações (Drizzle)
+├── api/           # Rotas da API (oRPC)
+├── auth/          # Auth (Better Auth)
+└── config/        # tsconfig
 ```
-
-### Backend
-
-```
-Server (Elysia)
-├── Auth → Sessão/Cookies
-└── API (oRPC + Middleware)
-    └── Application (Use Cases)
-        └── Domain (Regras de negócio)
-            └── Repository (Core → Infra)
-```
-
-| Pacote | Responsabilidade |
-|--------|------------------|
-| **Core** | Contratos, domínios e use cases. Sem dependências externas |
-| **Infra** | Schemas Drizzle, repositórios e integrações |
-| **API** | Routers oRPC com `requireAuth` e `requireRole("admin", ...)` |
-| **Auth** | Configuração do Better Auth (server e client) |
-
-### Frontend
-
-| Recurso | Detalhes |
-|---------|----------|
-| **Roteamento** | File-based com TanStack Router (`src/routes/`) |
-| **Rotas protegidas** | Layout `_auth.tsx` com redirect automático |
-| **API client** | Type-safe via oRPC + TanStack Query |
-| **Estilização** | Tailwind CSS + DaisyUI |
-| **Ícones** | Phosphor Icons |
 
 ## Requisitos
 
@@ -110,41 +71,21 @@ O script pergunta o nome do projeto, o owner (pessoal ou organização) e se des
 
 ## Após o setup
 
-### Com Railway
-
-1. Configure as variáveis de ambiente — o `DATABASE_URL` é puxado do Railway automaticamente:
+1. Configure as variáveis de ambiente:
 
 ```bash
 bun env
 ```
 
-2. Inicie o ambiente de desenvolvimento — as migrations já foram executadas no pre-deploy do Railway:
+> Com Railway, o `DATABASE_URL` é preenchido automaticamente. Sem Railway, preencha manualmente em `apps/server/.env`.
 
-```bash
-bun dev
-```
-
-3. Remova os arquivos de exemplo:
-
-```bash
-bun cleanup
-```
-
-### Sem Railway
-
-1. Configure as variáveis de ambiente e preencha o `DATABASE_URL` manualmente em `apps/server/.env`:
-
-```bash
-bun env
-```
-
-2. Aplique o schema no banco local:
+2. Aplique as migrations *(apenas sem Railway)*:
 
 ```bash
 bun db:migrate
 ```
 
-3. Inicie o ambiente de desenvolvimento:
+3. Inicie o desenvolvimento:
 
 ```bash
 bun dev
@@ -164,22 +105,12 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 
 | Comando | Descrição |
 |---|---|
-| `bun dev` | Inicia todos os apps em modo desenvolvimento |
-| `bun dev:server` | Inicia apenas o servidor |
-| `bun dev:web` | Inicia apenas o frontend |
+| `bun dev` | Inicia server + web em desenvolvimento |
 | `bun run build` | Build de produção |
-| `bun run build:server` | Build apenas do servidor |
-| `bun run build:web` | Build apenas do frontend |
-| `bun db:push` | Aplica schema no banco |
-| `bun db:generate` | Gera migrations |
 | `bun db:migrate` | Executa migrations |
-| `bun db:seed` | Popula o banco com dados falsos |
 | `bun db:studio` | Abre o Drizzle Studio |
 | `bun lint` | Verifica linting |
-| `bun lint:fix` | Corrige linting |
 | `bun check-types` | Verifica tipos TypeScript |
-| `bun env` | Configura variáveis de ambiente |
-| `bun cleanup` | Remove arquivos de exemplo |
 
 ## Integrações
 
