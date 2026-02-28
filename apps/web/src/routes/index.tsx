@@ -119,6 +119,15 @@ function WelcomePage() {
               <GithubLogoIcon className="h-4 w-4" weight="bold" />
               Acessar repositório
             </a>
+            <a
+              className="btn btn-soft btn-secondary"
+              href="https://github.com/lucasprmartins/beta-tools"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <GithubLogoIcon className="h-4 w-4" weight="bold" />
+              Beta Tools
+            </a>
           </div>
         </header>
 
