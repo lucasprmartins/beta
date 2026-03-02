@@ -40,7 +40,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .infisical.json
 .claude/*.local.*
 .codepowers
-apps/*server
 
 # file nul
 nul
