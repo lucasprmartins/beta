@@ -23,6 +23,23 @@ File-based routing com tipagem completa. O route tree é gerado automaticamente 
 
 ## Regras
 
+### Rotas são finas
+
+Arquivos de rota contêm **apenas** configuração: `createFileRoute`, `beforeLoad`, `loader`, `validateSearch` e import do componente de `@/features/`. Toda UI, estado e lógica ficam em `src/features/`.
+
+```tsx
+// src/routes/_auth/dashboard.tsx
+import { DashboardPage } from "@/features/dashboard"
+
+export const Route = createFileRoute("/_auth/dashboard")({
+  component: DashboardPage,
+})
+```
+
+**Exceção**: layouts (`__root.tsx`, `_auth.tsx`) podem ter JSX de estrutura (Outlet, wrappers).
+
+### Gerais
+
 - **`createFileRoute`** para todas as rotas
 - Passe **`from`** ao usar `useNavigate` (tipagem correta)
 - Rotas protegidas ficam em `src/routes/_auth/`

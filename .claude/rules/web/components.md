@@ -7,6 +7,14 @@ paths:
 
 # Componentes React
 
+## Estrutura de Pastas
+
+| Pasta | Responsabilidade |
+|-------|-----------------|
+| `src/features/` | Páginas e domínios — componentes de página, lógica, sub-componentes |
+| `src/components/` | Componentes compartilhados reutilizáveis |
+| `src/layout/` | Estrutura visual da aplicação (sidebar, header) |
+
 ## Estrutura de Arquivo
 
 De cima para baixo:
