@@ -11,7 +11,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
-      "outputs": ["dist/**", "server"]
+      "outputs": ["dist/**", "server", "server.exe"]
     },
     "check-types": {
       "dependsOn": ["^build"],
