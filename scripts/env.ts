@@ -139,7 +139,7 @@ if (criouServer) {
 
 if (usaRailway) {
   const kvOutput = (
-    await $`railway variables --kv --service=postgres`.nothrow().quiet()
+    await $`railway variables --kv --service=database`.nothrow().quiet()
   ).stdout.toString();
   const match = kvOutput.match(/^DATABASE_PUBLIC_URL=(.+)$/m);
 
