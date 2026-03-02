@@ -11,21 +11,6 @@
     "check-types": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "devDependencies": {
-    "@app/api": "workspace:*",
-    "typescript": "^5.9.3",
-    "@types/bun": "catalog:",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "vite": "^7.3.1",
-    "@tanstack/react-router-devtools": "^1.163.2",
-    "@tanstack/router-plugin": "^1.163.2",
-    "@tanstack/react-query-devtools": "^5.91.3",
-    "@vitejs/plugin-react-swc": "^4.2.3",
-    "tailwindcss": "^4.2.1",
-    "@tailwindcss/vite": "^4.2.1",
-    "daisyui": "^5.5.19"
-  },
   "dependencies": {
     "@app/auth": "workspace:*",
     "@fontsource-variable/geist": "^5.2.8",
@@ -37,6 +22,21 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "serve": "^14.2.5",
-    "zod": "^4.3.6"
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@app/api": "workspace:*",
+    "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-query-devtools": "^5.91.3",
+    "@tanstack/react-router-devtools": "^1.163.2",
+    "@tanstack/router-plugin": "^1.163.2",
+    "@types/bun": "catalog:",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.3",
+    "daisyui": "^5.5.19",
+    "tailwindcss": "^4.2.1",
+    "typescript": "catalog:",
+    "vite": "^7.3.1"
   }
 }

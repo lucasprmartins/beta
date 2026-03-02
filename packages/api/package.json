@@ -17,18 +17,18 @@
     "build": "tsc --build",
     "check-types": "tsc --noEmit"
   },
+  "dependencies": {
+    "@app/auth": "workspace:*",
+    "@app/core": "workspace:*",
+    "@app/infra": "workspace:*",
+    "@orpc/openapi": "^1.13.5",
+    "@orpc/server": "^1.13.5",
+    "@orpc/zod": "^1.13.5",
+    "zod": "catalog:"
+  },
   "devDependencies": {
     "@app/config": "workspace:*",
     "@types/bun": "catalog:",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@app/core": "workspace:*",
-    "@app/infra": "workspace:*",
-    "@app/auth": "workspace:*",
-    "zod": "^4.3.6",
-    "@orpc/server": "^1.13.5",
-    "@orpc/openapi": "^1.13.5",
-    "@orpc/zod": "^1.13.5"
+    "typescript": "catalog:"
   }
 }
