@@ -13,15 +13,15 @@
     "build": "tsc --build",
     "check-types": "tsc --noEmit"
   },
+  "dependencies": {
+    "@app/infra": "workspace:*",
+    "@better-auth/drizzle-adapter": "^1.5.0",
+    "@better-auth/i18n": "^1.5.0",
+    "better-auth": "^1.5.0"
+  },
   "devDependencies": {
     "@app/config": "workspace:*",
     "@types/bun": "catalog:",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@app/infra": "workspace:*",
-    "better-auth": "^1.5.0",
-    "@better-auth/drizzle-adapter": "^1.5.0",
-    "@better-auth/i18n": "^1.5.0"
+    "typescript": "catalog:"
   }
 }
