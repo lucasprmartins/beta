@@ -39,7 +39,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .turbo
 .infisical.json
 .claude/*.local.*
-.codepowers
+.workflow
 
 # file nul
 nul
