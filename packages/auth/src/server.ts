@@ -33,7 +33,7 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24,
   },
   rateLimit: {
-    enabled: true,
+    enabled: !isLocal,
     window: 60,
     max: 100,
     customRules: {
