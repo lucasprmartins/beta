@@ -11,6 +11,11 @@ services:
       POSTGRES_DB: beta
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U beta"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
 
 volumes:
   pgdata:

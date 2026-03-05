@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "setup": "bun scripts/setup.ts",
-    "dev": "docker compose up -d postgres && turbo dev",
+    "dev": "docker compose up -d --wait postgres && turbo dev",
     "dev:server": "turbo -F server dev",
     "dev:web": "turbo -F web dev",
     "build": "turbo build",
