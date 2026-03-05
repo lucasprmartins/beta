@@ -310,7 +310,10 @@ const passos = usaRailway
     ]
   : [
       `1. ${pc.bold("bun env")}         ${pc.dim("— configurar variáveis de ambiente")}`,
-      `2. ${pc.bold("bun cleanup")}     ${pc.dim("— remover exemplos")}`,
+      `2. ${pc.bold("bun db:local")}    ${pc.dim("— subir PostgreSQL via Docker")}`,
+      `3. ${pc.bold("bun db:push")}     ${pc.dim("— aplicar schema no banco")}`,
+      `4. ${pc.bold("bun db:seed")}     ${pc.dim("— popular banco de dados")}`,
+      `5. ${pc.bold("bun cleanup")}     ${pc.dim("— remover exemplos")}`,
     ];
 
 log.message(passos.join("\n"));
