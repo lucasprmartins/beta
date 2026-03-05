@@ -8,26 +8,31 @@ dotenv.config({
 import { reset, seed } from "drizzle-seed";
 import { logger } from "../logger";
 import { db } from "./index";
+import { categoria } from "./schema/example-crud";
+import { produto } from "./schema/example-domain";
 
-// Importe seus schemas aqui:
-// import { exemplo } from "./schema/exemplo";
-
-const schema = {
-  // Adicione suas tabelas aqui:
-  // exemplo,
-};
+const schema = { categoria, produto };
 
 async function main() {
   await reset(db, schema);
-  await seed(db, schema);
+  await seed(db, schema, { count: 20 });
 
-  // Para customizar os dados gerados, use .refine():
+  // Para personalizar os dados gerados, substitua o seed acima por .refine():
+  //
   // await seed(db, schema).refine((f) => ({
-  //   exemplo: {
+  //   categoria: {
+  //     count: 5,
+  //     columns: {
+  //       nome: f.valuesFromArray(["Eletrônicos", "Roupas", "Alimentos"]),
+  //       descricao: f.loremIpsum({ sentencesCount: 1 }),
+  //     },
+  //   },
+  //   produto: {
   //     count: 20,
   //     columns: {
   //       nome: f.fullName(),
-  //       email: f.email(),
+  //       preco: f.number({ minValue: 9.9, maxValue: 999.99, precision: 100 }),
+  //       estoque: f.int({ minValue: 0, maxValue: 200 }),
   //     },
   //   },
   // }));
