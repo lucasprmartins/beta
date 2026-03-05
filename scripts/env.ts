@@ -6,7 +6,6 @@ import { $ } from "bun";
 import {
   comandoExiste,
   escreverArquivo,
-  lerJson,
   raizProjeto,
   substituirNoArquivo,
   verificarCancelamento,
@@ -19,16 +18,7 @@ intro("Configurar Ambiente");
 
 // ─── Detectar Railway ──────────────────────────────────────────────────────────
 
-const configPath = resolve(root, "config.json");
-const temConfig = existsSync(configPath);
-
-interface ProjectConfig {
-  railway?: { workspace: string };
-}
-
-const usaRailway = temConfig
-  ? Boolean((await lerJson<ProjectConfig>(configPath)).railway)
-  : false;
+const usaRailway = existsSync(resolve(root, "apps/proxy/railway.json"));
 
 // ─── Railway (link + ambiente) ─────────────────────────────────────────────────
 
