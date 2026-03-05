@@ -22,7 +22,7 @@
     "db:push": "turbo -F @app/infra db:push",
     "db:generate": "turbo -F @app/infra db:generate",
     "db:migrate": "turbo -F @app/infra db:migrate",
-    "db:seed": "bun scripts/seed.ts",
+    "db:seed": "turbo -F @app/infra db:seed",
     "db:studio": "turbo -F @app/infra db:studio",
     "lint": "bun ultracite check",
     "lint:fix": "bun ultracite fix",
