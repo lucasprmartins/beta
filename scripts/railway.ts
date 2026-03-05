@@ -1,14 +1,8 @@
 import { intro, log, outro, spinner, text } from "@clack/prompts";
 import { $ } from "bun";
-import {
-  comandoExiste,
-  raizProjeto,
-  verificarCancelamento,
-} from "./lib/utils";
+import { comandoExiste, raizProjeto, verificarCancelamento } from "./lib/utils";
 
 export async function linkRailway(): Promise<void> {
-  const root = raizProjeto();
-
   if (!(await comandoExiste("railway"))) {
     log.error(
       "Railway CLI não está instalado. Instale em: https://docs.railway.com/guides/cli"
