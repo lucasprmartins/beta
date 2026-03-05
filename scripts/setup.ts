@@ -178,15 +178,6 @@ if (repoExiste) {
   sRepo.stop(`Repositório criado: ${owner}/${nomeProjeto}`);
 }
 
-// ─── config.json ───────────────────────────────────────────────────────────────
-
-const config: Record<string, unknown> = { name: nomeProjeto, owner };
-if (usaRailway) {
-  config.railway = { workspace: railwayWorkspace };
-}
-await escreverJson(resolve(root, "config.json"), config);
-log.success("config.json gerado");
-
 // ─── Auto-remoção ──────────────────────────────────────────────────────────────
 
 const setupPath = resolve(root, "scripts/setup.ts");
