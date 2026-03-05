@@ -151,8 +151,14 @@ if (usaRailway) {
   } else {
     log.warn("DATABASE_URL não encontrado no Railway, aguarde o deploy.");
   }
+} else if (criouServer) {
+  const localUrl = "postgresql://beta:beta@localhost:5432/beta";
+  await substituirNoArquivo(serverEnvPath, [
+    { de: /^DATABASE_URL=.*$/m, para: `DATABASE_URL=${localUrl}` },
+  ]);
+  log.success("DATABASE_URL configurado para Docker local");
 } else {
-  log.info("Preencha o DATABASE_URL manualmente em apps/server/.env");
+  log.info("DATABASE_URL mantido (já existente)");
 }
 
 outro("Ambiente configurado!");
