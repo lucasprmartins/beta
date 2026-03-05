@@ -16,9 +16,23 @@ process.chdir(root);
 
 intro("Configurar Ambiente");
 
-// ─── Detectar Railway ──────────────────────────────────────────────────────────
+// ─── Escolher ambiente ─────────────────────────────────────────────────────────
 
-const usaRailway = existsSync(resolve(root, "apps/proxy/railway.json"));
+const temRailway = existsSync(resolve(root, "apps/proxy/railway.json"));
+
+let usaRailway = false;
+
+if (temRailway) {
+  const ambiente = await select({
+    message: "Qual ambiente deseja configurar?",
+    options: [
+      { value: "local", label: "Local (Docker)" },
+      { value: "railway", label: "Railway" },
+    ],
+  });
+  verificarCancelamento(ambiente);
+  usaRailway = ambiente === "railway";
+}
 
 // ─── Railway (link + ambiente) ─────────────────────────────────────────────────
 
@@ -68,13 +82,13 @@ if (usaRailway) {
     process.exit(1);
   }
 
-  const ambiente = await select({
-    message: "Selecione o ambiente:",
+  const railwayEnv = await select({
+    message: "Selecione o ambiente Railway:",
     options: ambientes,
   });
-  verificarCancelamento(ambiente);
+  verificarCancelamento(railwayEnv);
 
-  await $`railway environment ${ambiente}`.quiet();
+  await $`railway environment ${railwayEnv}`.quiet();
 }
 
 // ─── Criar .env se não existir ─────────────────────────────────────────────────
@@ -125,7 +139,7 @@ if (criouServer) {
   log.info("BETTER_AUTH_SECRET mantido (já existente)");
 }
 
-// ─── DATABASE_URL via Railway ──────────────────────────────────────────────────
+// ─── DATABASE_URL ──────────────────────────────────────────────────────────────
 
 if (usaRailway) {
   const kvOutput = (
