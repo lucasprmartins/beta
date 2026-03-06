@@ -42,9 +42,9 @@ packages/
 ## Requisitos
 
 - [Bun](https://bun.sh) >= 1.3.10
+- [Docker](https://www.docker.com/) *(PostgreSQL local via Docker Compose)*
 - [GitHub CLI](https://cli.github.com) (`gh`)
 - [Railway CLI](https://docs.railway.com/guides/cli) *(opcional — provisiona PostgreSQL e infra na nuvem)*
-- PostgreSQL *(necessário apenas sem Railway)*
 
 ## Começando
 
@@ -77,9 +77,9 @@ O script pergunta o nome do projeto, o owner (pessoal ou organização) e se des
 bun env
 ```
 
-> Com Railway, o `DATABASE_URL` é preenchido automaticamente. Sem Railway, preencha manualmente em `apps/server/.env`.
+> O script pergunta se deseja usar **Local (Docker)** ou **Railway**. Com Railway, o `DATABASE_URL` é preenchido automaticamente. Com Docker, ele é configurado automaticamente para `postgres://beta:beta@localhost:5432/beta`.
 
-2. Aplique as migrations *(apenas sem Railway)*:
+2. Aplique as migrations:
 
 ```bash
 bun db:migrate
@@ -90,6 +90,8 @@ bun db:migrate
 ```bash
 bun dev
 ```
+
+> No modo Local, o `bun dev` sobe automaticamente o PostgreSQL via Docker Compose antes de iniciar o server e o web.
 
 4. Remova os arquivos de exemplo:
 
@@ -105,9 +107,11 @@ O servidor roda em `http://localhost:3000` e o frontend em `http://localhost:300
 
 | Comando | Descrição |
 |---|---|
-| `bun dev` | Inicia server + web em desenvolvimento |
+| `bun dev` | Sobe o PostgreSQL (Docker) e inicia server + web |
 | `bun run build` | Build de produção |
+| `bun db:local` | Sobe apenas o PostgreSQL via Docker Compose |
 | `bun db:migrate` | Executa migrations |
+| `bun db:seed` | Popula o banco com dados iniciais |
 | `bun db:studio` | Abre o Drizzle Studio |
 | `bun lint` | Verifica linting |
 | `bun check-types` | Verifica tipos TypeScript |
