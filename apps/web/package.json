@@ -12,10 +12,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@app/api": "workspace:*",
     "@app/auth": "workspace:*",
     "@fontsource-variable/geist": "^5.2.8",
-    "@orpc/client": "^1.13.6",
-    "@orpc/tanstack-query": "^1.13.6",
     "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-router": "^1.166.2",
@@ -25,7 +24,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@app/api": "workspace:*",
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@tanstack/react-router-devtools": "^1.166.2",
