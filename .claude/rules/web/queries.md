@@ -1,16 +1,16 @@
 ---
 paths:
-  - "apps/web/src/lib/orpc.ts"
+  - "apps/web/src/lib/api.ts"
   - "apps/web/src/features/**"
 ---
 
 # Queries (TanStack Query v5 + oRPC)
 
-## client vs orpc
+## client vs api
 
 | Export | Uso |
 |--------|-----|
-| `orpc` | Queries: `queryOptions()`, `infiniteOptions()`, `key()` |
+| `api` | Queries: `queryOptions()`, `infiniteOptions()`, `key()` |
 | `client` | Mutations: `mutationFn`, chamadas imperativas |
 
 ## Regras

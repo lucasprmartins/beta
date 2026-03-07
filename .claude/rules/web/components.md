@@ -19,14 +19,14 @@ paths:
 
 De cima para baixo:
 
-1. Imports
-2. Tipos locais
-3. Constantes e helpers
-4. Sub-componentes (composição)
-5. Componente principal exportado
-
-- Sub-componentes ficam no **mesmo arquivo**, acima do principal
-- Variáveis em pt-br: `carregando`, `itens`, `feedback`, `erroListagem`
+| # | Seção | O que vai aqui |
+|---|-------|---------------|
+| 1 | Imports | Externos primeiro, depois internos (`@/...`), separados por linha em branco |
+| 2 | Tipos | `interface` e `type` usados pelo(s) componente(s) do arquivo |
+| 3 | Constantes e helpers | Valores estáticos, mapas de lookup, funções puras auxiliares |
+| 4 | Hooks (queries e mutations) | `queryOptions`, custom hooks com `useQuery`/`useMutation` |
+| 5 | Sub-componentes | Componentes internos (não exportados) usados por composição |
+| 6 | Componente principal | O componente exportado — sempre por último |
 
 ## useEffect — Evite ao Máximo
 

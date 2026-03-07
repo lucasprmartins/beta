@@ -37,7 +37,7 @@ Em operações sobre recurso existente, busque antes de delegar ao use case:
 - Primeiro `null` → `NOT_FOUND` (recurso não existe)
 - Segundo `null` → `BAD_REQUEST` (operação inválida no recurso existente)
 
-## Handlers (`src/server.ts`)
+## Server (`src/server.ts`)
 
 - `RPCHandler` — endpoint `/rpc` para o frontend (binary protocol)
 - `OpenAPIHandler` — endpoint `/api` com docs automáticas (apenas em dev)
