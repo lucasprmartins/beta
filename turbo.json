@@ -14,7 +14,7 @@
       "outputs": ["dist/**", "server", "server.exe"]
     },
     "check-types": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^check-types"],
       "inputs": ["**/*.{ts,tsx}", "tsconfig.json"],
       "outputs": [
         "node_modules/.cache/tsbuildinfo.json",
