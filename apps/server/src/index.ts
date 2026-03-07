@@ -1,4 +1,4 @@
-import { apiHandler, rpcHandler } from "@app/api";
+import { apiHandler, rpcHandler } from "@app/api/server";
 import { auth, createContext } from "@app/auth/server";
 import { env, isLocal } from "@app/infra/env";
 import { logger } from "@app/infra/logger";
