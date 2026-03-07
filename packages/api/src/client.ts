@@ -28,5 +28,5 @@ export function createClient(options?: { onUnauthorized?: () => void }) {
   const client: AppRouterClient = createORPCClient(link);
   const api = createTanstackQueryUtils(client);
 
-  return { link, client, api };
+  return { client, api };
 }
