@@ -2,6 +2,7 @@ import { WarningCircleIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { SignInForm, SignUpForm } from "@/features/auth";
+import { SESSION_EXPIRED_REASON } from "@/lib/api";
 import { sessionOptions } from "@/lib/auth";
 
 type AuthMode = "sign-in" | "sign-up";
@@ -27,7 +28,7 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base-100">
       <div className="flex flex-col items-center gap-4">
-        {reason === "session-expired" && (
+        {reason === SESSION_EXPIRED_REASON && (
           <div className="alert alert-warning">
             <WarningCircleIcon className="h-5 w-5 shrink-0" />
             <span>Sua sessão expirou. Faça login novamente.</span>
