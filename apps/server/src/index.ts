@@ -5,10 +5,23 @@ import { logger } from "@app/infra/logger";
 import { cors } from "@elysiajs/cors";
 import { sql } from "bun";
 import { Elysia } from "elysia";
+import type { Generator } from "elysia-rate-limit";
 import { rateLimit } from "elysia-rate-limit";
-import { RATE_LIMITS, rateLimitGenerator } from "./rate-limit";
 
 const PORT = 3000;
+const RPC_RATE_LIMIT = { duration: 60_000, max: 120 } as const;
+
+const rateLimitGenerator: Generator = (request, server) => {
+  const forwardedFor = request.headers
+    .get("x-forwarded-for")
+    ?.split(",")[0]
+    ?.trim();
+  if (forwardedFor) {
+    return forwardedFor;
+  }
+
+  return server?.requestIP(request)?.address ?? "unknown-client";
+};
 
 new Elysia()
 
@@ -48,8 +61,8 @@ new Elysia()
     rpc
       .use(
         rateLimit({
-          duration: RATE_LIMITS.rpc.duration,
-          max: RATE_LIMITS.rpc.max,
+          duration: RPC_RATE_LIMIT.duration,
+          max: RPC_RATE_LIMIT.max,
           generator: rateLimitGenerator,
           scoping: "scoped",
         })
@@ -75,30 +88,21 @@ new Elysia()
   .use((app) =>
     isLocal
       ? app.group("/api", (api) =>
-          api
-            .use(
-              rateLimit({
-                duration: RATE_LIMITS.api.duration,
-                max: RATE_LIMITS.api.max,
-                generator: rateLimitGenerator,
-                scoping: "scoped",
-              })
-            )
-            .all(
-              "/*",
-              async ({ request }) => {
-                const context = await createContext({ request });
-                const { response } = await apiHandler.handle(request, {
-                  prefix: "/api",
-                  context,
-                });
+          api.all(
+            "/*",
+            async ({ request }) => {
+              const context = await createContext({ request });
+              const { response } = await apiHandler.handle(request, {
+                prefix: "/api",
+                context,
+              });
 
-                return response ?? new Response("NOT FOUND", { status: 404 });
-              },
-              {
-                parse: "none",
-              }
-            )
+              return response ?? new Response("NOT FOUND", { status: 404 });
+            },
+            {
+              parse: "none",
+            }
+          )
         )
       : app
   )
