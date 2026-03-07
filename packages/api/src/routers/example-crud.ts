@@ -1,15 +1,6 @@
-import {
-  atualizarCategoria,
-  criarCategoria,
-  deletarCategoria,
-} from "@app/core/application/example-crud";
 import { categoriaRepository } from "@app/infra/db/repositories/example-crud";
 import { z } from "zod";
 import { o } from "../auth";
-
-const criar = criarCategoria(categoriaRepository);
-const atualizar = atualizarCategoria(categoriaRepository);
-const deletar = deletarCategoria(categoriaRepository);
 
 const categoriaSchema = z.object({
   id: z.number().int().describe("ID da categoria"),
@@ -73,7 +64,7 @@ export const categoriaRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const resultado = await criar(input);
+      const resultado = await categoriaRepository.criar(input);
 
       if (!resultado) {
         throw errors.CONFLICT({ data: { nome: input.nome } });
@@ -106,7 +97,7 @@ export const categoriaRouter = {
     })
     .handler(async ({ input, errors }) => {
       const { id, ...dados } = input;
-      const resultado = await atualizar(id, dados);
+      const resultado = await categoriaRepository.atualizar(id, dados);
 
       if (!resultado) {
         throw errors.NOT_FOUND({ data: { id } });
@@ -136,7 +127,7 @@ export const categoriaRouter = {
       },
     })
     .handler(async ({ input, errors }) => {
-      const resultado = await deletar(input.id);
+      const resultado = await categoriaRepository.deletar(input.id);
 
       if (!resultado) {
         throw errors.NOT_FOUND({ data: { id: input.id } });

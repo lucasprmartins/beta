@@ -2,7 +2,6 @@ export const ARQUIVOS_EXEMPLO = [
   "packages/core/src/contracts/example-crud.ts",
   "packages/core/src/contracts/example-domain.ts",
   "packages/core/src/domains/example-domain.ts",
-  "packages/core/src/application/example-crud.ts",
   "packages/core/src/application/example-domain.ts",
   "packages/infra/src/db/schema/example-crud.ts",
   "packages/infra/src/db/schema/example-domain.ts",
