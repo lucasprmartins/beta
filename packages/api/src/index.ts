@@ -34,9 +34,8 @@ export const apiHandler = new OpenAPIHandler(router, {
         info: {
           title: "API",
           version: "1.0.0",
-          description: "API REST do projeto Beta",
+          description: "API REST gerada a partir dos handlers do oRPC.",
         },
-        servers: [{ url: "http://localhost:3000/api" }],
       },
     }),
   ],
