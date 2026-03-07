@@ -22,7 +22,7 @@ Routers oRPC com validação Zod e erros tipados.
 - Schemas Zod com `.describe()` em cada campo (gera documentação OpenAPI)
 - `.route()` com `method`, `path`, `summary`, `description`, `tags`
 - `z.coerce.number()` para inputs de GET (query params chegam como string)
-- Convenção: `{dominio}Router`, registrar em `src/index.ts`
+- Convenção: `{dominio}Router`, registrar em `src/server.ts`
 
 ## Tratamento de Erros
 
@@ -37,8 +37,14 @@ Em operações sobre recurso existente, busque antes de delegar ao use case:
 - Primeiro `null` → `NOT_FOUND` (recurso não existe)
 - Segundo `null` → `BAD_REQUEST` (operação inválida no recurso existente)
 
-## Handlers (`src/index.ts`)
+## Handlers (`src/server.ts`)
 
 - `RPCHandler` — endpoint `/rpc` para o frontend (binary protocol)
 - `OpenAPIHandler` — endpoint `/api` com docs automáticas (apenas em dev)
 - `onError` — interceptor que loga erros via Pino
+
+## Client (`src/client.ts`)
+
+- `createClient(options?)` — factory que cria link, client tipado e utils TanStack Query
+- Aceita `onUnauthorized` callback para tratar 401 (redirect fica no consumidor)
+- Importado pelo web como `@app/api/client`

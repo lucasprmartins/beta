@@ -39,7 +39,7 @@ packages/
 | `api` | `core` (use cases), `infra` (repositórios) |
 | `auth` | `infra` (DB para sessões) |
 | `server` | `api`, `auth`, `infra` |
-| `web` | `auth` (client), API via oRPC client |
+| `web` | `api` (client), `auth` (client) |
 
 ## Domínios
 
