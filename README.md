@@ -77,7 +77,7 @@ O script pergunta o nome do projeto, o owner (pessoal ou organização) e se des
 bun env
 ```
 
-> O script pergunta se deseja usar **Local (Docker)** ou **Railway**. Com Railway, o `DATABASE_URL` é preenchido automaticamente. Com Docker, ele é configurado automaticamente para `postgres://beta:beta@localhost:5432/beta`.
+> O script pergunta se deseja usar **Local (Docker)** ou **Railway**. Com Railway, o `DATABASE_URL` é preenchido automaticamente. Com Docker, ele é configurado automaticamente para `postgres://user:password@localhost:5432/db`.
 
 2. Aplique as migrations *(apenas Local — no Railway o deploy executa automaticamente)*:
 

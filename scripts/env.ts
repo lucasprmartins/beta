@@ -156,7 +156,7 @@ if (usaRailway) {
     log.warn("DATABASE_URL não encontrado no Railway, aguarde o deploy.");
   }
 } else if (criouServer) {
-  const localUrl = "postgresql://beta:beta@localhost:5432/beta";
+  const localUrl = "postgresql://user:password@localhost:5432/db";
   await substituirNoArquivo(serverEnvPath, [
     { de: /^DATABASE_URL=.*$/m, para: `DATABASE_URL=${localUrl}` },
   ]);

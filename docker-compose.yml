@@ -1,18 +1,18 @@
 services:
   postgres:
     image: postgres:17
-    container_name: beta-postgres
+    container_name: database
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: beta
-      POSTGRES_PASSWORD: beta
-      POSTGRES_DB: beta
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U beta"]
+      test: ["CMD-SHELL", "pg_isready -U user"]
       interval: 2s
       timeout: 5s
       retries: 10
