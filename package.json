@@ -39,7 +39,7 @@
     "zod": "^4.3.6"
   },
   "dependencies": {
-    "turbo": "^2.8.13"
+    "turbo": "^2.8.14"
   },
   "devDependencies": {
     "@app/config": "workspace:*",

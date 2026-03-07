@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@app/infra": "workspace:*",
-    "@better-auth/drizzle-adapter": "^1.5.3",
-    "@better-auth/i18n": "^1.5.3",
-    "better-auth": "^1.5.3"
+    "@better-auth/drizzle-adapter": "^1.5.4",
+    "@better-auth/i18n": "^1.5.4",
+    "better-auth": "^1.5.4"
   },
   "devDependencies": {
     "@app/config": "workspace:*",
