@@ -36,7 +36,7 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
     const formData = new FormData(e.currentTarget);
 
     const result = await signIn({
-      username: formData.get("username") as string,
+      identifier: formData.get("identifier") as string,
       password: formData.get("password") as string,
     });
 
@@ -63,21 +63,23 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
           <ThemeToggle size="sm" />
         </legend>
 
-        <label className="fieldset-label" htmlFor="sign-in-username">
-          Usuário
+        <label className="fieldset-label" htmlFor="sign-in-identifier">
+          Usuário ou e-mail
         </label>
         <label className="input validator w-full">
           <UserIcon className="h-4 w-4 opacity-50" />
           <input
             disabled={isPending}
-            id="sign-in-username"
-            name="username"
-            placeholder="Digite seu usuário..."
+            id="sign-in-identifier"
+            name="identifier"
+            placeholder="Digite seu usuário ou e-mail..."
             required
             type="text"
           />
         </label>
-        <p className="validator-hint hidden">Usuário é obrigatório.</p>
+        <p className="validator-hint hidden">
+          Usuário ou e-mail é obrigatório.
+        </p>
 
         <label className="fieldset-label" htmlFor="sign-in-password">
           Senha

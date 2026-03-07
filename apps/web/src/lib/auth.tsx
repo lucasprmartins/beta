@@ -91,7 +91,7 @@ export const useAuthConfig = () => {
 };
 
 export interface SignInCredentials {
-  username: string;
+  identifier: string;
   password: string;
 }
 
@@ -107,7 +107,16 @@ export const useSignIn = (options?: UseSignInOptions) => {
 
   return useMutation({
     mutationFn: async (credentials: SignInCredentials): Promise<AuthResult> => {
-      const result = await auth.signIn.username(credentials);
+      const isEmail = credentials.identifier.includes("@");
+      const result = isEmail
+        ? await auth.signIn.email({
+            email: credentials.identifier,
+            password: credentials.password,
+          })
+        : await auth.signIn.username({
+            username: credentials.identifier,
+            password: credentials.password,
+          });
 
       if (result.error) {
         const error = {
