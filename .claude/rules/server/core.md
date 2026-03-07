@@ -45,7 +45,7 @@ Apenas para Domínio Rico. A entidade é a **guardiã das regras de negócio** �
 
 Use cases recebem repositório por injeção (higher-order function).
 
-- **CRUD Simples**: passthrough — delega diretamente ao repositório
+- **CRUD Simples**: não tem camada application — o router chama o repositório diretamente
 - **Domínio Rico**: toda operação passa pela entidade
   - Criar: `Entidade.criar(input)` → `exportar()` → `repo.criar()`
   - Atualizar: `repo.buscar()` → `Entidade.restaurar()` → método de negócio → `exportar()` → `repo.atualizar()`

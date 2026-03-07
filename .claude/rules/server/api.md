@@ -17,7 +17,8 @@ Routers oRPC com validação Zod e erros tipados.
 
 ## Regras de Router
 
-- Instanciar use cases no **nível do módulo**: `const criar = criarDominio(dominioRepository)`
+- **CRUD Simples**: importar e chamar o repositório diretamente no handler
+- **Domínio Rico**: instanciar use cases no **nível do módulo**: `const criar = criarDominio(dominioRepository)`
 - Schemas Zod com `.describe()` em cada campo (gera documentação OpenAPI)
 - `.route()` com `method`, `path`, `summary`, `description`, `tags`
 - `z.coerce.number()` para inputs de GET (query params chegam como string)
