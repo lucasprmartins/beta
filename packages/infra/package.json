@@ -4,18 +4,9 @@
   "private": true,
   "packageManager": "bun@1.3.10",
   "exports": {
-    "./db": {
-      "types": "./src/db/index.ts",
-      "default": "./src/db/index.ts"
-    },
-    "./integrations/*": {
-      "types": "./src/integrations/*.ts",
-      "default": "./src/integrations/*.ts"
-    },
-    "./*": {
-      "types": "./src/*.ts",
-      "default": "./src/*.ts"
-    }
+    "./db": "./src/db/index.ts",
+    "./integrations/*": "./src/integrations/*.ts",
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "db:push": "drizzle-kit push",
