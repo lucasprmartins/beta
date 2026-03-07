@@ -1,10 +1,7 @@
 import dotenv from "dotenv";
-import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
-dotenv.config({
-  path: "../../apps/server/.env",
-});
+dotenv.config({ path: "../../apps/server/.env", override: true });
 
 export default defineConfig({
   out: "./src/db/migrations",

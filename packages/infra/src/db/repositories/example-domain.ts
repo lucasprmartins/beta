@@ -2,7 +2,7 @@ import type {
   ProdutoData,
   ProdutoRepository,
 } from "@app/core/contracts/example-domain";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { db } from "../index";
 import { produto } from "../schema/example-domain";
 
@@ -33,6 +33,7 @@ export const produtoRepository: ProdutoRepository = {
     const rows = await db
       .select()
       .from(produto)
+      .orderBy(asc(produto.id))
       .limit(limite + 1)
       .offset(cursor);
 

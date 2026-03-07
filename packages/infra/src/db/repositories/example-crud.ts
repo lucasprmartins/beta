@@ -2,7 +2,7 @@ import type {
   CategoriaData,
   CategoriaRepository,
 } from "@app/core/contracts/example-crud";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { db } from "../index";
 import { categoria } from "../schema/example-crud";
 
@@ -29,6 +29,7 @@ export const categoriaRepository: CategoriaRepository = {
     const rows = await db
       .select()
       .from(categoria)
+      .orderBy(asc(categoria.id))
       .limit(limite + 1)
       .offset(cursor);
 

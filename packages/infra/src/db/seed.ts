@@ -1,9 +1,6 @@
 import dotenv from "dotenv";
-import "dotenv/config";
 
-dotenv.config({
-  path: "../../apps/server/.env",
-});
+dotenv.config({ path: "../../apps/server/.env", override: true });
 
 import { reset, seed } from "drizzle-seed";
 import { logger } from "../logger";
