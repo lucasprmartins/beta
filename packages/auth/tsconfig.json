@@ -1,13 +1,8 @@
 {
   "extends": "@app/config/tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "composite": true,
     "strictNullChecks": true,
+    "incremental": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
-  },
-  "references": [{ "path": "../infra" }]
+  }
 }

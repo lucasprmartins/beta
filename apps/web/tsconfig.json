@@ -28,8 +28,4 @@
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo.json"
   },
   "include": ["src"],
-  "references": [
-    { "path": "../../packages/api" },
-    { "path": "../../packages/auth" }
-  ]
 }

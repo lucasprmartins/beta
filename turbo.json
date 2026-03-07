@@ -16,10 +16,7 @@
     "check-types": {
       "dependsOn": ["^check-types"],
       "inputs": ["**/*.{ts,tsx}", "tsconfig.json"],
-      "outputs": [
-        "node_modules/.cache/tsbuildinfo.json",
-        "dist/tsconfig.tsbuildinfo"
-      ]
+      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
     },
     "test": {
       "dependsOn": ["topo"],
