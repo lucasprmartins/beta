@@ -10,3 +10,6 @@ export interface MenuItem {
 export const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: HouseIcon, to: "/dashboard" },
 ];
+
+export const NAV_ACTIVE_CLASS =
+  "!bg-primary/20 !text-primary font-bold hover:!bg-primary/10 hover:!text-secondary";

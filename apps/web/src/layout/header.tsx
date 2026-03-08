@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { HeaderLogo } from "@/components/header-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/features/auth";
-import { menuItems } from "@/lib/navigation";
+import { menuItems, NAV_ACTIVE_CLASS } from "@/lib/navigation";
 
 export function Header({ children }: { children: React.ReactNode }) {
   return (
@@ -15,10 +15,7 @@ export function Header({ children }: { children: React.ReactNode }) {
             {menuItems.map((item) => (
               <li key={item.to}>
                 <Link
-                  activeProps={{
-                    className:
-                      "!bg-primary/20 !text-primary font-bold hover:!bg-primary/10 hover:!text-secondary",
-                  }}
+                  activeProps={{ className: NAV_ACTIVE_CLASS }}
                   className="hover:!bg-base-content/5 text-secondary hover:text-base-content"
                   to={item.to}
                 >
