@@ -61,10 +61,10 @@ export const Route = createFileRoute("/_auth")({
     <LayoutComponent>
       <div className="p-6">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {["s1", "s2", "s3", "s4", "s5", "s6"].map((id, i) => (
+          {[0, 1, 2, 3, 4, 5].map((i) => (
             <div
               className="animate-[fadeIn_0.4s_ease-out_both] rounded-xl bg-base-200 p-5"
-              key={id}
+              key={`skeleton-${i}`}
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <div className="flex flex-col gap-4">
