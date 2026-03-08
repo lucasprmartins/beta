@@ -33,3 +33,4 @@ if (!result.success) {
 
 export const env = result.data;
 export const isLocal = env.BETTER_AUTH_URL.includes("localhost");
+export const corsOrigins = env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [];

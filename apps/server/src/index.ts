@@ -1,6 +1,6 @@
 import { apiHandler, rpcHandler } from "@app/api/server";
 import { auth, createContext } from "@app/auth/server";
-import { env, isLocal } from "@app/infra/env";
+import { corsOrigins, isLocal } from "@app/infra/env";
 import { logger } from "@app/infra/logger";
 import { cors } from "@elysiajs/cors";
 import { sql } from "bun";
@@ -42,7 +42,7 @@ new Elysia()
     isLocal
       ? app.use(
           cors({
-            origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
+            origin: corsOrigins,
             methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
             allowedHeaders: ["Content-Type", "Authorization"],
             exposeHeaders: ["Content-Length"],
@@ -70,7 +70,7 @@ new Elysia()
       .all(
         "/*",
         async ({ request }) => {
-          const context = await createContext({ request });
+          const context = await createContext(request);
           const { response } = await rpcHandler.handle(request, {
             prefix: "/rpc",
             context,
@@ -91,7 +91,7 @@ new Elysia()
           api.all(
             "/*",
             async ({ request }) => {
-              const context = await createContext({ request });
+              const context = await createContext(request);
               const { response } = await apiHandler.handle(request, {
                 prefix: "/api",
                 context,

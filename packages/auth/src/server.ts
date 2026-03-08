@@ -5,7 +5,7 @@ import {
   user,
   verification,
 } from "@app/infra/db/schema/auth";
-import { env, isLocal } from "@app/infra/env";
+import { corsOrigins, env, isLocal } from "@app/infra/env";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { i18n } from "@better-auth/i18n";
 import { betterAuth } from "better-auth";
@@ -24,13 +24,17 @@ export const auth = betterAuth({
       verification,
     },
   }),
-  trustedOrigins: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(",") : [],
+  trustedOrigins: corsOrigins,
   emailAndPassword: {
     enabled: true,
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
   },
   rateLimit: {
     enabled: !isLocal,
@@ -61,11 +65,7 @@ export const auth = betterAuth({
   ],
 });
 
-export interface CreateContextOptions {
-  request: Request;
-}
-
-export async function createContext({ request }: CreateContextOptions) {
+export async function createContext(request: Request) {
   const session = await auth.api.getSession({
     headers: request.headers,
   });
