@@ -73,7 +73,7 @@ export const AuthProvider = ({
     onSignUpSuccess,
     onSignOutSuccess,
     onError,
-    queryKey: ["session"],
+    queryKey: sessionOptions.queryKey,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -84,7 +84,7 @@ export const useAuthConfig = () => {
   if (!context) {
     return {
       ...defaultAuthConfig,
-      queryKey: ["session"] as const,
+      queryKey: sessionOptions.queryKey,
     };
   }
   return context;
