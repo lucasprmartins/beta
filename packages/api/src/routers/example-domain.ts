@@ -6,14 +6,9 @@ import {
   desativarProduto,
   removerEstoqueProduto,
 } from "@app/core/application/example-domain";
-import type { ProdutoData } from "@app/core/contracts/example-domain";
 import { produtoRepository } from "@app/infra/db/repositories/example-domain";
 import { z } from "zod";
 import { o } from "../auth";
-
-function exportarProduto(dados: ProdutoData) {
-  return dados;
-}
 
 const criar = criarProduto(produtoRepository);
 const adicionarEstoque = adicionarEstoqueProduto(produtoRepository);
@@ -74,7 +69,7 @@ export const produtoRouter = {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   criar: o
@@ -102,7 +97,7 @@ export const produtoRouter = {
         });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   adicionarEstoque: o
@@ -133,7 +128,7 @@ export const produtoRouter = {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   removerEstoque: o
@@ -175,7 +170,7 @@ export const produtoRouter = {
         throw errors.BAD_REQUEST({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   alterarPreco: o
@@ -206,7 +201,7 @@ export const produtoRouter = {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   ativar: o
@@ -246,7 +241,7 @@ export const produtoRouter = {
         throw errors.BAD_REQUEST({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   desativar: o
@@ -276,7 +271,7 @@ export const produtoRouter = {
         throw errors.NOT_FOUND({ data: { id: input.id } });
       }
 
-      return exportarProduto(resultado);
+      return resultado;
     }),
 
   listar: o
@@ -310,11 +305,5 @@ export const produtoRouter = {
         proximoCursor: z.number().nullable(),
       })
     )
-    .handler(async ({ input }) => {
-      const { itens, proximoCursor } = await produtoRepository.listar(input);
-      return {
-        itens: await Promise.all(itens.map(exportarProduto)),
-        proximoCursor,
-      };
-    }),
+    .handler(async ({ input }) => produtoRepository.listar(input)),
 };
