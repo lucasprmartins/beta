@@ -49,7 +49,7 @@ export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
     <form onSubmit={handleSubmit}>
       {error && (
         <div
-          className="alert alert-error fixed bottom-4 left-1/2 z-50 w-auto max-w-md -translate-x-1/2"
+          className="alert alert-error alert-soft fixed bottom-4 left-1/2 z-50 w-auto max-w-md -translate-x-1/2 shadow-lg"
           role="alert"
         >
           <WarningCircleIcon className="h-5 w-5" />
