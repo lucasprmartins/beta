@@ -28,7 +28,7 @@
     "lint:fix": "bun ultracite fix",
     "lint:fix:unsafe": "bun ultracite fix --unsafe",
     "check-types": "turbo check-types",
-    "ci": "bun lint && bun check-types && bun run build",
+    "check": "bun lint:fix && bun check-types",
     "env": "bun scripts/env.ts",
     "railway": "bun scripts/railway.ts",
     "cleanup": "bun scripts/cleanup.ts"
