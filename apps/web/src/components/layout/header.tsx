@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { HeaderLogo } from "@/components/header-logo";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { UserMenu } from "@/features/auth";
+import { HeaderLogo } from "@/components/ui/header-logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { UserMenu } from "@/features/auth.component";
 import { menuItems, NAV_ACTIVE_CLASS } from "@/lib/navigation";
 
 export function Header({ children }: { children: React.ReactNode }) {
