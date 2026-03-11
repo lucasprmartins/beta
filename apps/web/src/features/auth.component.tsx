@@ -7,22 +7,46 @@ import {
   WarningCircleIcon,
 } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { type ComponentPropsWithoutRef, useState } from "react";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { sessionOptions, useSignIn, useSignOut, useSignUp } from "../lib/auth";
+import { useState } from "react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import {
+  AuthContext,
+  defaultAuthConfig,
+  sessionOptions,
+  useSignIn,
+  useSignOut,
+  useSignUp,
+} from "@/features/auth.queries";
+import type {
+  AuthContextValue,
+  AuthProviderProps,
+  SignInFormProps,
+  SignOutButtonProps,
+  SignUpFormProps,
+} from "@/features/auth.types";
 
-export interface SignInFormProps {
-  onSwitchForm?: () => void;
-}
+export const AuthProvider = ({
+  children,
+  redirects,
+  onSignInSuccess,
+  onSignUpSuccess,
+  onSignOutSuccess,
+  onError,
+}: AuthProviderProps) => {
+  const value: AuthContextValue = {
+    redirects: {
+      ...defaultAuthConfig.redirects,
+      ...redirects,
+    },
+    onSignInSuccess,
+    onSignUpSuccess,
+    onSignOutSuccess,
+    onError,
+    queryKey: sessionOptions.queryKey,
+  };
 
-export interface SignUpFormProps {
-  onSwitchForm?: () => void;
-}
-
-export type SignOutButtonProps = Omit<
-  ComponentPropsWithoutRef<"button">,
-  "onClick"
->;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
 
 export const SignInForm = ({ onSwitchForm }: SignInFormProps) => {
   const { mutateAsync: signIn, isPending } = useSignIn();

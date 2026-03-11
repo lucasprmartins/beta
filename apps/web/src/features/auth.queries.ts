@@ -5,31 +5,17 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { createContext, type ReactNode, useContext } from "react";
-
-export interface AuthResult<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: { message: string };
-}
-
-export interface AuthRedirects {
-  afterSignIn: string;
-  afterSignUp: string;
-  afterSignOut: string;
-}
-
-export interface AuthConfig {
-  redirects: AuthRedirects;
-  onSignInSuccess?: () => void;
-  onSignUpSuccess?: () => void;
-  onSignOutSuccess?: () => void;
-  onError?: (error: { message: string }) => void;
-}
-
-export interface AuthContextValue extends AuthConfig {
-  queryKey: readonly string[];
-}
+import { createContext, useContext } from "react";
+import type {
+  AuthConfig,
+  AuthContextValue,
+  AuthResult,
+  SignInCredentials,
+  SignUpCredentials,
+  UseSignInOptions,
+  UseSignOutOptions,
+  UseSignUpOptions,
+} from "@/features/auth.types";
 
 export const defaultAuthConfig: AuthConfig = {
   redirects: {
@@ -47,38 +33,6 @@ export const sessionOptions = queryOptions({
   staleTime: 1000 * 60 * 5,
 });
 
-export interface AuthProviderProps {
-  children: ReactNode;
-  redirects?: Partial<AuthRedirects>;
-  onSignInSuccess?: () => void;
-  onSignUpSuccess?: () => void;
-  onSignOutSuccess?: () => void;
-  onError?: (error: { message: string }) => void;
-}
-
-export const AuthProvider = ({
-  children,
-  redirects,
-  onSignInSuccess,
-  onSignUpSuccess,
-  onSignOutSuccess,
-  onError,
-}: AuthProviderProps) => {
-  const value: AuthContextValue = {
-    redirects: {
-      ...defaultAuthConfig.redirects,
-      ...redirects,
-    },
-    onSignInSuccess,
-    onSignUpSuccess,
-    onSignOutSuccess,
-    onError,
-    queryKey: sessionOptions.queryKey,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
 export const useAuthConfig = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -89,16 +43,6 @@ export const useAuthConfig = () => {
   }
   return context;
 };
-
-export interface SignInCredentials {
-  identifier: string;
-  password: string;
-}
-
-export interface UseSignInOptions {
-  onSuccess?: () => void;
-  onError?: (error: { message: string }) => void;
-}
 
 export const useSignIn = (options?: UseSignInOptions) => {
   const config = useAuthConfig();
@@ -138,18 +82,6 @@ export const useSignIn = (options?: UseSignInOptions) => {
   });
 };
 
-export interface SignUpCredentials {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-}
-
-export interface UseSignUpOptions {
-  onSuccess?: () => void;
-  onError?: (error: { message: string }) => void;
-}
-
 export const useSignUp = (options?: UseSignUpOptions) => {
   const config = useAuthConfig();
   const queryClient = useQueryClient();
@@ -178,11 +110,6 @@ export const useSignUp = (options?: UseSignUpOptions) => {
     },
   });
 };
-
-export interface UseSignOutOptions {
-  redirectTo?: string;
-  onSuccess?: () => void;
-}
 
 export const useSignOut = (options?: UseSignOutOptions) => {
   const config = useAuthConfig();
