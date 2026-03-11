@@ -1,9 +1,9 @@
 import { WarningCircleIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
-import { SignInForm, SignUpForm } from "@/features/auth";
+import { SignInForm, SignUpForm } from "@/features/auth.component";
+import { sessionOptions } from "@/features/auth.queries";
 import { SESSION_EXPIRED_REASON } from "@/lib/api";
-import { sessionOptions } from "@/lib/auth";
 
 type AuthMode = "sign-in" | "sign-up";
 

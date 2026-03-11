@@ -8,7 +8,7 @@ import {
   Outlet,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { AuthProvider } from "../lib/auth";
+import { AuthProvider } from "@/features/auth.component";
 
 interface RouterContext {
   queryClient: QueryClient;
