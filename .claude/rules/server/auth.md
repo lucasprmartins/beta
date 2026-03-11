@@ -1,34 +1,27 @@
 ---
 paths:
-  - "packages/auth/**/*.ts"
+  - "packages/auth/**"
   - "apps/web/src/lib/auth.tsx"
 ---
 
-# Auth (Better Auth)
+## Autenticação (Better Auth)
 
-Autenticação com email/senha e username. O pacote expõe dois módulos: `server.ts` (backend) e `client.ts` (frontend).
+A autenticação é implementada usando Better Auth para gerenciamento de users, sessions e roles.
 
-## Plugins
+## Instruções
 
-| Plugin | Server | Client | Função |
-|--------|--------|--------|--------|
-| `username` | `username()` | `usernameClient()` | Login por username (3-20 chars) |
-| `admin` | `adminPlugin()` | `adminClient()` | Gerenciamento de usuários e roles |
-| `openAPI` | `openAPI()` | — | Docs automáticas (apenas dev) |
+### Backend
 
-## Regras
+- Parar criar dados extras do usuário: use `additionalFields` do Better Auth — não crie um domínio User separado.
+- O contexto da sessão é extraído via `createContext()` e passado a todos os handlers oRPC.
 
-- **Dados extras de usuário** (telefone, bio, avatar): use `additionalFields` do Better Auth — não crie um domínio User separado
-- Um domínio User só se justifica com lógica complexa (gamificação, reputação, multi-tenancy)
-- O `Context` (sessão) é extraído via `createContext()` e passado a todos os handlers oRPC
+## Frontend
 
-## Frontend (`apps/web/src/lib/auth.tsx`)
+- Use os hooks `useSignIn()`, `useSignUp()` e `useSignOut()` para autenticação, que cuidam de refetch da sessão e redirecionamentos automáticos.
+- Usar `ensureQueryData(sessionOptions)` no `beforeLoad` das rotas protegidas.
+- AuthProvider configura redirects: `afterSignIn`, `afterSignUp`, `afterSignOut`.
 
-| Hook | Input | Comportamento |
-|------|-------|---------------|
-| `useSignIn()` | `{ username, password }` | Login → refetch session → redirect |
-| `useSignUp()` | `{ name, email, username, password }` | Registro → refetch session → redirect |
-| `useSignOut()` | — | Logout → remove session → redirect |
+### Plugins
 
-- Usar `ensureQueryData(sessionOptions)` no `beforeLoad` das rotas protegidas
-- AuthProvider configura redirects: `afterSignIn`, `afterSignUp`, `afterSignOut`
+- `username` para login simples por username.
+- `admin` para gerenciamento de usuários e roles.

@@ -1,45 +1,32 @@
 ---
 paths:
-  - "packages/infra/**/*.ts"
+  - "packages/infra/**"
 ---
 
-# Infra
+## Infraestrutura (Drizzle e integrações)
 
-Implementações concretas: banco de dados e integrações externas.
+A infraestrutura é responsável por implementar detalhes técnicos como acesso a banco de dados, serviços externos e frameworks. Deve ser o mais isolada possível do domínio para facilitar manutenção e testes.
 
-## Schema (`src/db/schema/`)
+## Instruções
 
-- **Sempre** `.enableRLS()` em toda tabela
-- **Sempre** incluir `createdAt` e `updatedAt` (timestamps com timezone)
-- Nome da tabela: singular minúsculo
-- **Nunca use `real` para monetários** — use `numeric("col", { precision: 10, scale: 2 })`
-  - Retorna `string`: converter com `Number()` na leitura e `String()` na escrita
+### Banco de Dados (Drizzle ORM)
 
-## Repositórios (`src/db/repositories/`)
+- Os nomes das tabelas são singular em lower_snake_case.
+- **SEMPRE** incluir `.enableRLS()` nas tabelas.
+- **SEMPRE** incluir `createdAt` e `updatedAt` (timestamps com timezone) como colunas nas tabelas.
+- `.returning()` em querys com INSERT/UPDATE/DELETE para obter os dados afetados.
+- `.limit(1)` em consultas de item único, destructure com `const [row]`.
+- `.set()`/`.values()` **NUNCA** incluem `id`, `createdAt`, `updatedAt`.
+- Paginação: busca `limite + 1` com offset, `slice(0, limite)`, retorna `nextCursor: more ? cursor + limite : null`
+- **NUNCA** edite `src/db/migrations/`.
+- Após criar ou alterar schema utilize o comando `bun db:generate`.
 
-- Helper `exportar()` converte linha DB → DTO (exclui `createdAt`/`updatedAt`)
-- `.returning()` em insert/update/delete
-- `.limit(1)` em consultas de item único, destructure com `const [row]`
-- `.set()`/`.values()` **nunca** incluem `id`, `createdAt`, `updatedAt`
-- Paginação: busca `limite + 1` com offset, `slice(0, limite)`, retorna `proximoCursor: temMais ? cursor + limite : null`
+#### Transactions
 
-## Transações
+- Use `db.transaction(async (tx) => {...})` para atomicidade.
+- Use `tx` (não `db`) para todas as queries dentro da transação.
+- Rollback automático se exceção for lançada.
 
-- Use `db.transaction(async (tx) => {...})` para atomicidade
-- Use `tx` (não `db`) para todas as queries dentro da transação
-- Rollback automático se exceção for lançada
+### Integrações
 
-## Migrations
-
-- **Nunca** edite `src/db/migrations/` manualmente
-- Após criar ou alterar schema: `bun db:generate`
-
-## Seed (`src/db/seed.ts`)
-
-- `reset(db, schema)` limpa tabelas com TRUNCATE CASCADE
-- `seed(db, schema).refine()` customiza geradores por coluna
-- Importar schema e adicionar ao objeto `schema`
-
-## Integrações (`src/integrations/`)
-
-Cada integração em arquivo separado.
+- As integrações com serviços externos (APIs, filas, etc) são separados em módulos dentro de `packages/infra/integrations/`.

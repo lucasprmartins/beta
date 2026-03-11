@@ -1,56 +1,30 @@
-# Projeto
+## Visão Geral
 
-Monorepo template com arquitetura limpa orientada a domínios de negócio.
-
-## Estrutura
-
-```
-apps/
-├── server/        # Orquestrador HTTP (Elysia)
-└── web/           # Interface (React 19 + TanStack)
-
-packages/
-├── core/          # Lógica de negócio pura (sem deps externas)
-├── infra/         # Banco de dados + integrações
-├── api/           # Routers oRPC
-├── auth/          # Autenticação (Better Auth)
-└── config/        # Configurações compartilhadas (tsconfig)
-```
+Este projeto é um template monorepo com arquitetura limpa orientada a domínio de negócio separando responsabilidades na arquitetura de software e na estrutura de pastas, com stack totalmente moderna e otimizada para desenvolvimento fullstack. O objetivo é fornecer uma base sólida e escalável para construção de aplicações web complexas seguindo boas práticas de design de software.
 
 ## Stack
 
-| Camada | Tecnologia |
-|--------|------------|
-| Runtime | Bun |
-| Server | Elysia |
-| API | oRPC |
-| Auth | Better Auth |
-| DB | Drizzle ORM + PostgreSQL |
-| Frontend | React 19 + TanStack Router/Query |
-| Styling | Tailwind CSS + DaisyUI |
-| Icons | Phosphor Icons |
+- Bun para runtime, gerenciamento de pacotes e testes.
+- Elysia como framework de servidor HTTP em `apps/server`.
+- React 19 com TanStack Router e Query para frontend em `apps/web`.
+    - Tailwind CSS e DaisyUI para estilização e design.
+    - Phosphor Icons para ícones.
+- Drizzle ORM com PostgreSQL para persistência em `packages/infra`.
+- oRPC para definição de API fortemente tipada em `packages/api`.
+- Better Auth para autenticação em `packages/auth`.
 
-## Dependências entre Pacotes
+## Arquitetura
 
-| Pacote | Importa de |
-|--------|------------|
-| `core` | Nenhum — é puro |
-| `infra` | `core` (implementa contratos) |
-| `api` | `core` (use cases), `infra` (repositórios) |
-| `auth` | `infra` (DB para sessões) |
-| `server` | `api`, `auth`, `infra` |
-| `web` | `api` (client), `auth` (client) |
+A arquitetura é baseada em camadas, onde cada camada tem responsabilidades claras e bem definidas:
+- **Domínio**: Contém as regras de negócio, entidades e lógica central da aplicação. Deve ser independente de frameworks e tecnologias específicas.
+- **Aplicação**: Orquestra as operações do domínio, implementa casos de uso e coordena a comunicação entre as camadas.
+- **Infraestrutura**: Implementa detalhes técnicos como acesso a banco de dados, serviços externos e frameworks. Deve ser o mais isolada possível do domínio para facilitar manutenção e testes.
 
-## Domínios
+## Instruções
 
-Dois padrões: **CRUD Simples** (sem lógica de negócio) e **Domínio Rico** (com entidades, invariantes e regras). Detalhes nas rules de cada camada.
-
-## Comandos
-
-| Comando | Descrição |
-|---------|-----------|
-| `bun dev` | Inicia server + web |
-| `bun lint` | Verifica lint (Ultracite) |
-| `bun lint:fix` | Corrige lint |
-| `bun check-types` | Verifica tipagem TypeScript |
-| `bun db:generate` | Gera migration Drizzle |
+- **SEMPRE** consulte a documentação via Context7 antes de implementar código que use qualquer biblioteca do stack. Não confie apenas no conhecimento prévio — APIs mudam entre versões.
+- Código de negócio deve ser escrito em português para facilitar entendimento por toda a equipe, enquanto código técnico pode ser em inglês para aderir a convenções comuns.
+- Funções devem ter a nomenclatura clara e seguir o padrão camelCase, enquanto classes e tipos devem usar PascalCase.
+- Funções devem ter early returns para reduzir aninhamento e melhorar legibilidade. Mantenha as funções focadas e com baixa complexidade.
+- Utilize o linter (Ultracite) para manter um estilo de código consistente e corrigir problemas comuns.
+- Mantenha as funções focadas e com baixa complexidade, utilizando early returns para reduzir aninhamento e melhorar legibilidade.

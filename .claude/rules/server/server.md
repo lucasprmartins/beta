@@ -1,28 +1,29 @@
 ---
 paths:
-  - "apps/server/**/*.ts"
-  - "packages/core/**/*.ts"
-  - "packages/infra/**/*.ts"
-  - "packages/api/**/*.ts"
-  - "packages/auth/**/*.ts"
+  - "apps/server/**"
+  - "packages/core/**"
+  - "packages/infra/**"
+  - "packages/api/**"
+  - "packages/auth/**"
 ---
 
-# Regras Transversais (Backend)
+## Backend
 
-Regras que se aplicam a todo código server-side.
+O backend é construído usando Elysia + Bun. Ele é responsável por expor a API e interagir com a infraestrutura.
 
-## Logger (Pino)
+## Instruções
 
-Use `logger` de `@app/infra/logger` — **nunca** `console.log` no backend.
+### Logger (Pino)
 
-- `logger.info()` para operações normais
-- `logger.error({ err }, "mensagem")` para erros
-- `logger.debug()` para desenvolvimento
+- Use **SEMPRE** `logger` de `@app/infra/logger`, **NUNCA** `console.log`.
+- `logger.info()` são para operações normais, como requisições recebidas, ações do usuário, etc.
+- `logger.error({ err }, "mensagem")` são para erros, onde `err` é o objeto de erro capturado.
+- `logger.debug()` são para desenvolvimento, como inputs/outputs de funções, dados de debug, etc.
 
-## Variáveis de Ambiente
+### Variáveis de Ambiente
 
-- **Nunca** use `process.env` — importe `env` de `@app/infra/env`
-- Exceção: `drizzle.config.ts` (roda fora do servidor)
-- Nova variável: adicionar ao schema Zod em `packages/infra/src/env.ts` + `apps/server/.env.example`
-- Obrigatórias: `z.string().min(1)` / Opcionais: `z.string().optional().default("valor")`
-- **Nunca** `as string` para forçar tipo
+- **NUNCA** use `process.env`, **SEMPRE** importe `env` de `@app/infra/env`. Com exceção de `drizzle.config.ts` que roda fora do servidor.
+- Quando possuir uma nova variável de ambiente, adicione ao schema Zod em `packages/infra/src/env.ts` e `apps/server/.env.example`.
+- Variáveis obrigatórias devem possuir `z.string().min(1)`.
+- Variáveis opcionais devem possuir `z.string().optional().default("valor")`.
+- **NUNCA** use `as string` para forçar tipo.

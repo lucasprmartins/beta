@@ -1,50 +1,34 @@
 ---
 paths:
-  - "packages/api/**/*.ts"
+  - "packages/api/**"
 ---
 
-# API (oRPC)
+## Routers API (oRPC)
 
-Routers oRPC com validação Zod e erros tipados.
+As rotas API são definidas usando oRPC, que gera tipos automáticos para cliente e servidor.
 
-## Auth Middleware (`src/auth.ts`)
+## Instruções
 
-| Uso | Como |
-|-----|------|
-| Rota pública | `o.route(...)` |
-| Requer sessão | `o.use(requireAuth).route(...)` |
-| Requer role | `o.use(requireRole("admin")).route(...)` |
+### Auth Middleware
 
-## Regras de Router
+- `o.route(...)` para rotas públicas.
+- `o.use(requireAuth).route()` para rotas que exigem sessão.
+- `o.use(requireRole("admin")).route()` para rotas que exigem role específica.
 
-- **CRUD Simples**: importar e chamar o repositório diretamente no handler
-- **Domínio Rico**: instanciar use cases no **nível do módulo**: `const criar = criarDominio(dominioRepository)`
-- Schemas Zod com `.describe()` em cada campo (gera documentação OpenAPI)
-- `.route()` com `method`, `path`, `summary`, `description`, `tags`
-- `z.coerce.number()` para inputs de GET (query params chegam como string)
+### Router
+
+- **CRUD**: importar e chamar o repositório diretamente no handler.
 - Convenção: `{dominio}Router`, registrar em `src/server.ts`
+- Utilizar `logger.debug(...)` para inputs e outputs importantes para o desenvolvimento.
 
-## Tratamento de Erros
+### OpenAPI
+
+- Schemas Zod com `.describe()` em cada campo parar gerar documentação automática (OpenAPI) e validação robusta.
+- Rotas com `method`, `path`, `summary`, `description`, `tags` em `.route()` para gerar documentação e organização automática (OpenAPI).
+- `z.coerce.number()` para inputs de GET (query params chegam como string)
+
+### Tratamento de Erros
 
 - Use `.errors()` com dados tipados — nunca `ORPCError` direto
 - Converta `null` do Core em erros HTTP: `NOT_FOUND`, `CONFLICT`, `BAD_REQUEST`
 - Handler verifica `null` e lança `throw errors.X({ data: {...} })`
-
-## Pre-fetch (Domínio Rico)
-
-Em operações sobre recurso existente, busque antes de delegar ao use case:
-
-- Primeiro `null` → `NOT_FOUND` (recurso não existe)
-- Segundo `null` → `BAD_REQUEST` (operação inválida no recurso existente)
-
-## Server (`src/server.ts`)
-
-- `RPCHandler` — endpoint `/rpc` para o frontend (binary protocol)
-- `OpenAPIHandler` — endpoint `/api` com docs automáticas (apenas em dev)
-- `onError` — interceptor que loga erros via Pino
-
-## Client (`src/client.ts`)
-
-- `createClient(options?)` — factory que cria link, client tipado e utils TanStack Query
-- Aceita `onUnauthorized` callback para tratar 401 (redirect fica no consumidor)
-- Importado pelo web como `@app/api/client`
