@@ -28,3 +28,4 @@ A arquitetura é baseada em camadas, onde cada camada tem responsabilidades clar
 - Funções devem ter early returns para reduzir aninhamento e melhorar legibilidade. Mantenha as funções focadas e com baixa complexidade.
 - Utilize o linter (Ultracite) para manter um estilo de código consistente e corrigir problemas comuns.
 - Mantenha as funções focadas e com baixa complexidade, utilizando early returns para reduzir aninhamento e melhorar legibilidade.
+- Para fazer checagem de lint e tipos, sempre utilize o comando `bun check` que roda ambos em sequência, garantindo que o código esteja limpo e sem erros de tipo antes de ser commitado.
