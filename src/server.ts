@@ -1,9 +1,9 @@
 import cors from "cors";
 import express from "express";
 import { pinoHttp } from "pino-http";
-import { corsOrigins, isLocal } from "./config/env.js";
-import { logger } from "./config/logger.js";
-import { healthRouter } from "./routes/health.js";
+import { corsOrigins, isLocal } from "./config/env";
+import { logger } from "./config/logger";
+import { healthRouter } from "./routes/health";
 
 export function createServer() {
   const app = express();
