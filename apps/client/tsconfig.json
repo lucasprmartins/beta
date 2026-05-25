@@ -7,6 +7,15 @@
     "noEmit": true,
     "types": ["vite/client"],
     "paths": {
+      "@/auth/context": ["../server/src/auth/context.ts"],
+      "@/auth/index": ["../server/src/auth/index.ts"],
+      "@/auth/i18n/*": ["../server/src/auth/i18n/*"],
+      "@/config/*": ["../server/src/config/*"],
+      "@/db": ["../server/src/db/index.ts"],
+      "@/db/*": ["../server/src/db/*"],
+      "@/domain/*": ["../server/src/domain/*"],
+      "@/routes/lib/*": ["../server/src/routes/lib/*"],
+      "@/routes/task": ["../server/src/routes/task.ts"],
       "@/*": ["./src/*"],
       "@assets/*": ["./src/assets/*"]
     }

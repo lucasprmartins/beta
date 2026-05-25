@@ -1,12 +1,5 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { TaskRepository } from "../contracts/Task";
-import {
-  InvalidTaskTransitionError,
-  Task,
-  TaskNotFoundError,
-  TaskValidationError,
-} from "../entities/Task";
 import {
   CancelTask,
   CompleteTask,
@@ -15,7 +8,14 @@ import {
   ListTasks,
   ReopenTask,
   StartTask,
-} from "./Task";
+} from "@/domain/application/Task";
+import type { TaskRepository } from "@/domain/contracts/Task";
+import {
+  InvalidTaskTransitionError,
+  Task,
+  TaskNotFoundError,
+  TaskValidationError,
+} from "@/domain/entities/Task";
 
 function createInMemoryRepository(): TaskRepository {
   const tasks = new Map<string, Task>();

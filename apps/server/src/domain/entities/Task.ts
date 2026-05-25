@@ -1,5 +1,5 @@
-import type { Result } from "../Result";
-import { err, ok } from "../Result";
+import type { Result } from "@/domain/Result";
+import { err, ok } from "@/domain/Result";
 
 export type TaskStatus = "pending" | "in_progress" | "completed" | "cancelled";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";

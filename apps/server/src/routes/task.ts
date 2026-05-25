@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { logger } from "../config/logger";
-import { taskRepository } from "../db/repositories/task";
+import { logger } from "@/config/logger";
+import { taskRepository } from "@/db/repositories/task";
 import {
   CancelTask,
   CompleteTask,
@@ -9,10 +9,10 @@ import {
   ListTasks,
   ReopenTask,
   StartTask,
-} from "../domain/application/Task";
-import type { Task } from "../domain/entities/Task";
-import { TaskNotFoundError } from "../domain/entities/Task";
-import { o, requireAuth } from "./lib/auth";
+} from "@/domain/application/Task";
+import type { Task } from "@/domain/entities/Task";
+import { TaskNotFoundError } from "@/domain/entities/Task";
+import { o, requireAuth } from "@/routes/lib/auth";
 
 function toResponse(task: Task) {
   return {

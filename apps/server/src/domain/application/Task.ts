@@ -1,12 +1,12 @@
-import type { TaskRepository } from "../contracts/Task";
+import type { TaskRepository } from "@/domain/contracts/Task";
 import type {
   CreateTaskInput,
   InvalidTaskTransitionError,
   TaskValidationError,
-} from "../entities/Task";
-import { Task, TaskNotFoundError } from "../entities/Task";
-import type { Result } from "../Result";
-import { err, ok } from "../Result";
+} from "@/domain/entities/Task";
+import { Task, TaskNotFoundError } from "@/domain/entities/Task";
+import type { Result } from "@/domain/Result";
+import { err, ok } from "@/domain/Result";
 
 export class CreateTask {
   private readonly repository: TaskRepository;

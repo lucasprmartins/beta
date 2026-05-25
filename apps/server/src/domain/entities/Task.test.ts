@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { InvalidTaskTransitionError, Task, TaskValidationError } from "./Task";
+import {
+  InvalidTaskTransitionError,
+  Task,
+  TaskValidationError,
+} from "@/domain/entities/Task";
 
 const TITLE_MAX_LENGTH_PATTERN = /200/;
 const PAST_DUE_DATE_PATTERN = /anterior a hoje/;

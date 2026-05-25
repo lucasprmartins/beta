@@ -3,8 +3,8 @@ import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/node";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { logger } from "../../config/logger";
-import { router } from "./router";
+import { logger } from "@/config/logger";
+import { router } from "@/routes/lib/router";
 
 export const rpcHandler = new RPCHandler(router, {
   interceptors: [
