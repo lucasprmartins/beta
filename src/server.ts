@@ -1,6 +1,8 @@
 import cors from "cors";
 import express from "express";
+import { toNodeHandler } from "better-auth/node";
 import { pinoHttp } from "pino-http";
+import { auth } from "./auth";
 import { corsOrigins, isLocal } from "./config/env";
 import { logger } from "./config/logger";
 import { healthRouter } from "./routes/health";
@@ -13,7 +15,6 @@ export function createServer() {
       logger,
     })
   );
-  app.use(express.json());
 
   if (isLocal) {
     app.use(
@@ -27,6 +28,9 @@ export function createServer() {
       })
     );
   }
+
+  app.all("/auth/*splat", toNodeHandler(auth));
+  app.use(express.json());
 
   app.get("/", (_request, response) => {
     response.json({ status: "ok", service: "beta-node" });
