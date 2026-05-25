@@ -20,9 +20,14 @@
     "db:push": "pnpm --filter server db:push",
     "db:generate": "pnpm --filter server db:generate",
     "db:migrate": "pnpm --filter server db:migrate",
-    "db:studio": "pnpm --filter server db:studio"
+    "db:studio": "pnpm --filter server db:studio",
+    "lint": "ultracite check",
+    "lint:fix": "ultracite fix",
+    "check": "pnpm typecheck && pnpm lint:fix"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "ultracite": "7.6.1",
     "typescript": "^6.0.3"
   }
 }
