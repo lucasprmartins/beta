@@ -3,9 +3,12 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=26"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsup src/index.ts --format esm --platform node --target node20 --out-dir dist --clean --sourcemap",
+    "build": "tsup src/index.ts --format esm --platform node --target node26 --out-dir dist --clean --sourcemap",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node --import tsx --test \"src/**/*.test.ts\"",
