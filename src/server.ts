@@ -4,10 +4,10 @@ import { toNodeHandler } from "better-auth/node";
 import { pinoHttp } from "pino-http";
 import { auth } from "./auth";
 import { createContext } from "./auth/context";
-import { apiHandler, rpcHandler } from "./api/server";
 import { corsOrigins, isLocal } from "./config/env";
 import { logger } from "./config/logger";
 import { healthRouter } from "./routes/health";
+import { apiHandler, rpcHandler } from "./routes/rpc/server";
 
 export function createServer() {
   const app = express();

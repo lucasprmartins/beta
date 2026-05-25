@@ -3,7 +3,7 @@ import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/node";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { logger } from "../config/logger";
+import { logger } from "../../config/logger";
 import { taskRouter } from "./routers/task";
 
 export const router = { task: taskRouter };
