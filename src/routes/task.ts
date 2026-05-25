@@ -12,7 +12,7 @@ import {
 } from "../domain/application/Task";
 import type { Task } from "../domain/entities/Task";
 import { TaskNotFoundError } from "../domain/entities/Task";
-import { o, requireAuth } from "./config/auth";
+import { o, requireAuth } from "./lib/auth";
 
 function toResponse(task: Task) {
   return {

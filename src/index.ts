@@ -6,7 +6,7 @@ import { auth } from "./auth";
 import { createContext } from "./auth/context";
 import { corsOrigins, env, isLocal } from "./config/env";
 import { logger } from "./config/logger";
-import { apiHandler, rpcHandler } from "./routes/config/orpc";
+import { apiHandler, rpcHandler } from "./routes/lib/orpc";
 import { healthRouter } from "./routes/health";
 
 const app = express();
