@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/client: {}
+
+  apps/server:
     dependencies:
       '@better-auth/drizzle-adapter':
         specifier: ^1.6.11

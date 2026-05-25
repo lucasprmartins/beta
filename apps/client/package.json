@@ -1,0 +1,9 @@
+{
+  "name": "client",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"client workspace not configured yet\"",
+    "build": "echo \"client workspace not configured yet\"",
+    "typecheck": "echo \"client workspace not configured yet\""
+  }
+}
