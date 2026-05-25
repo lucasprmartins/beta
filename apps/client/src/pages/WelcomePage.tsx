@@ -37,7 +37,7 @@ const layers = [
     title: "API",
     subtitle: "oRPC Router",
     description: "Rotas type-safe com validação Zod, RPC e REST via OpenAPI.",
-    color: "text-secondary",
+    color: "text-base-content",
   },
   {
     icon: LockKeyIcon,
