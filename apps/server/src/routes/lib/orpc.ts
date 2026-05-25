@@ -4,9 +4,7 @@ import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/node";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { logger } from "../../config/logger";
-import { taskRouter } from "../task";
-
-export const router = { task: taskRouter };
+import { router } from "./router";
 
 export const rpcHandler = new RPCHandler(router, {
   interceptors: [

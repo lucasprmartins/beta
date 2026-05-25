@@ -7,14 +7,22 @@
     "node": ">=26"
   },
   "scripts": {
-    "dev": "pnpm --filter server dev",
-    "build": "pnpm --filter server build",
+    "dev": "pnpm --parallel --filter server --filter client dev",
+    "dev:server": "pnpm --filter server dev",
+    "dev:client": "pnpm --filter client dev",
+    "build": "pnpm --recursive --filter server --filter client build",
+    "build:server": "pnpm --filter server build",
+    "build:client": "pnpm --filter client build",
     "start": "pnpm --filter server start",
-    "typecheck": "pnpm --filter server typecheck",
+    "preview:client": "pnpm --filter client preview",
+    "typecheck": "pnpm --recursive --filter server --filter client typecheck",
     "test": "pnpm --filter server test",
     "db:push": "pnpm --filter server db:push",
     "db:generate": "pnpm --filter server db:generate",
     "db:migrate": "pnpm --filter server db:migrate",
     "db:studio": "pnpm --filter server db:studio"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
   }
 }

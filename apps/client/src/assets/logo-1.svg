@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 727.44 275.86">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #8f1390;
+      }
+    </style>
+  </defs>
+  <g id="Logotipo-1">
+    <path class="cls-1" d="M0,91.95h45.98v91.95H0v-91.95ZM45.98,45.98h91.95v183.9H45.98v-45.98h45.98v-91.95h-45.98v-45.98Z"/>
+    <path class="cls-1" d="M170.37,0h45.98v229.88h-45.98V0Z"/>
+    <path class="cls-1" d="M294.76,183.9h45.98v45.98h-45.98v45.98h-45.98V45.98h91.95v45.98h-45.98v91.95ZM340.73,91.95h45.98v91.95h-45.98v-91.95Z"/>
+    <path class="cls-1" d="M511.1,91.95h-45.98v137.93h-45.98V0h45.98v45.98h45.98v45.98ZM511.1,91.95h45.98v137.93h-45.98V91.95Z"/>
+    <path class="cls-1" d="M589.51,91.95h45.98v91.95h-45.98v-91.95ZM635.49,45.98h91.95v183.9h-91.95v-45.98h45.98v-91.95h-45.98v-45.98Z"/>
+  </g>
+</svg>
