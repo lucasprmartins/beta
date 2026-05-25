@@ -1,58 +1,35 @@
 import cors from "cors";
 import express from "express";
 import { toNodeHandler } from "better-auth/node";
-import { pinoHttp } from "pino-http";
+import { ipKeyGenerator, rateLimit } from "express-rate-limit";
 import { auth } from "./auth";
 import { createContext } from "./auth/context";
 import { corsOrigins, env, isLocal } from "./config/env";
 import { logger } from "./config/logger";
+import { queryClient } from "./db";
 import { apiHandler, rpcHandler } from "./routes/lib/orpc";
 import { healthRouter } from "./routes/health";
 
 const app = express();
+const RPC_RATE_LIMIT = { windowMs: 60_000, limit: 120 } as const;
 
-app.use(
-  pinoHttp({
-    logger,
-    customLogLevel(request, response, error) {
-      if (error || response.statusCode >= 500) {
-        return "error";
+const rpcRateLimit = rateLimit({
+  windowMs: RPC_RATE_LIMIT.windowMs,
+  limit: RPC_RATE_LIMIT.limit,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator(request) {
+    const forwardedFor = request.headers["x-forwarded-for"];
+    if (typeof forwardedFor === "string") {
+      const clientIp = forwardedFor.split(",")[0]?.trim();
+      if (clientIp) {
+        return ipKeyGenerator(clientIp);
       }
+    }
 
-      if (response.statusCode >= 400) {
-        return "warn";
-      }
-
-      if (request.method === "OPTIONS" || request.url === "/health") {
-        return "debug";
-      }
-
-      return "info";
-    },
-    customSuccessMessage(request, response, responseTime) {
-      return `${request.method} ${request.url} ${response.statusCode} ${Math.round(responseTime)}ms`;
-    },
-    customErrorMessage(request, response, error) {
-      return `${request.method} ${request.url} ${response.statusCode} ${error.message}`;
-    },
-    serializers: {
-      req(request) {
-        return {
-          id: request.id,
-          method: request.method,
-          url: request.url,
-          origin: request.headers.origin,
-          userAgent: request.headers["user-agent"],
-        };
-      },
-      res(response) {
-        return {
-          statusCode: response.statusCode,
-        };
-      },
-    },
-  })
-);
+    return request.ip ? ipKeyGenerator(request.ip) : "unknown-client";
+  },
+});
 
 if (isLocal) {
   app.use(
@@ -69,13 +46,19 @@ if (isLocal) {
 
 app.all("/auth/*splat", toNodeHandler(auth));
 
-app.get("/", (_request, response) => {
-  response.json({ status: "ok", service: "beta-node" });
+app.get("/", async (_request, response) => {
+  try {
+    await queryClient`SELECT 1`;
+    response.json({ status: "ok", db: "connected" });
+  } catch (err) {
+    logger.error({ err }, "health check falhou: banco indisponível");
+    response.status(503).json({ status: "error", db: "disconnected" });
+  }
 });
 
 app.use("/health", healthRouter);
 
-app.use("/rpc{/*path}", async (request, response, next) => {
+app.use("/rpc{/*path}", rpcRateLimit, async (request, response, next) => {
   const context = await createContext(request.headers);
   const { matched } = await rpcHandler.handle(request, response, {
     prefix: "/rpc",
