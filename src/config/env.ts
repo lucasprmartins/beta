@@ -3,6 +3,9 @@ import pino from "pino";
 import { z } from "zod";
 
 const envSchema = z.object({
+  DATABASE_URL: z.string().min(1),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
   PORT: z.coerce.number().int().positive().optional().default(3000),
   CORS_ORIGIN: z.string().optional().default(""),
   NODE_ENV: z
@@ -13,6 +16,7 @@ const envSchema = z.object({
     .enum(["debug", "info", "warn", "error", "fatal"])
     .optional()
     .default("info"),
+  DISABLE_PUBLIC_SIGNUP: z.coerce.boolean().optional().default(true),
 });
 
 const result = envSchema.safeParse(process.env);
