@@ -1,0 +1,10 @@
+.git
+.turbo
+.claude
+.codex
+node_modules
+**/dist
+**/server
+**/coverage
+*.md
+scripts
