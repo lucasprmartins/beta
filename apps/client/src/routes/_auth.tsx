@@ -1,4 +1,3 @@
-import { sessionOptions } from "@/auth/config";
 import { WarningCircleIcon } from "@phosphor-icons/react";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import {
@@ -7,6 +6,7 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { sessionOptions } from "@/auth/config";
 // Layout alternativo: import { Header } from "@/components/layout/header"
 import { Sidebar } from "@/components/layout/sidebar";
 

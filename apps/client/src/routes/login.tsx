@@ -1,5 +1,5 @@
-import { sessionOptions } from "@/auth/config";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { sessionOptions } from "@/auth/config";
 import { LoginPage } from "@/pages/LoginPage";
 
 export const Route = createFileRoute("/login")({

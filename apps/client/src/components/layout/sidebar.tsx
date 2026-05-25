@@ -1,6 +1,6 @@
-import { UserMenu } from "@/auth/components/UserMenu";
 import { SidebarSimpleIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
+import { UserMenu } from "@/auth/components/UserMenu";
 import { HeaderLogo } from "@/components/ui/header-logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { menuItems, NAV_ACTIVE_CLASS } from "@/routes/-navigation";

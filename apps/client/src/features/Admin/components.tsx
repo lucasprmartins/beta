@@ -1,8 +1,3 @@
-import { auth } from "@/auth";
-import { Avatar } from "@/auth/components/Avatar";
-import { RoleBadge } from "@/auth/components/RoleBadge";
-import { sessionOptions } from "@/auth/config";
-import { ROLE_META, ROLES } from "@/auth/contracts";
 import {
   ArrowsClockwiseIcon,
   AtIcon,
@@ -29,6 +24,11 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { auth } from "@/auth";
+import { Avatar } from "@/auth/components/Avatar";
+import { RoleBadge } from "@/auth/components/RoleBadge";
+import { sessionOptions } from "@/auth/config";
+import { ROLE_META, ROLES } from "@/auth/contracts";
 import {
   getUserRole,
   isUserBanned,

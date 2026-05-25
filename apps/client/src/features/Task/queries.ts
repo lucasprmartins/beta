@@ -1,6 +1,6 @@
-import { api, client } from "@/api/client";
 import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createCollection } from "@tanstack/react-db";
+import { api, client } from "@/api/client";
 import type { TaskData } from "@/features/Task/contracts";
 import { queryClient } from "@/lib/query";
 

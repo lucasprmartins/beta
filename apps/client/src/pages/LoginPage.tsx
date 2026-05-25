@@ -1,9 +1,9 @@
-import { SignInForm } from "@/auth/components/SignInForm";
-import { SignUpForm } from "@/auth/components/SignUpForm";
 import icon1 from "@assets/icon-1.svg";
 import { WarningCircleIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { SignInForm } from "@/auth/components/SignInForm";
+import { SignUpForm } from "@/auth/components/SignUpForm";
 
 const SESSION_EXPIRED_REASON = "session-expired";
 const SIGNUP_BLOCKED = import.meta.env.VITE_DISABLE_PUBLIC_SIGNUP !== "false";

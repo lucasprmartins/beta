@@ -1,14 +1,14 @@
+import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express from "express";
-import { toNodeHandler } from "better-auth/node";
 import { ipKeyGenerator, rateLimit } from "express-rate-limit";
 import { auth } from "./auth";
 import { createContext } from "./auth/context";
 import { corsOrigins, env, isLocal } from "./config/env";
 import { logger } from "./config/logger";
 import { queryClient } from "./db";
-import { apiHandler, rpcHandler } from "./routes/lib/orpc";
 import { healthRouter } from "./routes/health";
+import { apiHandler, rpcHandler } from "./routes/lib/orpc";
 
 const app = express();
 const RPC_RATE_LIMIT = { windowMs: 60_000, limit: 120 } as const;

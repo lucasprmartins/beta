@@ -89,7 +89,9 @@ const startTask = base
   .input(z.object({ id: z.string().describe("ID da tarefa") }))
   .handler(async ({ input, errors }) => {
     logger.debug({ input }, "startTask input");
-    const result = await new StartTask(taskRepository).execute({ id: input.id });
+    const result = await new StartTask(taskRepository).execute({
+      id: input.id,
+    });
     if (!result.ok) {
       if (result.error instanceof TaskNotFoundError) {
         throw errors.NOT_FOUND({ data: { id: input.id } });

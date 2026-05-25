@@ -1,9 +1,3 @@
-import { Avatar } from "@/auth/components/Avatar";
-import { RoleBadge } from "@/auth/components/RoleBadge";
-import { sessionOptions } from "@/auth/config";
-import { toUserRole } from "@/auth/contracts";
-import { useChangePassword } from "@/auth/hooks/useChangePassword";
-import { useUpdateUser } from "@/auth/hooks/useUpdateUser";
 import {
   AtIcon,
   CheckCircleIcon,
@@ -14,6 +8,12 @@ import {
 } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
+import { Avatar } from "@/auth/components/Avatar";
+import { RoleBadge } from "@/auth/components/RoleBadge";
+import { sessionOptions } from "@/auth/config";
+import { toUserRole } from "@/auth/contracts";
+import { useChangePassword } from "@/auth/hooks/useChangePassword";
+import { useUpdateUser } from "@/auth/hooks/useUpdateUser";
 
 // ─── Feedback ───────────────────────────────────────────────────────
 

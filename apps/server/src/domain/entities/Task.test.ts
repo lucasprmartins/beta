@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { InvalidTaskTransitionError, Task, TaskValidationError } from "./Task";
 
+const TITLE_MAX_LENGTH_PATTERN = /200/;
+const PAST_DUE_DATE_PATTERN = /anterior a hoje/;
+const CANCELLATION_REASON_PATTERN = /motivo/;
+const COMPLETED_STATUS_PATTERN = /completed/;
+
 function createTask(overrides?: { title?: string; description?: string }) {
   const result = Task.create({
     title: overrides?.title ?? "Comprar mantimentos",
@@ -85,7 +90,7 @@ describe("Task.create", () => {
       return;
     }
     assert.ok(result.error instanceof TaskValidationError);
-    assert.match(result.error.message, /200/);
+    assert.match(result.error.message, TITLE_MAX_LENGTH_PATTERN);
   });
 
   it("rejeita data limite no passado", () => {
@@ -99,7 +104,7 @@ describe("Task.create", () => {
       return;
     }
     assert.ok(result.error instanceof TaskValidationError);
-    assert.match(result.error.message, /anterior a hoje/);
+    assert.match(result.error.message, PAST_DUE_DATE_PATTERN);
   });
 
   it("aceita data limite hoje", () => {
@@ -169,7 +174,7 @@ describe("Transições de estado", () => {
       return;
     }
     assert.ok(result.error instanceof TaskValidationError);
-    assert.match(result.error.message, /motivo/);
+    assert.match(result.error.message, CANCELLATION_REASON_PATTERN);
   });
 
   it("completed -> pending via reopen()", () => {
@@ -251,7 +256,7 @@ describe("Mutações", () => {
       return;
     }
     assert.ok(result.error instanceof TaskValidationError);
-    assert.match(result.error.message, /completed/);
+    assert.match(result.error.message, COMPLETED_STATUS_PATTERN);
   });
 
   it("changeDescription atualiza a descrição", () => {

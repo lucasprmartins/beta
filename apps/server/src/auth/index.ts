@@ -2,9 +2,9 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { i18n } from "@better-auth/i18n";
 import { betterAuth } from "better-auth";
 import { admin as adminPlugin, openAPI, username } from "better-auth/plugins";
+import { corsOrigins, env, isLocal } from "../config/env";
 import { db } from "../db";
 import { account, session, user, verification } from "../db/schema/auth";
-import { corsOrigins, env, isLocal } from "../config/env";
 import { ptBR } from "./i18n/pt-br";
 
 export const auth = betterAuth({

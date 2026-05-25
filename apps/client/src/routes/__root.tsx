@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/auth/components/AuthProvider";
 import { MagnifyingGlassIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -9,6 +8,7 @@ import {
   Outlet,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { AuthProvider } from "@/auth/components/AuthProvider";
 
 interface RouterContext {
   queryClient: QueryClient;
