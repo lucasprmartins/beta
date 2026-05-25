@@ -13,4 +13,4 @@ export const menuItems: MenuItem[] = [
 ];
 
 export const NAV_ACTIVE_CLASS =
-  "!bg-primary/20 !text-primary font-bold hover:!bg-primary/10 hover:!text-secondary";
+  "!bg-primary/20 !text-primary font-bold hover:!bg-primary/10 hover:!text-primary";

@@ -16,7 +16,7 @@ export function Header({ children }: { children: React.ReactNode }) {
               <li key={item.to}>
                 <Link
                   activeProps={{ className: NAV_ACTIVE_CLASS }}
-                  className="text-secondary hover:bg-base-content/5! hover:text-base-content"
+                  className="text-base-content/70 hover:bg-base-content/5! hover:text-base-content"
                   to={item.to}
                 >
                   {({ isActive }) => (

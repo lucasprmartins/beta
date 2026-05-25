@@ -59,7 +59,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
               <li key={item.to}>
                 <Link
                   activeProps={{ className: NAV_ACTIVE_CLASS }}
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right text-secondary hover:bg-base-content/5! hover:text-base-content"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right text-base-content/70 hover:bg-base-content/5! hover:text-base-content"
                   data-tip={item.label}
                   onClick={closeDrawer}
                   to={item.to}
