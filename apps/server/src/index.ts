@@ -14,6 +14,43 @@ const app = express();
 app.use(
   pinoHttp({
     logger,
+    customLogLevel(request, response, error) {
+      if (error || response.statusCode >= 500) {
+        return "error";
+      }
+
+      if (response.statusCode >= 400) {
+        return "warn";
+      }
+
+      if (request.method === "OPTIONS" || request.url === "/health") {
+        return "debug";
+      }
+
+      return "info";
+    },
+    customSuccessMessage(request, response, responseTime) {
+      return `${request.method} ${request.url} ${response.statusCode} ${Math.round(responseTime)}ms`;
+    },
+    customErrorMessage(request, response, error) {
+      return `${request.method} ${request.url} ${response.statusCode} ${error.message}`;
+    },
+    serializers: {
+      req(request) {
+        return {
+          id: request.id,
+          method: request.method,
+          url: request.url,
+          origin: request.headers.origin,
+          userAgent: request.headers["user-agent"],
+        };
+      },
+      res(response) {
+        return {
+          statusCode: response.statusCode,
+        };
+      },
+    },
   })
 );
 
