@@ -7,6 +7,10 @@
     "node": ">=26"
   },
   "scripts": {
+    "cleanup": "tsx scripts/cleanup.ts",
+    "setup": "tsx scripts/setup.ts",
+    "env": "tsx scripts/env.ts",
+    "predev": "pnpm db",
     "dev": "pnpm --parallel --filter server --filter client dev",
     "dev:server": "pnpm --filter server dev",
     "dev:client": "pnpm --filter client dev",
@@ -14,7 +18,10 @@
     "build:server": "pnpm --filter server build",
     "build:client": "pnpm --filter client build",
     "start": "pnpm --filter server start",
+    "start:server": "pnpm --filter server start",
+    "start:client": "pnpm --filter client start",
     "preview:client": "pnpm --filter client preview",
+    "db": "docker compose up -d --wait postgres",
     "typecheck": "pnpm --recursive --filter server --filter client typecheck",
     "test": "pnpm --filter server test",
     "db:push": "pnpm --filter server db:push",
@@ -26,7 +33,11 @@
     "check": "pnpm typecheck && pnpm lint:fix"
   },
   "devDependencies": {
+    "@clack/prompts": "^1.4.0",
     "@biomejs/biome": "2.4.12",
+    "picocolors": "^1.1.1",
+    "tsx": "^4.22.3",
+    "@types/node": "^25.9.1",
     "ultracite": "7.6.1",
     "typescript": "^6.0.3"
   }

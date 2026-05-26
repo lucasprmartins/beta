@@ -11,6 +11,18 @@ importers:
       '@biomejs/biome':
         specifier: 2.4.12
         version: 2.4.12
+      '@clack/prompts':
+        specifier: ^1.4.0
+        version: 1.4.0
+      '@types/node':
+        specifier: ^25.9.1
+        version: 25.9.1
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
+      tsx:
+        specifier: ^4.22.3
+        version: 4.22.3
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
